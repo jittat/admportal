@@ -1,4 +1,5 @@
 from django.db import models
+from .header_utils import table_header
 
 class Campus(models.Model):
     title = models.CharField(max_length=100)
@@ -53,3 +54,6 @@ class AdmissionProject(models.Model):
 
     def __str__(self):
         return self.title
+
+    def major_table_header(self):
+        return table_header(self.column_descriptions)
