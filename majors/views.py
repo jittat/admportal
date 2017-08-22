@@ -1,3 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
-# Create your views here.
+from .models import AdmissionProject
+
+def index(request):
+    projects = AdmissionProject.objects.all()
+
+    return render(request,
+                  'majors/index.html',
+                  { 'projects': projects })
+
+    
+def list_majors(request, project_id):
+    project = get_object_or_404(AdmissionProject, pk=project_id)
+    
+    return render(request,
+                  'majors/majors.html',
+                  { 'project': project })
+

@@ -1,0 +1,7 @@
+<ul>
+  {% for project in projects %}
+    <li>
+      <a href="{% url 'majors:list-majors' project.id %}">{{ project.title }}</a> ({{ project.admission_round }})
+    </li>
+  {% endfor %}
+</ul>
