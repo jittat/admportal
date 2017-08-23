@@ -2,3 +2,16 @@
 body {
   padding-top: 3.5rem;
 }
+
+.bg-dark {
+    background-color: #016a66 !important;
+}
+
+#main_jumbotron_id {
+    background-color: #016a66;
+    border-radius: 0px;
+    color: white;
+    font-family: 'Prompt', sans-serif;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
