@@ -39,7 +39,7 @@ def parse_header(header):
     return nodes
 
 
-def table_header(header):
+def table_header(header, prefix_columns=None, postfix_columns=None):
     nodes = parse_header(header)
     rows = {}
 
@@ -69,11 +69,22 @@ def table_header(header):
     row_count = len(rows)
     for r in range(row_count):
         output.append('<tr>')
+        if (r == 0) and (prefix_columns):
+            for c in prefix_columns:
+                output.append('<th rowspan="' + str(row_count) + '">' +
+                              c + '</th>')
+            
         for title, span, is_leaf in rows[r]:
-            if is_leaf:
+            if is_leaf: 
                 rowspan = row_count - r
                 output.append('<th rowspan="' + str(rowspan) + '">' + title + '</th>')
             else:
                 output.append('<th colspan="' + str(span) + '">' + title + '</th>')
+
+        if (r == 0) and (postfix_columns):
+            for c in postfix_columns:
+                output.append('<th rowspan="' + str(row_count) + '">' +
+                              c + '</th>')
+            
         output.append('</tr>')
     return "\n".join(output)

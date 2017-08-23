@@ -12,8 +12,10 @@ def index(request):
     
 def list_majors(request, project_id):
     project = get_object_or_404(AdmissionProject, pk=project_id)
+    majors = project.major_set.all()
     
     return render(request,
                   'majors/majors.html',
-                  { 'project': project })
+                  { 'project': project,
+                    'majors': majors })
 

@@ -1,0 +1,9 @@
+<tr>
+  <td>{{ major.number }}</td>
+  <td>{{ major.faculty }}</td>
+  <td>{{ major.title }}</td>
+  {% for item in major.get_detail_items %}
+    <td>{{ item }}</td>
+  {% endfor %}
+  <td>{{ major.slots }}</td>
+</tr>

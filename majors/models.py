@@ -1,3 +1,6 @@
+import io
+import csv
+
 from django.db import models
 from .header_utils import table_header
 
@@ -56,4 +59,30 @@ class AdmissionProject(models.Model):
         return self.title
 
     def major_table_header(self):
-        return table_header(self.column_descriptions)
+        return table_header(self.column_descriptions,
+                            ['หมายเลข','คณะ','สาขาวิชา'],
+                            ['จำนวนรับ'])
+
+
+class Major(models.Model):
+    number = models.IntegerField()
+    title = models.CharField(max_length=200)
+    faculty = models.ForeignKey('Faculty')
+    admission_project = models.ForeignKey('AdmissionProject')
+
+    slots = models.IntegerField()
+    slots_comments = models.TextField(blank=True)
+
+    detail_items_csv = models.TextField()
+
+    class Meta:
+        ordering = ['number']
+    
+    def __str__(self):
+        return self.title
+
+    def get_detail_items(self):
+        csv_io = io.StringIO(self.detail_items_csv)
+        reader = csv.reader(csv_io)
+        for row in reader:
+            return row

@@ -6,4 +6,7 @@
 
 <table border="1">
   {{ project.major_table_header|safe }}
+  {% for major in majors %}
+    {% include "majors/include/major_row.html" %}
+  {% endfor %}
 </table>
