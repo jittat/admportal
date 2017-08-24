@@ -54,7 +54,7 @@ class AdmissionRound(models.Model):
 class AdmissionProject(models.Model):
     title = models.CharField(max_length=400)
     short_title = models.CharField(max_length=200)
-    admission_round = models.ForeignKey('AdmissionRound')
+    admission_rounds = models.ManyToManyField('AdmissionRound')
     campus = models.ForeignKey('Campus',
                                null=True,
                                blank=True)
@@ -67,6 +67,8 @@ class AdmissionProject(models.Model):
     short_descriptions = models.CharField(max_length=400,
                                           blank=True,
                                           verbose_name='รายละเอียดโครงการ (สั้น) แสดงในหน้าแรก')
+    slots = models.IntegerField(default=0,
+                                verbose_name='จำนวนรับ')
     
     def __str__(self):
         return self.title

@@ -1,4 +1,5 @@
-<table class="table table-sm table-responsive">
+{% load humanize %}
+<table class="table table-sm table-responsive table-striped">
   {% for r in admission_rounds %}
     <thead class="thead-inverse">
       <tr>
@@ -6,6 +7,9 @@
           {{ r }}
           {% if r.short_descriptions %}<small>{{ r.short_descriptions }}</small>{% endif %}
           {% if r.admission_dates %}<small>รับสมัคร {{ r.admission_dates }}</small>{% endif %}
+        </th>
+        <th>
+          <small>จำนวนรับ</small>
         </th>
         {% for c in campuses %}
           <th width="8%" style="text-align: center;">
@@ -22,6 +26,9 @@
           <span class="badge badge-secondary">{{ forloop.counter }}</span>
           {{ p }}
         </td>
+        <td class="text-right">
+          {{ p.slots|intcomma }}
+        </td>
         {% for c in campuses %}
           <td width="8%" style="text-align: center;">
             {% if not p.campus %}
@@ -37,6 +44,11 @@
     {% empty %}
       <tr>
         <td><small>ยังไม่มีข้อมูลโครงการ</small></td>
+        <td></td>
+        {% for c in campuses %}
+          <td>
+          </td>
+        {% endfor %}
       </tr>
     {% endfor %}
   {% endfor %}
