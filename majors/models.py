@@ -33,6 +33,13 @@ class AdmissionRound(models.Model):
     subround_number = models.IntegerField(default=0)
     rank = models.IntegerField()
 
+    short_descriptions = models.CharField(max_length=400,
+                                          blank=True,
+                                          verbose_name='รายละเอียดสั้น ๆ (แสดงในหน้าแรก)')
+    admission_dates = models.CharField(max_length=200,
+                                       blank=True,
+                                       verbose_name='กำหนดการ')
+
     class Meta:
         ordering = ['rank']
 
@@ -55,6 +62,12 @@ class AdmissionProject(models.Model):
     general_conditions = models.TextField(blank=True)
     column_descriptions = models.TextField(blank=True)
 
+    descriptions = models.TextField(blank=True,
+                                    verbose_name='รายละเอียดโครงการ')
+    short_descriptions = models.CharField(max_length=400,
+                                          blank=True,
+                                          verbose_name='รายละเอียดโครงการ (สั้น) แสดงในหน้าแรก')
+    
     def __str__(self):
         return self.title
 

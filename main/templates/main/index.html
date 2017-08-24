@@ -15,47 +15,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <table class="table table-sm table-responsive">
-        {% for r in admission_rounds %}
-          <thead class="thead-inverse">
-            <tr>
-              <th>
-                {{ r }} <small>ระบุคำอธิบาย</small>
-              </th>
-              {% for c in campuses %}
-                <th width="8%" style="text-align: center;">
-                  <small>
-                    {{ c.short_title }}
-                  </small>
-                </th>
-              {% endfor %}
-            </tr>
-          </thead>
-          {% for p in r.admissionproject_set.all %}
-            <tr>
-              <td>
-                <span class="badge badge-secondary">{{ forloop.counter }}</span>
-                {{ p }}
-              </td>
-              {% for c in campuses %}
-                <td width="8%" style="text-align: center;">
-                  {% if not p.campus %}
-                    <span class="badge badge-success">&nbsp;</span>
-                  {% else %}
-                    {% if p.campus == c %}
-                      <span class="badge badge-success">&nbsp;</span>
-                    {% endif %}
-                  {% endif %}
-                </td>
-              {% endfor %}
-            </tr>
-          {% empty %}
-            <tr>
-              <td><small>ยังไม่มีข้อมูลโครงการ</small></td>
-            </tr>
-          {% endfor %}
-        {% endfor %}
-      </table>
+      {% include "main/include/project_table.html" %}
     </div>
   </div>
 </div>
