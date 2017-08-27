@@ -1,12 +1,15 @@
-<h1>{{ project.title }}</h1>
+{% extends 'base.html' %}
+{% block content %}
+  <h1>{{ project.title }}</h1>
 
-<p>
-  {{ project.general_conditions|linebreaks }}
-</p>
+  <p>
+    {{ project.general_conditions|linebreaks }}
+  </p>
 
-<table border="1">
-  {{ project.major_table_header|safe }}
-  {% for major in majors %}
-    {% include "majors/include/major_row.html" %}
-  {% endfor %}
-</table>
+  <table border="1">
+    {{ project.major_table_header|safe }}
+    {% for major in majors %}
+      {% include "majors/include/major_row.html" %}
+    {% endfor %}
+  </table>
+{% endblock %}

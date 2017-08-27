@@ -1,46 +1,10 @@
-{% load humanize %}
 <table class="table table-sm table-responsive table-striped">
   {% for r in admission_rounds %}
     <thead class="thead-inverse">
-      <tr>
-        <th>
-          {{ r }}
-          {% if r.short_descriptions %}<small>{{ r.short_descriptions }}</small>{% endif %}
-          {% if r.admission_dates %}<small>รับสมัคร {{ r.admission_dates }}</small>{% endif %}
-        </th>
-        <th>
-          <small>จำนวนรับ</small>
-        </th>
-        {% for c in campuses %}
-          <th width="8%" style="text-align: center;">
-            <small>
-              {{ c.short_title }}
-            </small>
-          </th>
-        {% endfor %}
-      </tr>
+      {% include 'main/include/admission_round_table_header.html' %}
     </thead>
-    {% for p in r.admissionproject_set.all %}
-      <tr>
-        <td>
-          <span class="badge badge-secondary">{{ forloop.counter }}</span>
-          {{ p }}
-        </td>
-        <td class="text-right">
-          {{ p.slots|intcomma }}
-        </td>
-        {% for c in campuses %}
-          <td width="8%" style="text-align: center;">
-            {% if not p.campus %}
-              <span class="badge badge-success">&nbsp;</span>
-            {% else %}
-              {% if p.campus == c %}
-                <span class="badge badge-success">&nbsp;</span>
-              {% endif %}
-            {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
+    {% for project in r.admissionproject_set.all %}
+      {% include 'main/include/project_row.html' %}
     {% empty %}
       <tr>
         <td><small>ยังไม่มีข้อมูลโครงการ</small></td>
