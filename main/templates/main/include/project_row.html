@@ -4,18 +4,17 @@
     <span class="badge badge-secondary">{{ forloop.counter }}</span>
     {{ project }}
   </td>
+  <td>
+    {{ dates }}
+  </td>
   <td class="text-right">
     {{ project.slots|intcomma }}
   </td>
-  {% for c in campuses %}
-  <td width="8%" style="text-align: center;">
+  <td class="text-center;">
     {% if not project.campus %}
-    <span class="badge badge-success">&nbsp;</span>
+      <span class="badge campus-badge-all">ทุกวิทยาเขต</span>
     {% else %}
-    {% if project.campus == c %}
-    <span class="badge badge-success">&nbsp;</span>
-    {% endif %}
+      <span class="badge campus-badge-campus-{{ project.campus.id }}">{{ project.campus }}</span>
     {% endif %}
   </td>
-  {% endfor %}
 </tr>

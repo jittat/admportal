@@ -50,11 +50,12 @@ class AdmissionRound(models.Model):
         else:
             return 'รอบที่ %d/%d' % (self.number, self.subround_number)
 
-    
+
 class AdmissionProject(models.Model):
     title = models.CharField(max_length=400)
     short_title = models.CharField(max_length=200)
-    admission_rounds = models.ManyToManyField('AdmissionRound')
+    admission_rounds = models.ManyToManyField('AdmissionRound',
+                                              through='AdmissionProjectRound')
     campus = models.ForeignKey('Campus',
                                null=True,
                                blank=True)
@@ -79,6 +80,14 @@ class AdmissionProject(models.Model):
                             ['จำนวนรับ'])
 
 
+class AdmissionProjectRound(models.Model):
+    admission_round = models.ForeignKey('AdmissionRound',
+                                        on_delete=models.CASCADE)
+    admission_project = models.ForeignKey('AdmissionProject',
+                                          on_delete=models.CASCADE)
+    admission_dates = models.CharField(max_length=100)
+
+    
 class Major(models.Model):
     number = models.IntegerField()
     title = models.CharField(max_length=200)

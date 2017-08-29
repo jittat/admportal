@@ -15,3 +15,20 @@ body {
     padding-top: 30px;
     padding-bottom: 30px;
 }
+
+.campus-badge-all {
+    background-color: darkgrey;
+}
+
+.campus-badge-campus-1 {
+    background-color: darkgreen;
+}
+.campus-badge-campus-2 {
+    background-color: darkblue;
+}
+.campus-badge-campus-3 {
+    background-color: brown;
+}
+.campus-badge-campus-4 {
+    background-color: orange;
+}

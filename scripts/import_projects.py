@@ -4,7 +4,7 @@ bootstrap()
 import sys
 import csv
 
-from majors.models import Campus, AdmissionRound, AdmissionProject
+from majors.models import Campus, AdmissionRound, AdmissionProject, AdmissionProjectRound
 
 def main():
     admission_rounds = dict([(r.id,r) for r in AdmissionRound.objects.all()])
@@ -18,10 +18,17 @@ def main():
                 continue
 
             pid = int(items[0])
+
+            try:
+                old_project = AdmissionProject.objects.get(pk=pid)
+                old_project.delete()
+            except:
+                pass
+            
             title = items[1]
             short_title = items[2]
             short_descriptions = items[3]
-            slots = int(items[6])
+            slots = int(items[5])
 
             project = AdmissionProject(id=pid,
                                        title=title,
@@ -35,13 +42,24 @@ def main():
 
             project.save()
 
-            prounds = [int(rid) for rid in items[5].split(';')]
-            for r in prounds:
-                project.admission_rounds.add(AdmissionRound.objects.get(pk=r))
+            rcount = 0
+            project_round_ids = []
+            round_dates = []
+            while (len(items) >= 7 + rcount*2) and (items[6 + rcount*2].strip() != ''):
+                project_round_ids.append(int(items[6 + rcount*2]))
+                round_dates.append(items[6 + rcount*2 + 1].strip())
+                rcount += 1
+                
+            for r in range(rcount):
+                project_round = AdmissionProjectRound()
+                project_round.admission_project = project
+                project_round.admission_round = AdmissionRound.objects.get(pk=project_round_ids[r])
+                project_round.admission_dates = round_dates[r]
+                project_round.save()
             
             counter += 1
 
-    print('Imported',counter,'faculties')
+    print('Imported',counter,'projects')
         
 
 if __name__ == '__main__':

@@ -122,6 +122,9 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_URL = '/media/'
+
 try:
     from admportal.settings_local import *
 except ImportError:

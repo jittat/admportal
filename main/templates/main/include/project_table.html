@@ -3,16 +3,18 @@
     <thead class="thead-inverse">
       {% include 'main/include/admission_round_table_header.html' %}
     </thead>
-    {% for project in r.admissionproject_set.all %}
-      {% include 'main/include/project_row.html' %}
+    {% for project_round in r.admissionprojectround_set.all %}
+      {% with project_round.admission_project as project %}
+        {% with project_round.admission_dates as dates %}
+          {% include 'main/include/project_row.html' %}
+        {% endwith %}
+      {% endwith %}
     {% empty %}
       <tr>
         <td><small>ยังไม่มีข้อมูลโครงการ</small></td>
         <td></td>
-        {% for c in campuses %}
-          <td>
-          </td>
-        {% endfor %}
+        <td></td>
+        <td></td>
       </tr>
     {% endfor %}
   {% endfor %}
