@@ -32,3 +32,7 @@ body {
 .campus-badge-campus-4 {
     background-color: orange;
 }
+
+h2 {
+    font-family: 'Prompt', sans-serif;
+}

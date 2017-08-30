@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <b>ประกาศข่าว</b>
-      <ul>
+      <h2 class="display-5">ข่าวสารการสมัคร</h2>
+      <ul style="margin-top: 10px;">
         {% for announcement in announcements %}
           <li>
             {{ announcement.body }}
@@ -15,6 +15,7 @@
           </li>
         {% endfor %}
       </ul>
+      <hr />
     </div>
   </div>
 </div>
