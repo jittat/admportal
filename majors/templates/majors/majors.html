@@ -23,6 +23,13 @@
         {% include "majors/include/major_row.html" %}
         {% endfor %}
       </table>
+
+      {% if comments %}
+        <h4>หมายเหตุจำนวนรับ</h4>
+        {% for c in comments %}
+          <span class="badge badge-danger">*{{ forloop.counter }}</span> &nbsp; {{ c }}<br />
+        {% endfor %}
+      {% endif %}
     </div>
   </div>
 </div>

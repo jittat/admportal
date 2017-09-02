@@ -5,5 +5,8 @@
   {% for item in major.get_detail_items %}
     <td>{{ item|linebreaks }}</td>
   {% endfor %}
-  <td>{{ major.slots }}</td>
+  <td>
+    {{ major.slots }}
+    {% if major.slots_comments %}<span class="badge badge-danger">*{{ major.comment_number }}</span>{% endif %}
+  </td>
 </tr>

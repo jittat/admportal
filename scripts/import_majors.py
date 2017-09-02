@@ -31,7 +31,7 @@ def main():
                 continue
 
             number = items[0]
-            faculty_title = items[1]
+            faculty_title = items[1].strip()
 
             candidate_titles = [faculty_title,
                                 'คณะ' + faculty_title]
