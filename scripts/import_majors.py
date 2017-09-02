@@ -19,7 +19,14 @@ def main():
     counter = 0
     with open(filename) as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
-        for items in reader:
+        lines = [l for l in reader]
+
+        project.general_conditions = lines[0][0]
+        project.column_descriptions = lines[1][0]
+        project.save()
+        
+        for items in lines[2:]:
+            
             if len(items) < 5:
                 continue
 

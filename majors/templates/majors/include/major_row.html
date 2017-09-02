@@ -3,7 +3,7 @@
   <td>{{ major.faculty }}</td>
   <td>{{ major.title }}</td>
   {% for item in major.get_detail_items %}
-    <td>{{ item }}</td>
+    <td>{{ item|linebreaks }}</td>
   {% endfor %}
   <td>{{ major.slots }}</td>
 </tr>

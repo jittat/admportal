@@ -1,15 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1>{{ project.title }}</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>โครงการ{{ project.title }}</h2>
 
-  <p>
-    {{ project.general_conditions|linebreaks }}
-  </p>
+      {% include "majors/include/project_info.html" %}
 
-  <table border="1">
-    {{ project.major_table_header|safe }}
-    {% for major in majors %}
-      {% include "majors/include/major_row.html" %}
-    {% endfor %}
-  </table>
+      <hr />
+      
+      <h4>คุณสมบัติทั่วไป</h4>
+      {{ project.general_conditions|linebreaks }}
+      <hr />
+      
+      <h4>สาขาวิชา คุณสมบัติเฉพาะ และเกณฑ์การรับสมัคร</h4>
+
+      <table class="table table-sm table-striped table-responsive">
+        <thead class="thead-inverse">
+          {{ project.major_table_header|safe }}
+        </thead>
+        {% for major in majors %}
+        {% include "majors/include/major_row.html" %}
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
 {% endblock %}

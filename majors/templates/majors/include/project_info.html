@@ -1,0 +1,6 @@
+วิทยาเขต:
+{% if project.campus != None %}<span class="badge campus-badge-campus-{{ project.campus.id }}">{{ project.campus }}</span>{% else %}<span class="badge campus-badge-all">ทุกวิทยาเขต</span>{% endif %}
+<br />
+
+รอบการรับสมัคร:
+{% for projectround in project.admissionprojectround_set.all %}{% if not forloop.first %}, {% endif %}{{ projectround.admission_round }} ({{ projectround.admission_dates }}){% endfor %}
