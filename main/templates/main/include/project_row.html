@@ -1,8 +1,11 @@
 {% load humanize %}
 <tr>
   <td>
-    <span class="badge badge-secondary">{{ forloop.counter }}</span>
+    <span class="badge badge-secondary badge-pill">{{ forloop.counter }}</span>
     {{ project }}
+    {% if project.major_detail_visible %}
+      <a href="{% url 'majors:list-majors' project.id %}"><span class="badge badge-pill badge-info">อ่านรายละเอียด</span></a>
+    {% endif %}
   </td>
   <td>
     {{ dates }}

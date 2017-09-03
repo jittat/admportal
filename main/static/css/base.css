@@ -16,6 +16,10 @@ body {
     padding-bottom: 30px;
 }
 
+.project-major-pages {
+    margin-top: 15px;
+}
+
 .campus-badge-all {
     background-color: darkgrey;
 }

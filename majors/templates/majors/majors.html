@@ -1,17 +1,29 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 project-major-pages">
+      <div class="float-right">
+        <img src="{% static 'img/ku-logo-xs-back.png' %}" />
+      </div>
       <h2>โครงการ{{ project.title }}</h2>
 
+      {% if not project.major_detail_visible %}
+        <div class="alert alert-warning">
+          <span class="badge badge-warning">หมายเหตุ:</span> รายละเอียดของโครงการนี้แสดงเฉพาะสำหรับผู้ดูแลเท่านั้น ถ้าจะให้แสดงสำหรับผู้ใช้ทั่วไป สามารถแก้ได้ที่ <a class="btn btn-sm btn-warning" target="_blank" href="{% url 'admin:majors_admissionproject_change' project.id %}">หน้าผู้ดูแล</a><br />
+        </div>
+      {% endif %}
+      
       {% include "majors/include/project_info.html" %}
 
       <hr />
-      
-      <h4>คุณสมบัติทั่วไป</h4>
-      {{ project.general_conditions|linebreaks }}
-      <hr />
+
+      {% if project.general_conditions %}
+        <h4>คุณสมบัติทั่วไป</h4>
+        {{ project.general_conditions|linebreaks }}
+        <hr />
+      {% endif %}
       
       <h4>สาขาวิชา คุณสมบัติเฉพาะ และเกณฑ์การรับสมัคร</h4>
 
@@ -20,7 +32,7 @@
           {{ project.major_table_header|safe }}
         </thead>
         {% for major in majors %}
-        {% include "majors/include/major_row.html" %}
+          {% include "majors/include/major_row.html" %}
         {% endfor %}
       </table>
 

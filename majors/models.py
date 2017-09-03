@@ -70,6 +70,9 @@ class AdmissionProject(models.Model):
                                           verbose_name='รายละเอียดโครงการ (สั้น) แสดงในหน้าแรก')
     slots = models.IntegerField(default=0,
                                 verbose_name='จำนวนรับ')
+
+    major_detail_visible = models.BooleanField(default=False,
+                                               verbose_name='แสดงรายละเอียดสาขา')
     
     def __str__(self):
         return self.title

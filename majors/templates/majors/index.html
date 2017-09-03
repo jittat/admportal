@@ -1,11 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-  <ul>
-    {% for project in projects %}
-      <li>
-        <a href="{% url 'majors:list-majors' project.id %}">{{ project.title }}</a>
-        ({{ project.admission_rounds.all|join:', ' }})
-      </li>
-    {% endfor %}
-  </ul>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>รายการโครงการ</h2>
+      <span class="badge badge-danger">หมายเหตุ:</span> หน้านี้แสดงเฉพาะสำหรับผู้ดูแลเท่านั้น
+      <ul>
+        {% for project in projects %}
+          <li>
+            {% if not project.major_detail_visible %}
+              <span class="badge badge-info">ซ่อน</span>
+            {% endif %}
+            <a href="{% url 'majors:list-majors' project.id %}">{{ project.title }}</a>
+            ({{ project.admission_rounds.all|join:', ' }})
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
 {% endblock %}
