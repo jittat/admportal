@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 project-major-pages">
+      <div class="float-right">
+        <img src="{% static 'img/ku-logo-xs-back.png' %}" />
+      </div>
+      <h2>ค้นหาสาขา</h2>
+      <form class="form-inline" method="post" action="{% url 'majors:search-majors' %}">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="col">
+            <input class="form-control" type="text" placeholder="ป้อนชื่อสาขา" name="query">
+          </div>
+          <div class="col">
+            <input class="btn btn-primary" type="submit" value="ค้นข้อมูลสาขา" />
+          </div>
+        </div>
+      </form>
+      <hr />
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-12 project-major-pages">
+      <h3>ผลการค้นหา</h3>
+      <p>
+        คำค้นหา: {{ query }}<br />
+        พบทั้งสิ้น {{ projects|length }} โครงการ
+      </p>
+
+      
+      {% for project in projects %}
+        <h3>{{ forloop.counter  }}. โครงการ{{ project.title }}</h3>
+      
+        {% include "majors/include/project_info.html" %}
+        
+        <hr />
+
+        {% if project.general_conditions %}
+          <h4>คุณสมบัติทั่วไป</h4>
+          {{ project.general_conditions|linebreaks }}
+          <hr />
+        {% endif %}
+      
+        <h4>สาขาวิชา คุณสมบัติเฉพาะ และเกณฑ์การรับสมัคร</h4>
+
+        <table class="table table-sm table-striped table-responsive">
+          <thead class="thead-inverse">
+            {{ project.major_table_header|safe }}
+          </thead>
+          {% for major in project.found_majors %}
+            {% include "majors/include/major_row.html" %}
+          {% endfor %}
+        </table>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -102,6 +102,8 @@ class Major(models.Model):
 
     detail_items_csv = models.TextField()
 
+    simplified_title = models.CharField(max_length=200)
+    
     class Meta:
         ordering = ['number']
     
@@ -113,3 +115,9 @@ class Major(models.Model):
         reader = csv.reader(csv_io)
         for row in reader:
             return row
+
+    @staticmethod
+    def simplify_title(title):
+        rem_chars = "์ ()"
+        
+        return ''.join([c for c in title if c not in rem_chars])

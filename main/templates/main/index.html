@@ -21,7 +21,25 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
+      <div class="float-right">
+        <form class="form-inline d-md-inline d-none" method="post" action="{% url 'majors:search-majors' %}">
+          {% csrf_token %}
+          <input class="form-control" type="text" placeholder="ป้อนชื่อสาขา" name="query"> &nbsp;
+          <input class="btn btn-primary" type="submit" value="ค้นข้อมูลสาขา" />
+        </form>
+      </div>
       <h2 class="display-5">โครงการรับสมัคร</h2>
+      <form class="d-md-none" method="post" action="{% url 'majors:search-majors' %}">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="col">
+            <input class="form-control" type="text" placeholder="ป้อนชื่อสาขา" name="query">
+          </div>
+          <div class="col">
+            <input class="btn btn-primary" type="submit" value="ค้นข้อมูลสาขา" />
+          </div>
+        </div>
+      </form>
       <p>
         ในปีการศึกษา 2561 มหาวิทยาลัยเกษตรศาสตร์รับนิสิตใหม่ตามโครงการ TCAS โดยแบ่งการรับเป็น 5 รอบ ดังแสดงในตารางด้านล่าง  สำหรับรายละเอียดสาขาวิชา เกณฑ์การรับสมัคร และเกณฑ์การคัดเลือกจะประกาศให้ทราบต่อไป
       </p>

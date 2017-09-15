@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import AdmissionProject
+from .models import AdmissionProject, Major
 
 def index(request):
     if not request.user.is_authenticated:
@@ -13,7 +13,38 @@ def index(request):
                   'majors/index.html',
                   { 'projects': projects })
 
+
+def search_majors(request):
+    query = request.POST['query'].strip()
+    if query == '':
+        return redirect(reverse('main-index'))
+
+    visible_projects = AdmissionProject.objects.filter(major_detail_visible=True).all()
+    visible_project_ids = set([p.id for p in visible_projects])
     
+    search_query = Major.simplify_title(query)
+    majors = [m for m in Major.objects.filter(simplified_title__contains=search_query)
+              if m.admission_project_id in visible_project_ids]
+
+    found_projects = {}
+    projects = []
+    for m in majors:
+        if m.admission_project_id not in found_projects:
+            found_projects[m.admission_project_id] = m.admission_project
+            projects.append(m.admission_project)
+            p = m.admission_project
+            p.found_majors = []
+        else:
+            p = found_projects[m.admission_project_id]
+
+        p.found_majors.append(m)
+            
+    return render(request,
+                  'majors/search.html',
+                  { 'projects': projects,
+                    'query': query })
+    
+
 def list_majors(request, project_id):
     project = get_object_or_404(AdmissionProject, pk=project_id)
 
