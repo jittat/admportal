@@ -40,3 +40,37 @@ body {
 h1,h2,h3,h4 {
     font-family: 'Prompt', sans-serif;
 }
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+.mb30 {
+    margin-bottom: 30px;
+}
+
+.m5 {
+    margin: 5px;
+}
+
+.p0 {
+    padding: 0;
+}
+
+.p10 {
+    padding: 10px;
+}
+
+.border-a0 {
+    border: 1px solid #a0a0a0;
+    border-radius: .25rem;
+}
+
+.top-radius-5 {
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
