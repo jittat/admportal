@@ -14,6 +14,20 @@ def index(request):
                   { 'projects': projects })
 
 
+def extract_and_attach_major_comments(majors):
+    comment_number = 0
+    comments = []
+    comment_map = {}
+    for m in majors:
+        if m.slots_comments != '':
+            if m.slots_comments not in comment_map:
+                comment_number += 1
+                comment_map[m.slots_comments] = comment_number
+                comments.append(m.slots_comments)
+            m.comment_number = comment_map[m.slots_comments]
+    return comments
+
+
 def search_majors(request):
     query = request.POST['query'].strip()
     if query == '':
@@ -23,7 +37,7 @@ def search_majors(request):
     visible_project_ids = set([p.id for p in visible_projects])
     
     search_query = Major.simplify_title(query)
-    majors = [m for m in Major.objects.filter(simplified_title__contains=search_query)
+    majors = [m for m in Major.objects.filter(simplified_title__contains=search_query).order_by('admission_project_id')
               if m.admission_project_id in visible_project_ids]
 
     found_projects = {}
@@ -38,12 +52,16 @@ def search_majors(request):
             p = found_projects[m.admission_project_id]
 
         p.found_majors.append(m)
-            
+
+
+    for p in projects:
+        p.comments = extract_and_attach_major_comments(p.found_majors)
+        
     return render(request,
                   'majors/search.html',
                   { 'projects': projects,
                     'query': query })
-    
+
 
 def list_majors(request, project_id):
     project = get_object_or_404(AdmissionProject, pk=project_id)
@@ -53,16 +71,7 @@ def list_majors(request, project_id):
     
     majors = project.major_set.all()
 
-    comment_number = 0
-    comments = []
-    comment_map = {}
-    for m in majors:
-        if m.slots_comments != '':
-            if m.slots_comments not in comment_map:
-                comment_number += 1
-                comment_map[m.slots_comments] = comment_number
-                comments.append(m.slots_comments)
-            m.comment_number = comment_map[m.slots_comments]
+    comments = extract_and_attach_major_comments(majors)
     
     return render(request,
                   'majors/majors.html',

@@ -27,36 +27,62 @@
     <div class="col-md-12 project-major-pages">
       <h3>ผลการค้นหา</h3>
       <p>
-        คำค้นหา: {{ query }}<br />
+        <b>คำค้นหา:</b> {{ query }} &nbsp;&nbsp;
         พบทั้งสิ้น {{ projects|length }} โครงการ
       </p>
 
-      
       {% for project in projects %}
-        <h3>{{ forloop.counter  }}. โครงการ{{ project.title }}</h3>
-      
-        {% include "majors/include/project_info.html" %}
-        
-        <hr />
-
-        {% if project.general_conditions %}
-          <h4>คุณสมบัติทั่วไป</h4>
-          {{ project.general_conditions|linebreaks }}
-          <hr />
-        {% endif %}
-      
-        <h4>สาขาวิชา คุณสมบัติเฉพาะ และเกณฑ์การรับสมัคร</h4>
-
-        <table class="table table-sm table-striped table-responsive">
-          <thead class="thead-inverse">
-            {{ project.major_table_header|safe }}
-          </thead>
-          {% for major in project.found_majors %}
-            {% include "majors/include/major_row.html" %}
-          {% endfor %}
-        </table>
+        <div class="project-search-results" style="border: 1px solid #a0a0a0; border-radius: 5px; padding: 10px; margin-bottom: 10px;">
+          <h3><span class="badge badge-success">{{ forloop.counter  }}.</span> โครงการ{{ project.title }}</h3>
+          <div class="project-contents">
+            วิทยาเขต:
+            {% if project.campus != None %}<span class="badge campus-badge-campus-{{ project.campus.id }}">{{ project.campus }}</span>{% else %}<span class="badge campus-badge-all">ทุกวิทยาเขต</span>{% endif %}
+            |
+            รอบการรับสมัคร:
+            {% for projectround in project.admissionprojectround_set.all %}{% if not forloop.first %}, {% endif %}{{ projectround.admission_round }} ({{ projectround.admission_dates }}){% endfor %}
+            
+            {% if project.general_conditions %}
+              <a class="btn btn-sm btn-success gen-condition-toggle" href="#">อ่านรายละเอียดคุณสมบัติทั่วไป</a>
+            {% endif %}
+            <hr />
+            {% if project.general_conditions %}
+              <div class="project-general-conditions" style="display: none;">
+                <h4>คุณสมบัติทั่วไป</h4>
+                {{ project.general_conditions|linebreaks }}
+                <hr />
+              </div>
+            {% endif %}
+            
+            <h4>สาขาวิชา คุณสมบัติเฉพาะ และเกณฑ์การรับสมัคร</h4>
+            
+            <table class="table table-sm table-striped table-responsive">
+              <thead class="thead-inverse">
+                {{ project.major_table_header|safe }}
+              </thead>
+              {% for major in project.found_majors %}
+                {% include "majors/include/major_row.html" %}
+              {% endfor %}
+            </table>
+            
+            {% if project.comments %}
+              <h4>หมายเหตุจำนวนรับ</h4>
+              {% for c in project.comments %}
+                <span class="badge badge-danger">*{{ forloop.counter }}</span> &nbsp; {{ c }}<br />
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
       {% endfor %}
     </div>
   </div>
 </div>
+<script>
+ $(function(){
+   $(".gen-condition-toggle").click(function(){
+     var pdiv = $(this).parents(".project-search-results");
+     $(pdiv).find(".project-general-conditions").show();
+     return false;
+   });
+ });
+</script>
 {% endblock %}
