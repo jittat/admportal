@@ -125,6 +125,12 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/media/'
 
+# Adm portal config
+
+ALLOW_SEARCH = True
+SEARCH_SCOPE_DISPLAY = 'จากโครงการรับสมัครในรอบที่ 1'
+SEARCH_EMPTY_DISPLAY_MESSAGE = 'ขณะนี้ระบบมีข้อมูลเฉพาะสาขาที่เปิดรับสมัครในรอบที่ 1 สาขาที่คุณสนใจอาจเปิดรับสมัครในรอบอื่น กรุณาเข้ามาตรวจสอบอีกครั้งเร็ว ๆ นี้'
+
 try:
     from admportal.settings_local import *
 except ImportError:

@@ -1,0 +1,11 @@
+<form class="d-md-none" method="post" action="{% url 'majors:search-majors' %}">
+  {% csrf_token %}
+  <div class="form-row">
+    <div class="col">
+      <input class="form-control" type="text" placeholder="ป้อนชื่อสาขา" name="query">
+    </div>
+    <div class="col">
+      <input class="btn btn-primary" type="submit" value="ค้นข้อมูลสาขา" />
+    </div>
+  </div>
+</form>

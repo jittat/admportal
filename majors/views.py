@@ -1,6 +1,8 @@
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 
+from django.conf import settings
+
 from .models import AdmissionProject, Major
 
 def index(request):
@@ -29,6 +31,9 @@ def extract_and_attach_major_comments(majors):
 
 
 def search_majors(request):
+    if not settings.ALLOW_SEARCH:
+        return redirect(reverse('main-index'))
+    
     query = request.POST['query'].strip()
     if query == '':
         return redirect(reverse('main-index'))
@@ -57,10 +62,15 @@ def search_majors(request):
     for p in projects:
         p.comments = extract_and_attach_major_comments(p.found_majors)
         
+    scope_display = settings.SEARCH_SCOPE_DISPLAY
+    empty_display_message = settings.SEARCH_EMPTY_DISPLAY_MESSAGE
+
     return render(request,
                   'majors/search.html',
                   { 'projects': projects,
-                    'query': query })
+                    'query': query,
+                    'scope_display': scope_display,
+                    'empty_display_message': empty_display_message })
 
 
 def list_majors(request, project_id):

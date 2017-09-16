@@ -25,7 +25,7 @@
   
   <div class="row">
     <div class="col-md-12 project-major-pages">
-      <h3>ผลการค้นหา</h3>
+      <h3>ผลการค้นหา{{ scope_display }}</h3>
       <p>
         <b>คำค้นหา:</b> {{ query }} &nbsp;&nbsp;
         พบทั้งสิ้น {{ projects|length }} โครงการ
@@ -72,6 +72,8 @@
             {% endif %}
           </div>
         </div>
+      {% empty %}
+        <b>ไม่พบสาขาที่คุณต้องการ</b> {{ empty_display_message }}
       {% endfor %}
     </div>
   </div>
