@@ -41,6 +41,11 @@ h1,h2,h3,h4 {
     font-family: 'Prompt', sans-serif;
 }
 
+.faculty-title-rows td {
+    background: #b97754;
+    color: #fafafa;
+}
+
 .mb10 {
     margin-bottom: 10px;
 }

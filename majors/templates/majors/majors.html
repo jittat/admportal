@@ -33,6 +33,11 @@
             {{ project.major_table_header|safe }}
           </thead>
           {% for major in majors %}
+            {% ifchanged major.faculty_id %}
+              <tr class="faculty-title-rows">
+                <td colspan="100" class="text-center"><b>{{ major.faculty }} ({{ major.faculty.campus.title }})</b></td>
+              </tr>
+            {% endifchanged %}
             {% include "majors/include/major_row.html" %}
           {% endfor %}
         </table>
@@ -43,12 +48,16 @@
           <thead class="thead-inverse">
             <tr>
               <th>หมายเลข</th>
-              <th>คณะ</th>
               <th>สาขาวิชา</th>
               <th>จำนวนรับ</th>
             </tr>
           </thead>
           {% for major in majors %}
+            {% ifchanged major.faculty_id %}
+              <tr class="faculty-title-rows">
+                <td colspan="100" class="text-center">{{ major.faculty }} ({{ major.faculty.campus.title }})</td>
+              </tr>
+            {% endifchanged %}
             {% include "majors/include/major_row_md.html" %}
           {% endfor %}
         </table>

@@ -97,7 +97,8 @@ class AdmissionProject(models.Model):
             return self.major_table_header_precomputed
         
         return table_header(self.column_descriptions,
-                            ['หมายเลข','คณะ','สาขาวิชา'],
+                            ['หมายเลข',
+                             'สาขาวิชา'],
                             ['จำนวนรับ'])
 
 
@@ -135,7 +136,7 @@ class Major(models.Model):
             return row
 
     def detail_items_as_list_display(self):
-        items = list(self.get_detail_items())
+        items = [item.replace("\n","<br />") for item in self.get_detail_items()]
         return self.admission_project.major_description_list_template.format(*items)
         
     @staticmethod
