@@ -27,14 +27,32 @@
       
       <h4>สาขาวิชา คุณสมบัติเฉพาะ และเกณฑ์การรับสมัคร</h4>
 
-      <table class="table table-sm table-striped table-responsive">
-        <thead class="thead-inverse">
-          {{ project.major_table_header|safe }}
-        </thead>
-        {% for major in majors %}
-          {% include "majors/include/major_row.html" %}
-        {% endfor %}
-      </table>
+      <div class="d-lg-block d-none">
+        <table class="table table-sm table-striped table-responsive">
+          <thead class="thead-inverse">
+            {{ project.major_table_header|safe }}
+          </thead>
+          {% for major in majors %}
+            {% include "majors/include/major_row.html" %}
+          {% endfor %}
+        </table>
+      </div>
+
+      <div class="d-lg-none">
+        <table class="table table-sm table-striped table-responsive">
+          <thead class="thead-inverse">
+            <tr>
+              <th>หมายเลข</th>
+              <th>คณะ</th>
+              <th>สาขาวิชา</th>
+              <th>จำนวนรับ</th>
+            </tr>
+          </thead>
+          {% for major in majors %}
+            {% include "majors/include/major_row_md.html" %}
+          {% endfor %}
+        </table>
+      </div>
 
       {% if comments %}
         <h4>หมายเหตุจำนวนรับ</h4>

@@ -2,7 +2,8 @@ import io
 import csv
 
 from django.db import models
-from .header_utils import table_header
+from .header_utils import table_header, table_header_column_count
+from .header_utils import table_header_as_list_template
 
 class Campus(models.Model):
     title = models.CharField(max_length=100)
@@ -62,7 +63,8 @@ class AdmissionProject(models.Model):
     
     general_conditions = models.TextField(blank=True)
     column_descriptions = models.TextField(blank=True)
-
+    column_count = models.IntegerField(default=0)
+    
     descriptions = models.TextField(blank=True,
                                     verbose_name='รายละเอียดโครงการ')
     short_descriptions = models.CharField(max_length=400,
@@ -74,10 +76,26 @@ class AdmissionProject(models.Model):
     major_detail_visible = models.BooleanField(default=False,
                                                verbose_name='แสดงรายละเอียดสาขา')
     
+    major_table_header_precomputed = models.TextField(blank=True)
+    major_description_list_template = models.TextField(blank=True)
+
+    
     def __str__(self):
         return self.title
 
-    def major_table_header(self):
+    
+    def save(self, *args, **kwargs):
+        self.major_table_header_precomputed = self.major_table_header(recompute=True)
+        self.column_count = table_header_column_count(self.column_descriptions)
+        self.major_description_list_template = table_header_as_list_template(self.column_descriptions)
+        
+        super(AdmissionProject, self).save(*args, **kwargs)
+        
+    
+    def major_table_header(self, recompute=False):
+        if (not recompute) and (self.major_table_header_precomputed):
+            return self.major_table_header_precomputed
+        
         return table_header(self.column_descriptions,
                             ['หมายเลข','คณะ','สาขาวิชา'],
                             ['จำนวนรับ'])
@@ -116,6 +134,10 @@ class Major(models.Model):
         for row in reader:
             return row
 
+    def detail_items_as_list_display(self):
+        items = list(self.get_detail_items())
+        return self.admission_project.major_description_list_template.format(*items)
+        
     @staticmethod
     def simplify_title(title):
         rem_chars = "์ ()"

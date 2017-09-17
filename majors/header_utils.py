@@ -39,32 +39,34 @@ def parse_header(header):
     return nodes
 
 
-def table_header(header, prefix_columns=None, postfix_columns=None):
-    nodes = parse_header(header)
-    rows = {}
+def traverse(node, depth, rows=None):
+    title = node[0]
+    children = node[1]
 
-    def traverse(node, depth):
-        title = node[0]
-        children = node[1]
+    if len(children) == 0:
+        leaf_count = 1
+        is_leaf = True
+    else:
+        leaf_count = 0
+        for child in children:
+            leaf_count += traverse(child, depth+1, rows)
+        is_leaf = False
 
-        if len(children) == 0:
-            leaf_count = 1
-            is_leaf = True
-        else:
-            leaf_count = 0
-            for child in children:
-                leaf_count += traverse(child, depth+1)
-            is_leaf = False
-            
+    if rows != None:
         if depth not in rows:
             rows[depth] = []
 
         rows[depth].append((title, leaf_count, is_leaf))
-        return leaf_count
+        
+    return leaf_count
     
 
+def table_header(header, prefix_columns=None, postfix_columns=None):
+    nodes = parse_header(header)
+    rows = {}
+
     for n in nodes:
-        traverse(n,0)
+        traverse(n,0,rows)
     output = []
     row_count = len(rows)
     for r in range(row_count):
@@ -88,3 +90,32 @@ def table_header(header, prefix_columns=None, postfix_columns=None):
             
         output.append('</tr>')
     return "\n".join(output)
+
+
+def table_header_as_list_template(header):
+    if header == '':
+        return ''
+    
+    nodes = parse_header(header)
+    param_count = [0]
+    
+    def build(node):
+        title = node[0]
+        children = node[1]
+
+        if len(children) == 0:
+            param_count[0] += 1
+            return '<li>%s: {%d}</li>' % (title, param_count[0]-1)
+        else:
+            children_strs = [build(child) for child in children]
+            return (('<li>%s\n<ul>\n' % (title,)) +
+                    '\n'.join(children_strs) +
+                    '\n</ul></li>')
+
+    output = [build(node) for node in nodes]
+    return "<ul>" + "\n".join(output) + "</ul>"
+
+
+def table_header_column_count(header):
+    nodes = parse_header(header)
+    return sum([traverse(n,0) for n in nodes])
