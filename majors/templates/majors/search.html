@@ -42,12 +42,12 @@
             {% for projectround in project.admissionprojectround_set.all %}{% if not forloop.first %}, {% endif %}{{ projectround.admission_round }} ({{ projectround.admission_dates }}){% endfor %}
             
             {% if project.general_conditions %}
-              <a class="btn btn-sm btn-success gen-condition-toggle" href="#">อ่านรายละเอียดคุณสมบัติทั่วไป</a>
+              <a class="btn btn-sm btn-success gen-condition-toggle" href="#">อ่านรายละเอียดคุณสมบัติเฉพาะ</a>
             {% endif %}
             <hr />
             {% if project.general_conditions %}
               <div class="project-general-conditions" style="display: none;">
-                <h4>คุณสมบัติทั่วไป</h4>
+                <h4>คุณสมบัติเฉพาะ</h4>
                 {{ project.general_conditions|linebreaks }}
                 <hr />
               </div>
@@ -60,6 +60,11 @@
                 {{ project.major_table_header|safe }}
               </thead>
               {% for major in project.found_majors %}
+                {% ifchanged major.faculty_id %}
+                  <tr class="faculty-title-rows">
+                    <td colspan="100" class="text-center"><b>{{ major.faculty }} ({{ major.faculty.campus.title }})</b></td>
+                  </tr>
+                {% endifchanged %}
                 {% include "majors/include/major_row.html" %}
               {% endfor %}
             </table>
