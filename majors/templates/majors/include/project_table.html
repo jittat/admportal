@@ -1,0 +1,13 @@
+<table class="table table-sm table-striped table-responsive">
+  <thead class="thead-inverse">
+    {{ project.major_table_header|safe }}
+  </thead>
+  {% for major in majors %}
+    {% ifchanged major.faculty_id %}
+      <tr class="faculty-title-rows">
+        <td colspan="100" class="text-center"><b>{{ major.faculty }} ({{ major.faculty.campus.title }})</b></td>
+      </tr>
+    {% endifchanged %}
+    {% include "majors/include/major_row.html" %}
+  {% endfor %}
+</table>
