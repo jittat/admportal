@@ -1,6 +1,8 @@
 from django.db import models
 
 class Announcement(models.Model):
+    DEFAULT_ROUND_NUMBER = 1
+    
     body = models.TextField()
     more_link_text = models.CharField(max_length=100,
                                       blank=True,
@@ -16,6 +18,11 @@ class Announcement(models.Model):
                                        default=True)
     created_date = models.DateTimeField(verbose_name='วันเวลาที่ประกาศ')
 
+    admission_round = models.ForeignKey('majors.AdmissionRound',
+                                        null=True,
+                                        blank=True,
+                                        default=None)
+    
     class Meta:
         ordering = ['-created_date']
     

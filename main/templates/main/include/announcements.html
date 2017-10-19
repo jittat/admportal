@@ -2,19 +2,26 @@
   <div class="row">
     <div class="col-md-12">
       <h2 class="display-5">ข่าวสารการสมัคร</h2>
-      <ul style="margin-top: 10px;">
-        {% for announcement in announcements %}
-          <li>
-            {{ announcement.body }}
-            {% if announcement.more_link_text %}
-              <a class="btn btn-sm btn-info" target="_blank" href="{{ announcement.more_link_url|safe }}">{{ announcement.more_link_text }}</a>
-            {% endif %}
-            {% if announcement.attachment %}
-              <a class="btn btn-sm btn-info" target="_blank" href="{{ announcement.attachment.url|safe }}">ดาวน์โหลด</a>
-            {% endif %}
-          </li>
-        {% endfor %}
-      </ul>
+      {% if announcement_rounds|length == 1 %}
+        {% include 'main/include/announcement_list.html' %}
+      {% else %}
+        <ul class="nav nav-tabs" role="tablist">
+          {% for r in announcement_rounds %}
+            <li class="nav-item">
+              <a class="nav-link {% if r.number == default_round_number %}active{% endif %}" data-toggle="tab" href="#tab_round_{{ r.number }}" role="tab" aria-controls="tab_round_{{ r.number }}" aria-selected="{% if r.number == default_round_number %}true{% else %}false{% endif %}">รอบที่ {{ r.number }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="tab-content">
+          {% for r in announcement_rounds %}
+            <div class="tab-pane fade {% if r.number == default_round_number %}show active{% endif %}" id="tab_round_{{ r.number }}" role="tabpanel">
+              {% with r.items as announcements %}
+                {% include 'main/include/announcement_list.html' %}
+              {% endwith %}
+            </div>
+          {% endfor %}          
+        </div>
+      {% endif %}
       <hr />
     </div>
   </div>
