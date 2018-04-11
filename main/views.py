@@ -21,6 +21,13 @@ def index(request):
     for a in announcements:
         if a.admission_round:
             round_number = a.admission_round.number
+            if round_number not in all_announcement_rounds:
+                all_rounds.append(round_number)
+                all_announcement_rounds[round_number] = []
+
+    for a in announcements:
+        if a.admission_round:
+            round_number = a.admission_round.number
             all_announcement_rounds[round_number].append(a)
         else:
             for round_number in all_rounds:
