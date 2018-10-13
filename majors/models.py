@@ -19,7 +19,8 @@ class Campus(models.Model):
 
 class Faculty(models.Model):
     title = models.CharField(max_length=100)
-    campus = models.ForeignKey('Campus')
+    campus = models.ForeignKey('Campus',
+                               on_delete=models.PROTECT)
 
     class Meta:
         verbose_name_plural = 'faculties'
@@ -58,6 +59,7 @@ class AdmissionProject(models.Model):
     admission_rounds = models.ManyToManyField('AdmissionRound',
                                               through='AdmissionProjectRound')
     campus = models.ForeignKey('Campus',
+                               on_delete=models.PROTECT,
                                null=True,
                                blank=True)
     
@@ -113,8 +115,10 @@ class AdmissionProjectRound(models.Model):
 class Major(models.Model):
     number = models.IntegerField()
     title = models.CharField(max_length=200)
-    faculty = models.ForeignKey('Faculty')
-    admission_project = models.ForeignKey('AdmissionProject')
+    faculty = models.ForeignKey('Faculty',
+                                on_delete=models.PROTECT)
+    admission_project = models.ForeignKey('AdmissionProject',
+                                          on_delete=models.PROTECT)
 
     slots = models.IntegerField()
     slots_comments = models.TextField(blank=True)

@@ -19,6 +19,7 @@ class Announcement(models.Model):
     created_date = models.DateTimeField(verbose_name='วันเวลาที่ประกาศ')
 
     admission_round = models.ForeignKey('majors.AdmissionRound',
+                                        on_delete=models.CASCADE,
                                         null=True,
                                         blank=True,
                                         default=None)
