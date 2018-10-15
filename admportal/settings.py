@@ -131,6 +131,9 @@ ALLOW_SEARCH = True
 SEARCH_SCOPE_DISPLAY = 'จากโครงการรับสมัครในรอบที่ 1'
 SEARCH_EMPTY_DISPLAY_MESSAGE = 'ขณะนี้ระบบมีข้อมูลเฉพาะสาขาที่เปิดรับสมัครในรอบที่ 1 สาขาที่คุณสนใจอาจเปิดรับสมัครในรอบอื่น กรุณาเข้ามาตรวจสอบอีกครั้งเร็ว ๆ นี้'
 
+ADMISSION_YEAR = 2562
+ADMISSION_ROUND_COUNT = 5
+
 try:
     from admportal.settings_local import *
 except ImportError:

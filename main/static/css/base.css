@@ -22,19 +22,28 @@ body {
 
 .campus-badge-all {
     background-color: darkgrey;
+    color: white;
 }
 
 .campus-badge-campus-1 {
     background-color: darkgreen;
+    color: white;
 }
 .campus-badge-campus-2 {
     background-color: darkblue;
+    color: white;
 }
 .campus-badge-campus-3 {
     background-color: brown;
+    color: white;
 }
 .campus-badge-campus-4 {
     background-color: orange;
+    color: white;
+}
+.campus-badge-campus-6 {
+    background-color: lightgrey;
+    color: white;
 }
 
 h1,h2,h3,h4 {
