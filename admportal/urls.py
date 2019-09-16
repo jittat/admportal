@@ -23,6 +23,7 @@ import main.views
 
 urlpatterns = [
     url(r'^$', main.views.index, name='main-index'),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^majors/', include('majors.urls')),
     url(r'^main/', include('main.urls')),
