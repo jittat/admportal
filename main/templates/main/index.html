@@ -19,10 +19,12 @@
   {% include "main/include/announcements.html" %}
 {% endif %}
 
+<div style="display: none;">
 {% include "main/include/campus_links.html" %}
+</div>
 
 <div class="container">
-  <div class="row">
+  <div class="row d-none">
     <div class="col-md-12">
       {% if allow_search %}{% include "main/include/search_float.html" %}{% endif %}
       <h2 class="display-5">โครงการรับสมัคร</h2>
