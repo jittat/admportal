@@ -9,15 +9,14 @@
       <img class="d-md-block d-none" src="{% static 'img/ku-logo.svg' %}" />
       <img class="d-md-none" src="{% static 'img/ku-logo.svg' %}" width="100px" />
     </div>
-    <h1 class="display-4 d-md-inline d-none">การรับสมัครเข้าศึกษาต่อมหาวิทยาลัยเกษตรศาสตร์ ปีการศึกษา {% current_year %}
-    </h1>
+    <h1 class="display-4 d-md-inline d-none">การรับสมัครเข้าศึกษาต่อมหาวิทยาลัยเกษตรศาสตร์ ปีการศึกษา {% current_year %}</h1>
     <h1 class="display-5 d-md-none">การรับสมัครเข้าศึกษาต่อมหาวิทยาลัยเกษตรศาสตร์ ปีการศึกษา {% current_year %}</h1>
     <div style="clear: both;"></div>
   </div>
 </div>
 
 {% if announcements %}
-{% include "main/include/announcements.html" %}
+  {% include "main/include/announcements.html" %}
 {% endif %}
 
 {% include "main/include/campus_links.html" %}
@@ -31,9 +30,7 @@
 
       <p>
         <!-- ในปีการศึกษา 2562 มหาวิทยาลัยเกษตรศาสตร์รับนิสิตใหม่ตามโครงการ TCAS โดยแบ่งการรับเป็น 5 รอบ ดังแสดงในตารางด้านล่าง  สำหรับรายละเอียดสาขาวิชา เกณฑ์การรับสมัคร และเกณฑ์การคัดเลือกจะประกาศให้ทราบต่อไป -->
-        ในปีการศึกษา {% current_year %} มหาวิทยาลัยเกษตรศาสตร์รับนิสิตใหม่ตามโครงการ TCAS โดยแบ่งการรับเป็น
-        {% admission_round_count %} รอบ สำหรับรายละเอียดสาขาวิชา เกณฑ์การรับสมัคร
-        และเกณฑ์การคัดเลือกจะประกาศให้ทราบต่อไป
+        ในปีการศึกษา {% current_year %} มหาวิทยาลัยเกษตรศาสตร์รับนิสิตใหม่ตามโครงการ TCAS โดยแบ่งการรับเป็น {% admission_round_count %} รอบ  สำหรับรายละเอียดสาขาวิชา เกณฑ์การรับสมัคร และเกณฑ์การคัดเลือกจะประกาศให้ทราบต่อไป
       </p>
       {% include "main/include/project_table.html" %}
     </div>
