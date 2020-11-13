@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'main.apps.MainConfig',
     'majors.apps.MajorsConfig',
+    'criteria.apps.CriteriaConfig',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',

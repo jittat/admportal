@@ -78,6 +78,11 @@ class AdmissionProject(models.Model):
     major_detail_visible = models.BooleanField(default=False,
                                                verbose_name='แสดงรายละเอียดสาขา')
     
+    is_available = models.BooleanField(default=False)
+
+    max_num_selections = models.IntegerField(default=1,
+                                             verbose_name='จำนวนสาขาที่เลือกได้')
+
     major_table_header_precomputed = models.TextField(blank=True)
     major_description_list_template = models.TextField(blank=True)
 
