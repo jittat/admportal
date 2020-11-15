@@ -1,5 +1,5 @@
 <div class="float-right">
-  <form class="form-inline d-md-inline d-none" method="post" action="{% url 'majors:search-majors' %}">
+  <form class="form-inline d-md-inline d-none" method="post" action="{% url 'org-majors:search-majors' %}">
     {% csrf_token %}
     <input class="form-control" type="text" placeholder="ป้อนชื่อสาขา" name="query"> &nbsp;
     <input class="btn btn-primary" type="submit" value="ค้นข้อมูลสาขา" />

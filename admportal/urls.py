@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^$', main.views.index, name='main-index'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^majors/', include('majors.urls')),
+    url(r'^majors/', include('criteria.urls')),
+    url(r'^org-majors/', include('majors.urls')),
     url(r'^main/', include('main.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

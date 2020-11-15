@@ -1,7 +1,7 @@
 from django.db import models
 
 from majors.models import AdmissionProject, AdmissionRound
-from majors.models import Major, Faculty
+from majors.models import Major, Faculty, Campus
 
 
 class AdmissionCriteria(models.Model):
@@ -9,6 +9,8 @@ class AdmissionCriteria(models.Model):
                                           on_delete=models.CASCADE)
     faculty = models.ForeignKey(
         Faculty, on_delete=models.CASCADE, null=True, blank=False)
+    campus = models.ForeignKey(
+        Campus, on_delete=models.CASCADE, null=True, blank=True)
     version = models.IntegerField(default=1)
     is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -188,6 +190,8 @@ class MajorCuptCode(models.Model):
     program_type = models.CharField(max_length=30)
     program_type_code = models.CharField(max_length=5)
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
+    campus = models.ForeignKey(Campus, on_delete=models.CASCADE, null=True)
+    
     major_code = models.CharField(max_length=5,
                                   blank=True)
     title = models.TextField()
@@ -214,6 +218,10 @@ class CurriculumMajor(models.Model):
     cupt_code = models.ForeignKey(MajorCuptCode,
                                   on_delete=models.CASCADE)
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
+    campus = models.ForeignKey(Campus,
+                               on_delete=models.CASCADE,
+                               null=True,
+                               blank=True)
     major = models.ForeignKey(Major,
                               on_delete=models.CASCADE, null=True)
     admission_criterias = models.ManyToManyField(
