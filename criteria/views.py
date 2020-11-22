@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.http import HttpResponseForbidden
 
 from majors.models import Faculty, Campus, AdmissionProject, AdmissionRound
-from .models import CurriculumMajor, MajorCuptCode
+from .models import CurriculumMajor, MajorCuptCode, AdmissionCriteria
 
 DEFAULT_CAMPUS_ID = 1
 
@@ -112,3 +113,123 @@ def index(request, campus_id=None, faculty_id=None):
                     'selected_projects': selected_projects,
                     'round_numbers': round_numbers,
                     'major_codes': major_codes })
+
+
+def sort_admission_criteria_rows(admission_criteria_rows):
+    lst = []
+    for criteria in admission_criteria_rows:
+        first_criteria = criteria['criterias'][0]
+        key = '-'.join([mc.curriculum_major.cupt_code.program_code + mc.curriculum_major.cupt_code.major_code for mc in criteria['majors']])
+        total_slots = sum([mc.slots for mc in criteria['majors']])
+        lst.append((first_criteria.faculty_id, key, -total_slots, first_criteria.id, criteria))
+
+    return [item[4] for item in sorted(lst)]
+
+def combine_criteria_rows(rows):
+    major_slots = {}
+
+    for r in rows:
+        curriculum_major_admission_criterias = r['majors']
+        for mc in curriculum_major_admission_criterias:
+            major = mc.curriculum_major
+            major_id = mc.curriculum_major.id
+            if major_id not in major_slots:
+                major_slots[major_id] = []
+            major_slots[major_id].append((mc.slots, mc, r['criterias'][0]))
+
+    combined_rows = []
+    deleted_major_ids = set()
+            
+    for major_id in major_slots:
+        slots = major_slots[major_id]
+        if len(slots) > 1:
+            non_zero_mc = [s for s in slots if s[0] > 0]
+            if len(non_zero_mc) == 1:
+                combined_rows.append({
+                    'majors': [non_zero_mc[0][1]],
+                    'criterias': [s[2] for s in slots],
+                    'major_count': 1,
+                    'criteria_count': len(slots),
+                })
+
+                for _,mc,_ in slots:
+                    deleted_major_ids.add(mc.id)
+
+    output_rows = []
+
+    for r in rows:
+        curriculum_major_admission_criterias = r['majors']
+        output_majors = []
+        for mc in curriculum_major_admission_criterias:
+            if mc.id not in deleted_major_ids:
+                output_majors.append(mc)
+
+        if len(output_majors) != 0:
+            output_rows.append({
+                'majors': output_majors,
+                'criterias': r['criterias'],
+                'major_count': len(output_majors),
+                'criteria_count': len(r['criterias']),
+            })
+
+    return output_rows + combined_rows
+        
+def prepare_admission_criteria(admission_criterias, curriculum_majors, combine_majors=False):
+    curriculum_majors_with_criterias = []
+    for criteria in admission_criterias:
+        criteria.cache_score_criteria_children()
+        criteria.curriculum_major_admission_criterias = criteria.curriculummajoradmissioncriteria_set.select_related('curriculum_major').all()
+        criteria.curriculum_major_admission_criteria_count = len(criteria.curriculum_major_admission_criterias)
+        criteria.curriculum_majors = [mj.curriculum_major for mj in criteria.curriculum_major_admission_criterias]
+        curriculum_majors_with_criterias += criteria.curriculum_majors
+
+    curriculum_majors_with_criteria_ids = set([m.id for m
+                                               in curriculum_majors_with_criterias])
+
+    free_curriculum_majors = [m for m in curriculum_majors
+                              if m.id not in curriculum_majors_with_criteria_ids]
+
+    admission_criteria_rows = [{'majors': c.curriculum_major_admission_criterias,
+                                'criterias': [c],
+                                'major_count': len(c.curriculum_major_admission_criterias),
+                                'criteria_count': len([c])} for c in admission_criterias]
+
+    if combine_majors:
+        admission_criteria_rows = combine_criteria_rows(admission_criteria_rows)
+
+    return sort_admission_criteria_rows(admission_criteria_rows), free_curriculum_majors
+
+def get_all_curriculum_majors(project, faculty=None):
+    if not faculty:
+        majors = CurriculumMajor.objects.filter(
+            admission_project_id=project.id).select_related('cupt_code')
+    else:
+        majors = CurriculumMajor.objects.filter(
+            admission_project_id=project.id,
+            faculty_id=faculty.id).select_related('cupt_code')
+
+    return majors
+
+def show_project(request, project_id, faculty_id=None):
+    if project_id not in [27,28]:
+        return HttpResponseForbidden()
+
+    project = get_object_or_404(AdmissionProject, pk=project_id)
+
+    faculties = Faculty.objects.all()
+    
+    admission_criterias = (AdmissionCriteria
+                           .objects
+                           .filter(admission_project_id=project_id,
+                                   is_deleted=False)
+                           .order_by('faculty_id'))
+
+    curriculum_majors = get_all_curriculum_majors(project)
+    admission_criteria_rows, free_curriculum_majors = prepare_admission_criteria(admission_criterias, curriculum_majors, True)
+
+    return render(request,
+                  'criteria/report_index.html',
+                  {'project': project,
+                   'admission_criteria_rows': admission_criteria_rows,
+                   'free_curriculum_majors': free_curriculum_majors,
+                   })

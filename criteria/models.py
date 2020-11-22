@@ -21,6 +21,8 @@ class AdmissionCriteria(models.Model):
     
     curriculum_majors_json = models.TextField(blank=True) 
 
+    min_scores_json = models.TextField(blank=True)
+    
     def get_all_score_criteria(self, criteria_type):
         if getattr(self,'cached_score_criteria',None) == None:
             self.cached_score_criteria = self.scorecriteria_set.all()
