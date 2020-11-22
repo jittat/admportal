@@ -1,46 +1,55 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-12 project-major-pages">
-      <div class="float-right">
-        <img src="{% static 'img/ku-logo-xs-back.png' %}" />
+  <div class="sticky-top pb-2" style="top: 56px; background: white;">
+    <div class="container">
+      <div class="row">
+	<div class="col-md-12 project-major-pages">
+	  <div class="float-right">
+            <img src="{% static 'img/ku-logo-xs-back.png' %}" />
+	  </div>
+	  <h2>สาขาและโครงการที่รับ{{ selected_label }}</h2>
+	  เลือกคณะหรือวิทยาเขต
+	  <select class="target-selects">
+	    {% for c in choices %}
+	      <option
+		{% if c.is_selected %}selected{% endif %}
+		data-sel-type="{{ c.type }}"
+		data-sel-id="{{ c.id }}"
+	      >
+		{% if c.type == 'campus' %}
+		  --- {{ c.label }} ---
+		{% else %}
+		  ›› {{ c.label }}
+		{% endif %}
+	      </option>
+	    {% endfor %}
+	  </select>
+	  <br>
+	</div>
       </div>
-      <h2>สาขาและโครงการที่รับ</h2>
-      เลือกคณะหรือวิทยาเขต
-      <select>
-	{% for c in choices %}
-	  <option {% if c.is_selected %}selected{% endif %}>
-	    {% if c.type == 'campus' %}
-	      --- {{ c.label }} ---
-	    {% else %}
-	      ›› {{ c.label }}
-	    {% endif %}
-	  </option>
-	{% endfor %}
-      </select><br>
-
-      <table class="table table-sm">
-	<thead class="thead-dark">
-	  <tr>
-	    <th>สาขาวิชา</th>
-	  </tr>
-	</thead>
-	<tbody>
-	  {% for c in major_codes %}
-	    {% ifchanged c.faculty %}
-	      <tr class="table-info">
-		<td>{{ c.faculty }}</td>
-	      </tr>
-	    {% endifchanged %}
-	    <tr>
-	      <td>{{ c }}</td>
-	    </tr>
-	  {% endfor %}
-	</tbody>
-      </table>
     </div>
   </div>
-</div>
+  <div class="container">
+    <div class="row">
+      {% include "criteria/include/major_project_table.html" %}
+    </div>
+  </div>
+  <script>
+   var campusUrlTemplate = "{% url 'criteria:index-campus' 9999 %}";
+   var facultyUrlTemplate = "{% url 'criteria:index-faculty' 9999 %}";
+   $(function(){
+     $(".target-selects").change(function(){
+       var selOpt = $(this).find(":selected");
+       var selType = $(selOpt).data("selType");
+       var selId = $(selOpt).data("selId");
+       if (selType == 'faculty') {
+	 var url = facultyUrlTemplate.replace('9999', selId);
+       } else {
+	 var url = campusUrlTemplate.replace('9999', selId);
+       }
+       window.location.href = url;
+     });
+   });
+  </script>
 {% endblock %}

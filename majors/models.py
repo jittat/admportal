@@ -86,6 +86,11 @@ class AdmissionProject(models.Model):
     major_table_header_precomputed = models.TextField(blank=True)
     major_description_list_template = models.TextField(blank=True)
 
+    table_header_title = models.CharField(max_length=50,
+                                          blank=True,
+                                          verbose_name='ชื่อสั้นมากแสดงหัวตาราง')
+    default_round_number = models.IntegerField(default=0,
+                                               verbose_name='รอบ (default)')
     
     def __str__(self):
         return self.title

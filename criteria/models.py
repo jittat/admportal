@@ -200,12 +200,22 @@ class MajorCuptCode(models.Model):
     component_weight_type = models.CharField(max_length=10,
                                              blank=True)
 
+    admission_project_list = models.CharField(max_length=100,
+                                              blank=True)
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['program_code','major_code'], name='unique_program_major')
         ]
         ordering = ['program_type_code', 'program_code']
-    
+
+    def get_admission_project_set(self):
+        if self.admission_project_list == '':
+            return set()
+        else:
+            ids = [int(x) for x in self.admission_project_list.split(',')]
+            return set(ids)
+        
     def __str__(self):
         if self.major_title:
             return f'{self.title} {self.major_title} ({self.program_type})'
