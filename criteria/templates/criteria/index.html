@@ -9,23 +9,30 @@
             <img src="{% static 'img/ku-logo-xs-back.png' %}" />
 	  </div>
 	  <h2>สาขาและโครงการที่รับ{{ selected_label }}</h2>
-	  เลือกคณะหรือวิทยาเขต
-	  <select class="target-selects">
-	    {% for c in choices %}
-	      <option
-		{% if c.is_selected %}selected{% endif %}
-		data-sel-type="{{ c.type }}"
-		data-sel-id="{{ c.id }}"
-	      >
-		{% if c.type == 'campus' %}
-		  --- {{ c.label }} ---
-		{% else %}
-		  ›› {{ c.label }}
-		{% endif %}
-	      </option>
+	  <div class="mb-1">
+	    เลือกคณะหรือวิทยาเขต
+	    <select class="target-selects">
+	      {% for c in choices %}
+		<option
+		  {% if c.is_selected %}selected{% endif %}
+		  data-sel-type="{{ c.type }}"
+				 data-sel-id="{{ c.id }}"
+		>
+		  {% if c.type == 'campus' %}
+		    --- {{ c.label }} ---
+		  {% else %}
+		    ›› {{ c.label }}
+		  {% endif %}
+		</option>
+	      {% endfor %}
+	    </select>
+	  </div>
+	  <div>
+	    รอบการรับสมัคร:
+	    {% for r in round_numbers %}
+	      <button type="button" id="round-button-{{ r }}" class="round-buttons btn  btn-outline-primary" data-round-number="{{ r }}">รอบที่ {{ r }}</button>
 	    {% endfor %}
-	  </select>
-	  <br>
+	  </div>
 	</div>
       </div>
     </div>
@@ -38,7 +45,29 @@
   <script>
    var campusUrlTemplate = "{% url 'criteria:index-campus' 9999 %}";
    var facultyUrlTemplate = "{% url 'criteria:index-faculty' 9999 %}";
+
+   function selectRound(r) {
+     {% for r in round_numbers %}
+     if(r == {{ r }}) {
+       $(".p-round-{{ r }}").show();
+       $("#round-button-{{ r }}")
+	 .addClass("btn-primary")
+	 .removeClass("btn-outline-primary");
+     } else {
+       $(".p-round-{{ r }}").hide();
+       $("#round-button-{{ r }}")
+	 .addClass("btn-outline-primary")
+	 .removeClass("btn-primary");
+     }
+     {% endfor %}
+   }
+   
    $(function(){
+     $(".round-buttons").click(function(){
+       var r = $(this).data('roundNumber');
+       selectRound(r);
+     });
+     
      $(".target-selects").change(function(){
        var selOpt = $(this).find(":selected");
        var selType = $(selOpt).data("selType");
@@ -50,6 +79,8 @@
        }
        window.location.href = url;
      });
+
+     selectRound({{ round_numbers.0 }});
    });
   </script>
 {% endblock %}

@@ -75,7 +75,7 @@ def index(request, campus_id=None, faculty_id=None):
     all_projects = AdmissionProject.objects.filter(is_available=True).all()
 
     selected_obj = None
-    
+
     if faculty_id!=None:
         faculty = get_object_or_404(Faculty, pk=faculty_id)
         campus = faculty.campus
@@ -100,6 +100,8 @@ def index(request, campus_id=None, faculty_id=None):
     selected_projects = [p for p in all_projects
                          if p.id in selected_project_ids]
         
+    round_numbers = sorted(set([p.default_round_number for p in selected_projects]))
+
     choices = build_choices(all_campuses, all_faculties, selected_obj)
 
     return render(request,
@@ -108,4 +110,5 @@ def index(request, campus_id=None, faculty_id=None):
                     'selected_obj': selected_obj,
                     'selected_label': selected_label,
                     'selected_projects': selected_projects,
+                    'round_numbers': round_numbers,
                     'major_codes': major_codes })

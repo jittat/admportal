@@ -20,7 +20,7 @@
 	<td>{{ c }}</td>
 	{% for p in selected_projects %}
 	  {% if p.id in c.get_admission_project_set %}
-	    <td class="p-round-{{ p.default_round_number }}">✓</td>
+	    <td class="text-center p-round-{{ p.default_round_number }}"><i class="fas fa-check"></i></td>
 	  {% else %}
 	    <td class="p-round-{{ p.default_round_number }}"></td>
 	  {% endif %}
