@@ -23,21 +23,46 @@
 
 {% include "main/include/campus_links.html" %}
 
-{% comment %}
 <div class="container">
-  <div class="row d-none">
+  <div class="row">
     <div class="col-md-12">
-      {% if allow_search %}{% include "main/include/search_float.html" %}{% endif %}
-      <h2 class="display-5">โครงการรับสมัคร</h2>
+      <h2 class="display-5">สาขาและโครงการรับสมัคร</h2>
       {% if allow_search %}{% include "main/include/search_normal.html" %}{% endif %}
 
       <p>
-        <!-- ในปีการศึกษา 2562 มหาวิทยาลัยเกษตรศาสตร์รับนิสิตใหม่ตามโครงการ TCAS โดยแบ่งการรับเป็น 5 รอบ ดังแสดงในตารางด้านล่าง  สำหรับรายละเอียดสาขาวิชา เกณฑ์การรับสมัคร และเกณฑ์การคัดเลือกจะประกาศให้ทราบต่อไป -->
-        ในปีการศึกษา {% current_year %} มหาวิทยาลัยเกษตรศาสตร์รับนิสิตใหม่ตามโครงการ TCAS โดยแบ่งการรับเป็น {% admission_round_count %} รอบ  สำหรับรายละเอียดสาขาวิชา เกณฑ์การรับสมัคร และเกณฑ์การคัดเลือกจะประกาศให้ทราบต่อไป
+        ในปีการศึกษา {% current_year %} มหาวิทยาลัยเกษตรศาสตร์รับนิสิตใหม่ตามโครงการ TCAS โดยแบ่งการรับเป็น 4 รอบ ขณะนี้สามารถตรวจสอบสาขาและโครงการกับรอบที่รับได้แล้ว  สำหรับรายละเอียดสาขาวิชา เกณฑ์การรับสมัคร และเกณฑ์การคัดเลือกจะประกาศให้ทราบเร็ว ๆ นี้
       </p>
-      {% include "main/include/project_table.html" %}
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+	<div class="card-body">
+	  <h5 class="card-title">สาขาและโครงการรับสมัคร</h5>
+	  <p class="card-text">
+	    สามารถตรวจสอบรายการโครงการรับและรอบรับของสาขาที่รับสมัครของคณะและวิทยาเขตต่าง ๆ 
+	  </p>
+	  <a href="{% url 'criteria:index' %}" class="btn btn-primary">ตรวจสอบรายละเอียด</a>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %}
+<div class="container">
+<div class="row d-none">
+<div class="col-md-12">
+{% if allow_search %}{% include "main/include/search_float.html" %}{% endif %}
+<h2 class="display-5">โครงการรับสมัคร</h2>
+{% if allow_search %}{% include "main/include/search_normal.html" %}{% endif %}
+
+<p>
+<!-- ในปีการศึกษา 2562 มหาวิทยาลัยเกษตรศาสตร์รับนิสิตใหม่ตามโครงการ TCAS โดยแบ่งการรับเป็น 5 รอบ ดังแสดงในตารางด้านล่าง  สำหรับรายละเอียดสาขาวิชา เกณฑ์การรับสมัคร และเกณฑ์การคัดเลือกจะประกาศให้ทราบต่อไป -->
+ในปีการศึกษา {% current_year %} มหาวิทยาลัยเกษตรศาสตร์รับนิสิตใหม่ตามโครงการ TCAS โดยแบ่งการรับเป็น {% admission_round_count %} รอบ  สำหรับรายละเอียดสาขาวิชา เกณฑ์การรับสมัคร และเกณฑ์การคัดเลือกจะประกาศให้ทราบต่อไป
+</p>
+{% include "main/include/project_table.html" %}
+</div>
+</div>
 </div>
 {% endcomment %}
 {% endblock %}

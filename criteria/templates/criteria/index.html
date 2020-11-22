@@ -1,15 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 project-major-pages">
+	<div class="float-right">
+          <img src="{% static 'img/ku-logo-xs-back.png' %}" />
+	</div>
+	<h2>สาขาและโครงการที่รับ - {{ selected_label }}</h2>
+	<div class="alert alert-info">
+	  เลือกคณะหรือวิทยาเขตเพื่อตรวจสอบสาขาและโครงการ/รอบที่รับสมัคร  สำหรับรายละเอียดเงื่อนไขเกณฑ์การรับของโครงการต่าง ๆ จะประกาศให้ทราบเร็ว ๆ นี้
+	  {% if campus.id == 2 %}
+	    สำหรับการสมัคร{{ campus.title }} สามารถตรวจสอบข้อมูลได้ที่ <a class="btn btn-secondary btn-sm" target="_blank" href="http://esd.kps.ku.ac.th/quota/">เว็บไซต์การรับสมัครของวิทยาเขตกำแพงแสน</a>
+	  {% endif %}
+	  {% if campus.id == 3 %}
+	    สำหรับการสมัคร{{ campus.title }} สามารถตรวจสอบข้อมูลได้ที่ <a class="btn btn-secondary btn-sm" target="_blank" href="https://qa.src.ku.ac.th/entrance/">เว็บไซต์การรับสมัครของวิทยาเขตศรีราชา</a>
+	  {% endif %}
+	  {% if campus.id == 4 %}
+	    สำหรับการสมัคร{{ campus.title }} สามารถตรวจสอบข้อมูลได้ที่ <a class="btn btn-secondary btn-sm" target="_blank" href="https://misreg.csc.ku.ac.th/admission/">เว็บไซต์การรับสมัครของวิทยาเขตสกลนคร</a>
+	  {% endif %}
+	</div>
+      </div>
+    </div>
+  </div>
   <div class="sticky-top pb-2" style="top: 56px; background: white;">
     <div class="container">
       <div class="row">
 	<div class="col-md-12 project-major-pages">
-	  <div class="float-right">
-            <img src="{% static 'img/ku-logo-xs-back.png' %}" />
-	  </div>
-	  <h2>สาขาและโครงการที่รับ - {{ selected_label }}</h2>
-	  <div class="mb-1">
+	  <div class="mb-2">
 	    เลือกคณะหรือวิทยาเขต
 	    <select class="target-selects">
 	      {% for c in choices %}

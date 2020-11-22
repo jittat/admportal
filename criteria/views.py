@@ -112,6 +112,7 @@ def index(request, campus_id=None, faculty_id=None):
                     'selected_label': selected_label,
                     'selected_projects': selected_projects,
                     'round_numbers': round_numbers,
+                    'campus': campus,
                     'major_codes': major_codes })
 
 
@@ -215,6 +216,8 @@ def show_project(request, project_id, faculty_id=None):
         return HttpResponseForbidden()
 
     project = get_object_or_404(AdmissionProject, pk=project_id)
+    if not project.major_detail_visible:
+        return HttpResponseForbidden()
 
     faculties = Faculty.objects.all()
     
