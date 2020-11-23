@@ -212,12 +212,10 @@ def get_all_curriculum_majors(project, faculty=None):
     return majors
 
 def show_project(request, project_id, faculty_id=None):
-    if project_id not in [27,28]:
-        return HttpResponseForbidden()
-
     project = get_object_or_404(AdmissionProject, pk=project_id)
     if not project.major_detail_visible:
-        return HttpResponseForbidden()
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
 
     faculties = Faculty.objects.all()
     
