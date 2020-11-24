@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 project-major-pages">
+	<div class="float-right">
+          <img src="{% static 'img/ku-logo-xs-back.png' %}" />
+	</div>
 	<h2>เกณฑ์ โครงการ {{ project.title }} (รอบที่ {{ project.default_round_number }})</h2>
+
+	<div style="clear: both;" class="mb-2"></div>
 	
 	{% with True as is_faculty_row_visible %}
 	  {% with True as is_edit_link_hidden %}

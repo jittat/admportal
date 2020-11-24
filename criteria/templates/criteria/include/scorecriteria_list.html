@@ -1,17 +1,25 @@
 <ol class="scorecriteria-lists">
   {% for scorecriteria in scorecriterias %}
-  <li>
-    {{scorecriteria|linebreaksbr}} 
-    {% if scorecriteria.has_children %}
-      <ol class="scorecriteria-lists">
-	{% for schild in scorecriteria.childs.all %}
-	  <li>
-	    {{schild|linebreaksbr}}
-	  </li>
-	{% endfor %}
-      </ol>
-    {% endif %}
-  </li>
+    <li>
+      {% if not hides_percent %}
+	{{scorecriteria|linebreaksbr}}
+      {% else %}
+	{{scorecriteria.description|linebreaksbr}}
+      {% endif %}
+      {% if scorecriteria.has_children %}
+	<ol class="scorecriteria-lists">
+	  {% for schild in scorecriteria.childs.all %}
+	    <li>
+	      {% if not hides_percent %}
+		{{schild|linebreaksbr}}
+	      {% else %}
+		{{schild.description|linebreaksbr}}
+	      {% endif %}
+	    </li>
+	  {% endfor %}
+	</ol>
+      {% endif %}
+    </li>
   {% endfor %}
 </ol>
 <style>

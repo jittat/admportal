@@ -251,7 +251,83 @@ EXTRA_NAME_MAP = {
     'min_gpa22':'คะแนนเฉลี่ยกลุ่มสาระคณิต',
     'min_gpa23':'คะแนนเฉลี่ยกลุ่มสาระวิทย์',
     'min_gpa28':'คะแนนเฉลี่ยกลุ่มสาระภาษาตปท.',
+
+    'PAT_1': 'PAT1',
+    'PAT_2': 'PAT2',
+    'PAT_3': 'PAT3',
+    'PAT_4': 'PAT4',
+    'PAT_5': 'PAT5',
+    'PAT_6': 'PAT6',
+    'PAT_7_1': 'PAT7.1',
+    'PAT_7_2': 'PAT7.2',
+    'PAT_7_3': 'PAT7.3',
+    'PAT_7_4': 'PAT7.4',
+    'PAT_7_5': 'PAT7.5',
+    'PAT_7_6': 'PAT7.6',
+    'PAT_7_7': 'PAT7.7',
+
+    'UDAT_09': 'สามัญ09',
+    'UDAT_19': 'สามัญ19',
+    'UDAT_29': 'สามัญ29',
+    'UDAT_39': 'สามัญ39',
+    'UDAT_49': 'สามัญ49',
+    'UDAT_59': 'สามัญ59',
+    'UDAT_69': 'สามัญ69',
+    'UDAT_89': 'สามัญ89',
+    'UDAT_99': 'สามัญ99',
+
+    'ONET_THA': 'ONET01',
+    'ONET_SOC': 'ONET02',
+    'ONET_ENG': 'ONET03',
+    'ONET_MAT': 'ONET04',
+    'ONET_SCI': 'ONET05',
+    'MAX(UDAT_39,UDAT_89)': 'วิชาสามัญ39 หรือ วิชาสามัญ89',
+
+    'CW110':'กลุ่ม 1 วิทยาศาสตร์สุขภาพ - 1.1 สหเวชศาสตร์ สาธารณสุขศาสตร์ เทคนิคการแพทย์ พยาบาลศาสตร์ วิทยาศาสตร์การกีฬา',
+    'CW120':'กลุ่ม 1 วิทยาศาสตร์สุขภาพ - 1.2 ทันตแพทย์ศาสตร์',
+    'CW130':'กลุ่ม 1 วิทยาศาสตร์สุขภาพ - 1.3 เภสัชศาสตร์',
+    'CW140':'กลุ่ม 1 วิทยาศาสตร์สุขภาพ - 1.4 สัตวแพทย์ศาสตร์',
+    'CW210':'กลุ่ม 2 วิทยาศาสตร์กายภาพและชีวภาพ - 2.1 วิทยาศาสตร์ ทรัพยากรธรรมชาติ',
+    'CW220':'กลุ่ม 2 วิทยาศาสตร์กายภาพและชีวภาพ - 2.2 เทคโนโลยีสารสนเทศ',
+    'CW300': 'กลุ่ม 3 วิศวกรรมศาสตร์',
+    'CW400': 'กลุ่ม 4 สถาปัตยกรรมศาสตร์',
+    'CW500': 'กลุ่ม 5 เกษตรศาสตร์ - เกษตรศาสตร์ อุตสาหกรรมเกษตร วนศาสตร์ เทคโนโลยีการเกษตร',
+    'CW610': 'กลุ่ม 6 - 6.1 บริหารธุรกิจ พาณิชยศาสตร์ การบัญชี เศรษฐศาสตร์',
+    'CW621': 'กลุ่ม 6 - 6.2 การท่องเที่ยวและการโรงแรม (รูปแบบที่ 1)',
+    'CW62271': 'กลุ่ม 6 - 6.2 การท่องเที่ยวและการโรงแรม (รูปแบบที่ 2 PAT 7.1 ฝรั่งเศษ)',
+    'CW62272': 'กลุ่ม 6 - 6.2 การท่องเที่ยวและการโรงแรม (รูปแบบที่ 2 PAT 7.2 เยอรมัน)',
+    'CW62273': 'กลุ่ม 6 - 6.2 การท่องเที่ยวและการโรงแรม (รูปแบบที่ 2 PAT 7.3 ญี่ปุ่น)',
+    'CW62274': 'กลุ่ม 6 - 6.2 การท่องเที่ยวและการโรงแรม (รูปแบบที่ 2 PAT 7.4 จีน)',
+    'CW62275': 'กลุ่ม 6 - 6.2 การท่องเที่ยวและการโรงแรม (รูปแบบที่ 2 PAT 7.5 อาหรับ)',
+    'CW62276': 'กลุ่ม 6 - 6.2 การท่องเที่ยวและการโรงแรม (รูปแบบที่ 2 PAT 7.6 บาลี)',
+    'CW62277': 'กลุ่ม 6 - 6.2 การท่องเที่ยวและการโรงแรม (รูปแบบที่ 2 PAT 7.7 เกาหลี)',
+    'CW701': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 1)',
+    'CW7021': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 1 คณิตศาสตร์)',
+    'CW7022': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 2 วิทยาศาสตร์)',
+    'CW7023': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 3 วิศวกรรมศาสตร์)',
+    'CW7024': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 4 สถาปัตยกรรมศาสตร์)',
+    'CW7026': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 6 ศิลปกรรมศาสตร์)',
+    'CW70271': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 7.1 ฝรั่งเศส)',
+    'CW70272': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 7.2 เยอรมัน)',
+    'CW70273': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 7.3 ญี่ปุ่น)',
+    'CW70274': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 7.4 จีน)',
+    'CW70275': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 7.5 อาหรับ)',
+    'CW70276': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 7.6 บาลี)',
+    'CW70277': 'กลุ่ม 7 ครุศาสตร์ ศึกษาศาสตร์ พลศึกษา สุขศึกษา (รูปแบบที่ 2 PAT 7.7 เกาหลี)',
+    'CW8004': 'กลุ่ม 8 ศิลปกรรมศาสตร์ (เลือก PAT 4)',
+    'CW8006': 'กลุ่ม 8 ศิลปกรรมศาสตร์ (เลือก PAT 6)',
+    'CW910': 'กลุ่ม 9 มนุษย์ศาสตร์และสังคมศาสตร์ - 9.1 พื้นฐานวิทยาศาสตร์',
+    'CW921': 'กลุ่ม 9 มนุษย์ศาสตร์และสังคมศาสตร์ - 9.2 พื้นฐานศิลปศาสตร์ (รูปแบบที่ 1)',
+    'CW92271': 'กลุ่ม 9 มนุษย์ศาสตร์และสังคมศาสตร์ - 9.2 พื้นฐานศิลปศาสตร์ (รูปแบบที่ 2 PAT 7.1 ฝรั่งเศส)',
+    'CW92272': 'กลุ่ม 9 มนุษย์ศาสตร์และสังคมศาสตร์ - 9.2 พื้นฐานศิลปศาสตร์ (รูปแบบที่ 2 PAT 7.2 เยอรมัน)',
+    'CW92273': 'กลุ่ม 9 มนุษย์ศาสตร์และสังคมศาสตร์ - 9.2 พื้นฐานศิลปศาสตร์ (รูปแบบที่ 2 PAT 7.3 ญี่ปุ่น)',
+    'CW92274': 'กลุ่ม 9 มนุษย์ศาสตร์และสังคมศาสตร์ - 9.2 พื้นฐานศิลปศาสตร์ (รูปแบบที่ 2 PAT 7.4 จีน)',
+    'CW92275': 'กลุ่ม 9 มนุษย์ศาสตร์และสังคมศาสตร์ - 9.2 พื้นฐานศิลปศาสตร์ (รูปแบบที่ 2 PAT 7.5 อาหรับ)',
+    'CW92276': 'กลุ่ม 9 มนุษย์ศาสตร์และสังคมศาสตร์ - 9.2 พื้นฐานศิลปศาสตร์ (รูปแบบที่ 2 PAT 7.6 บาลี)',
+    'CW92277': 'กลุ่ม 9 มนุษย์ศาสตร์และสังคมศาสตร์ - 9.2 พื้นฐานศิลปศาสตร์ (รูปแบบที่ 2 PAT 7.7 เกาหลี)',
 }
+        
+
 
 def extract_min_scores_json(min_scores_json):
     if min_scores_json:
@@ -277,6 +353,18 @@ def extract_min_scores_json(min_scores_json):
                 left.append((k, min_scores[k]))
     return cols, left
 
+def extract_scoring_scores_json(scoring_scores_json):
+    if scoring_scores_json == '':
+        return []
+    raw_scores = json.loads(scoring_scores_json)
+    scores = []
+    for s in raw_scores:
+        if s[0] in EXTRA_NAME_MAP:
+            scores.append((EXTRA_NAME_MAP[s[0]], s[1]))
+        else:
+            scores.append(s)
+    return scores
+
 def show_project(request, project_id, faculty_id=None):
     project = get_object_or_404(AdmissionProject, pk=project_id)
     if not project.major_detail_visible:
@@ -294,12 +382,22 @@ def show_project(request, project_id, faculty_id=None):
     curriculum_majors = get_all_curriculum_majors(project)
     admission_criteria_rows, free_curriculum_majors = prepare_admission_criteria(admission_criterias, curriculum_majors, True)
 
+    free_curriculum_majors = []
+
     shows_min_criteria_in_table = project_id in [27,28]
+    shows_scoring_criteria_percent = project_id in [27,28]
+    hides_percent = (project_id == 28) or (project.default_round_number == 1)
+    hides_scoring_prefix_dash = project_id == 28
 
     if shows_min_criteria_in_table:
         for r in admission_criteria_rows:
             for c in r['criterias']:
                 c.min_score_cols, c.min_score_others = extract_min_scores_json(c.min_scores_json)
+
+    if shows_scoring_criteria_percent:
+        for r in admission_criteria_rows:
+            for c in r['criterias']:
+                c.scoring_score_cols = extract_scoring_scores_json(c.scoring_scores_json)
     
     return render(request,
                   'criteria/report_index.html',
@@ -307,5 +405,7 @@ def show_project(request, project_id, faculty_id=None):
                    'admission_criteria_rows': admission_criteria_rows,
                    'free_curriculum_majors': free_curriculum_majors,
                    'shows_min_criteria_in_table': shows_min_criteria_in_table,
-                   'MIN_SCORE_COLUMNS': MIN_SCORE_COLUMNS,
+                   'shows_scoring_criteria_percent': shows_scoring_criteria_percent,
+                   'hides_scoring_prefix_dash': hides_scoring_prefix_dash,
+                   'hides_percent': hides_percent,
                    })

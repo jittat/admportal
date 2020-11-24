@@ -13,12 +13,12 @@
   </td>
 {% else %}
   {% for sc in admission_criteria.min_score_cols %}
-    <td rowspan="{{ major_count }}">{{ sc }}</td>
+    <td rowspan="{{ major_count }}">{{ sc|floatformat:-2 }}</td>
   {% endfor %}
   <td rowspan="{{ major_count }}">
     {% for k,v in admission_criteria.min_score_others %}
       {% if k != 'additional_condition' %}
-	-&#160;{{ k }}&#160;&#8805;&#160;{{ v }}<br>
+	-&#160;{{ k }}&#160;&#8805;&#160;{{ v|floatformat:-2 }}<br>
       {% else %}
 	-&#160;{{ v }}<br>
       {% endif %}
@@ -26,7 +26,13 @@
   </td>
 {% endif %}
 <td rowspan="{{ major_count }}">
-  {% with scorecriterias=admission_criteria.get_all_scoring_score_criteria %}
-    {% include "criteria/include/scorecriteria_list.html" %}
-  {% endwith %}
+  {% if not shows_scoring_criteria_percent %}
+    {% with scorecriterias=admission_criteria.get_all_scoring_score_criteria %}
+      {% include "criteria/include/scorecriteria_list.html" %}
+    {% endwith %}
+  {% else %}
+    {% for sc, percent in admission_criteria.scoring_score_cols %}
+      {% if not hides_scoring_prefix_dash %}-&#160;{% endif %}{{ sc }}{% if not hides_percent %}&#160;({{ percent|floatformat:-2 }}%){% endif %}<br>
+    {% endfor %}
+  {% endif %}
 </td>

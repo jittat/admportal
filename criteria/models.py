@@ -22,6 +22,7 @@ class AdmissionCriteria(models.Model):
     curriculum_majors_json = models.TextField(blank=True) 
 
     min_scores_json = models.TextField(blank=True)
+    scoring_scores_json = models.TextField(blank=True)
     
     def get_all_score_criteria(self, criteria_type):
         if getattr(self,'cached_score_criteria',None) == None:
@@ -144,7 +145,7 @@ COMPONENT_WEIGHT_TYPE_CHOICES = [
     ('CW120','1.2: กลุ่ม 1 วิทยาศาสตร์สุขภาพ - ทันตแพทย์ศาสตร์'),
     ('CW130','1.3: กลุ่ม 1 วิทยาศาสตร์สุขภาพ - เภสัชศาสตร์'),
     ('CW140','1.4: กลุ่ม 1 วิทยาศาสตร์สุขภาพ - สัตวแพทย์ศาสตร์'),
-    ('CW210','2.1: กลุ่ม 2 วิทยาศาสตร์กายภาพและชีวภาพ - วิทยาศาสตร์ ทรัพยากรธรรมชาติ'),
+    ('CW210','2.1: กลุ่ม 1 วิทยาศาสตร์กายภาพและชีวภาพ - วิทยาศาสตร์ ทรัพยากรธรรมชาติ'),
     ('CW220','2.2: กลุ่ม 2 วิทยาศาสตร์กายภาพและชีวภาพ - เทคโนโลยีสารสนเทศ'),
     ('CW300','3: กลุ่ม 3 วิศวกรรมศาสตร์'),
     ('CW400','4: กลุ่ม 4 สถาปัตยกรรมศาสตร์'),
