@@ -1,33 +1,32 @@
-<td rowspan="{{ major_count }}">
-  <span class="criteria-ids" style="display: none;">#{{ admission_criteria.id }}<br></span>
-  {% with scorecriterias=admission_criteria.get_all_required_score_criteria %}
-    {% include "criteria/include/scorecriteria_list.html" %}
-  {% endwith %}
-  {% if admission_criteria.additional_description %}
-    คำอธิบายหลักสูตรหลายเงื่อนไขเพิ่มเติม สำหรับผู้สมัคร: {{ admission_criteria.additional_description }}<br>
-  {% endif %}
-  {% if admission_criteria.additional_condition %}
-    คำอธิบายเงื่อนไขเพิ่มเติม สำหรับผู้สมัคร: {{ admission_criteria.additional_condition }}<br>
-  {% endif %}
-</td>
+{% if not shows_min_criteria_in_table %}
+  <td rowspan="{{ major_count }}">
+    <span class="criteria-ids" style="display: none;">#{{ admission_criteria.id }}<br></span>
+    {% with scorecriterias=admission_criteria.get_all_required_score_criteria %}
+      {% include "criteria/include/scorecriteria_list.html" %}
+    {% endwith %}
+    {% if admission_criteria.additional_description %}
+      คำอธิบายหลักสูตรหลายเงื่อนไขเพิ่มเติม สำหรับผู้สมัคร: {{ admission_criteria.additional_description }}<br>
+    {% endif %}
+    {% if admission_criteria.additional_condition %}
+      คำอธิบายเงื่อนไขเพิ่มเติม สำหรับผู้สมัคร: {{ admission_criteria.additional_condition }}<br>
+    {% endif %}
+  </td>
+{% else %}
+  {% for sc in admission_criteria.min_score_cols %}
+    <td rowspan="{{ major_count }}">{{ sc }}</td>
+  {% endfor %}
+  <td rowspan="{{ major_count }}">
+    {% for k,v in admission_criteria.min_score_others %}
+      {% if k != 'additional_condition' %}
+	-&#160;{{ k }}&#160;&#8805;&#160;{{ v }}<br>
+      {% else %}
+	-&#160;{{ v }}<br>
+      {% endif %}
+    {% endfor %}
+  </td>
+{% endif %}
 <td rowspan="{{ major_count }}">
   {% with scorecriterias=admission_criteria.get_all_scoring_score_criteria %}
     {% include "criteria/include/scorecriteria_list.html" %}
   {% endwith %}
-</td>
-<td rowspan="{{ major_count }}">
-  {% if is_edit_link_hidden %}
-  {% else %}
-    <a href="{% url 'backoffice:criteria:create' project.id admission_round.id %}?duplicate_score_id={{admission_criteria.id}}{% if faculty_choices %}&faculty_id={{ faculty.id }}{% endif %}"
-       class="btn btn-primary btn-sm">คัดลอก</a>
-    <a href="#" class="btn btn-secondary d-none btn-sm">คัดลอกไปยังโครงการอื่น</a>
-    <a href="{% url 'backoffice:criteria:edit' project.id admission_round.id admission_criteria.id %}{{ faculty_url_query }}"
-       class="btn btn-info btn-sm">แก้ไข</a>
-    <form class="d-inline"
-		 action="{% url 'backoffice:criteria:delete' project.id admission_round.id admission_criteria.id %}{{ faculty_url_query }}"
-		 id="delete_{{admission_criteria.id}}" method="post">
-      {% csrf_token %}
-    </form>
-    <button class="btn btn-danger btn-sm" onclick="deleteCriteria('delete_{{admission_criteria.id}}')">ลบ</button>
-  {% endif %}
 </td>

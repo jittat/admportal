@@ -1,17 +1,39 @@
 <table class="table table-sm table-bordered table-striped">
   <thead class="thead-dark">
-    <tr>
-      <th>สาขาวิชาที่ใช้เกณฑ์</th>
-      <th>จำนวนรับ</th>
-      <th>เงื่อนไขขั้นต่ำ</th>
-      <th>เกณฑ์การพิจารณา</th>
-      <th>
-	{% if is_edit_link_hidden %}
-	{% else  %}
-	  แก้ไข
-	{% endif %}
-      </th>
-    </tr>
+    {% if not shows_min_criteria_in_table %}
+      <tr>
+	<th>สาขาวิชาที่ใช้เกณฑ์</th>
+	<th>จำนวนรับ</th>
+	<th>เงื่อนไขขั้นต่ำ</th>
+	<th>เกณฑ์การพิจารณา</th>
+      </tr>
+    {% else %}
+      <tr>
+	<th rowspan="3">สาขาวิชาที่ใช้เกณฑ์</th>
+	<th rowspan="3">จำนวนรับ</th>
+	<th class="text-center" colspan="12">เงื่อนไขขั้นต่ำ</th>
+	<th rowspan="3">เกณฑ์การพิจารณา</th>
+      </tr>
+      <tr>
+	<th class="text-center" colspan="3">หน่วยกิต</th>
+	<th rowspan="2">GPAX</th>
+	<th>O-NET</th>
+	<th class="text-center" colspan="6">GAT/PAT (ขั้นต่ำ)</th>
+	<th rowspan="2">เงื่อนไขขั้นต่ำอื่น ๆ</th>
+      </tr>
+      <tr>
+	<th>คณิต</th>
+	<th>วิทย์</th>
+	<th>ภาษาตปท.</th>
+	<th>03</th>
+	<th>GAT</th>
+	<th>PAT1</th>
+	<th>PAT2</th>
+	<th>PAT3</th>
+	<th>PAT4</th>
+	<th>PAT5</th>
+      </tr>
+    {% endif %}
   </thead>
   {% for row in admission_criteria_rows %}
     {% with curriculum_major_admission_criterias=row.majors criterias=row.criterias major_count=row.major_count criteria_count=row.criteria_count %}
@@ -44,7 +66,6 @@
 	  <td>
 	    (ยังไม่ได้ระบุสาขา)
 	  </td>
-	  <td></td>
 	{% endif %}
 
 	{% with criterias.0 as admission_criteria %}

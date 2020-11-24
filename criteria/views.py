@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponseForbidden
@@ -211,6 +213,70 @@ def get_all_curriculum_majors(project, faculty=None):
 
     return majors
 
+MIN_SCORE_COLUMNS = [
+    'min_credit_gpa22',
+    'min_credit_gpa23',
+    'min_credit_gpa28',
+    'min_gpax',
+    'min_onet03',
+    'min_gat',
+    'min_pat1',
+    'min_pat2',
+    'min_pat3',
+    'min_pat4',
+    'min_pat5',
+]
+
+EXTRA_NAME_MAP = {
+    'min_onet01':'ONET01',
+    'min_onet04':'ONET04',
+    'min_onet05':'ONET05',
+    'min_pat7_1':'PAT7.1',
+    'min_pat7_2':'PAT7.2',
+    'min_pat7_3':'PAT7.3',
+    'min_pat7_4':'PAT7.4',
+    'min_pat7_5':'PAT7.5',
+    'min_pat7_6':'PAT7.6',
+    'min_pat7_7':'PAT7.7',
+    'min_9sub_09':'สามัญ09',
+    'min_9sub_19':'สามัญ19',
+    'min_9sub_29':'สามัญ29',
+    'min_9sub_39':'สามัญ39',
+    'min_9sub_49':'สามัญ49',
+    'min_9sub_59':'สามัญ59',
+    'min_9sub_69':'สามัญ69',
+    'min_9sub_89':'สามัญ89',
+    'min_gat2':'GAT(ส่วน2)',
+    'min_gpa21':'คะแนนเฉลี่ยกลุ่มสาระไทย',
+    'min_gpa22':'คะแนนเฉลี่ยกลุ่มสาระคณิต',
+    'min_gpa23':'คะแนนเฉลี่ยกลุ่มสาระวิทย์',
+    'min_gpa28':'คะแนนเฉลี่ยกลุ่มสาระภาษาตปท.',
+}
+
+def extract_min_scores_json(min_scores_json):
+    if min_scores_json:
+        min_scores = json.loads(min_scores_json)
+    else:
+        min_scores = {}
+
+    cols = []
+    used = set()
+    for k in MIN_SCORE_COLUMNS:
+        if k in min_scores:
+            cols.append(min_scores[k])
+            used.add(k)
+        else:
+            cols.append('')
+
+    left = []
+    for k in min_scores:
+        if k not in used:
+            if k in EXTRA_NAME_MAP:
+                left.append((EXTRA_NAME_MAP[k], min_scores[k]))
+            else:
+                left.append((k, min_scores[k]))
+    return cols, left
+
 def show_project(request, project_id, faculty_id=None):
     project = get_object_or_404(AdmissionProject, pk=project_id)
     if not project.major_detail_visible:
@@ -228,9 +294,18 @@ def show_project(request, project_id, faculty_id=None):
     curriculum_majors = get_all_curriculum_majors(project)
     admission_criteria_rows, free_curriculum_majors = prepare_admission_criteria(admission_criterias, curriculum_majors, True)
 
+    shows_min_criteria_in_table = project_id in [27,28]
+
+    if shows_min_criteria_in_table:
+        for r in admission_criteria_rows:
+            for c in r['criterias']:
+                c.min_score_cols, c.min_score_others = extract_min_scores_json(c.min_scores_json)
+    
     return render(request,
                   'criteria/report_index.html',
                   {'project': project,
                    'admission_criteria_rows': admission_criteria_rows,
                    'free_curriculum_majors': free_curriculum_majors,
+                   'shows_min_criteria_in_table': shows_min_criteria_in_table,
+                   'MIN_SCORE_COLUMNS': MIN_SCORE_COLUMNS,
                    })
