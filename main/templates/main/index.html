@@ -35,7 +35,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="card">
 	<div class="card-body">
 	  <h5 class="card-title">สาขาและโครงการรับสมัคร</h5>
@@ -46,6 +46,35 @@
 	</div>
       </div>
     </div>
+    {% if admission_projects %}
+      <div class="col-md-8">
+	<div class="card">
+	  <div class="card-body">
+	    <h5 class="card-title">เงื่อนไขและเกณฑ์การรับสมัคร</h5>
+	    <p class="card-text">
+	      สำหรับโครงการอื่น ๆ ในวิทยาเขตต่าง ๆ สามารถตรวจสอบได้จากเว็บไซต์ของวิทยาเขต
+	    </p>
+	    <table class="table table-sm">
+	      {% for project in admission_projects %}
+		{% ifchanged project.default_round_number %}
+		  <tr class="table-info">
+		    <td class="pl-3" colspan="100">รอบที่ {{ project.default_round_number }}</td>
+		  </tr>
+		{% endifchanged %}
+		<tr>
+		  <td>
+		    {{ project }}
+		  </td>
+		  <td>
+		    <a class="btn btn-sm btn-success" target="_blank" href="{% url 'criteria:project-index' project.id %}">อ่านเกณฑ์</a>
+		  </td>
+		</tr>
+	      {% endfor %}
+	    </table>
+	  </div>
+	</div>
+      </div>
+    {% endif %}
   </div>
 </div>
 {% comment %}

@@ -38,6 +38,8 @@ def index(request):
                                     'items': all_announcement_rounds[r]})
 
     allow_search = settings.ALLOW_SEARCH
+
+    projects = AdmissionProject.objects.filter(major_detail_visible=True).order_by('default_round_number').all()
     
     return render(request,
                   'main/index.html',
@@ -46,4 +48,5 @@ def index(request):
                     'announcements': announcements,
                     'announcement_rounds': announcement_rounds,
                     'default_round_number': DEFAULT_ROUND_NUMBER,
+                    'admission_projects': projects,
                     'allow_search': allow_search })
