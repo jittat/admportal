@@ -2,7 +2,11 @@
   {% for scorecriteria in scorecriterias %}
     <li>
       {% if not hides_percent %}
-	{{scorecriteria|linebreaksbr}}
+	{% if hides_AND_relation %}
+	  {{scorecriteria.display_with_short_relation|linebreaksbr}}
+	{% else %}
+	  {{scorecriteria|linebreaksbr}}
+	{% endif %}
       {% else %}
 	{{scorecriteria.description|linebreaksbr}}
       {% endif %}
