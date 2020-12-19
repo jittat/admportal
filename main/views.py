@@ -40,6 +40,10 @@ def index(request):
     allow_search = settings.ALLOW_SEARCH
 
     projects = AdmissionProject.objects.filter(major_detail_visible=True).order_by('default_round_number').all()
+
+    for p in projects:
+        if p.campus != None:
+            p.campuses = [p.campus]
     
     return render(request,
                   'main/index.html',

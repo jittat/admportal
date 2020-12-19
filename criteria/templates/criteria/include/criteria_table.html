@@ -42,7 +42,7 @@
 	{% ifchanged criterias.0.faculty %}
 	  <tr class="table-info">
 	    <th colspan="300" class="text-center">
-	      {{ criterias.0.faculty }}
+	      {{ criterias.0.faculty }} ({{ criterias.0.faculty.campus.title }})
 	    </th>
 	  </tr>
 	{% endifchanged  %}

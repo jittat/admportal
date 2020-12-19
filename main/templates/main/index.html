@@ -64,6 +64,9 @@
 		<tr>
 		  <td>
 		    {{ project }}
+		    {% for c in project.campuses %}
+		      <span class="badge badge-primary campus-badge-campus-{{ c.id }} badge-pill">{{ c }}</span>
+		    {% endfor %}
 		  </td>
 		  <td>
 		    <a class="btn btn-sm btn-success" target="_blank" href="{% url 'criteria:project-index' project.id %}">อ่านเกณฑ์</a>
