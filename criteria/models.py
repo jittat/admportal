@@ -289,4 +289,7 @@ class CurriculumMajorAdmissionCriteria(models.Model):
     admission_criteria = models.ForeignKey(
         AdmissionCriteria, on_delete=models.CASCADE)
     slots = models.IntegerField()
+
+    imported_slots = models.IntegerField(default=0)
+    
     version = models.IntegerField(default=1)
