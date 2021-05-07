@@ -81,6 +81,12 @@ def main():
                 else:
                     cm_criteria = cr
 
+        if r[10] != '':
+            cm_criteria = CurriculumMajorAdmissionCriteria.objects.get(pk=r[10])
+            if error_not_unique:
+                print('FIXED', cm_criteria)
+                error_not_unique = False
+                    
         if error_not_unique:
             candidates = []
             for cr in CurriculumMajorAdmissionCriteria.objects.filter(curriculum_major=curriculum_major, admission_criteria__is_deleted=False):
