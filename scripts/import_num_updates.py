@@ -48,7 +48,7 @@ def main():
 
 
         if len(cupt_codes)!=1:
-            print('ERROR not found',r[1], cupt_codes, program_code, major_code)
+            print(f'ERROR not found,{program_code},{major_code},{r[0]},{r[1]}')
             continue
 
         cupt_code = cupt_codes[0]

@@ -514,6 +514,10 @@ def main():
                                .order_by('faculty_id'))
 
         for admission_criteria in admission_criterias:
+
+            #if admission_criteria.id not in [7425]:
+            #    continue
+            
             curriculum_major_criterias = admission_criteria.curriculummajoradmissioncriteria_set.all()
 
             if len(curriculum_major_criterias) == 0:
