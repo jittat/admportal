@@ -16,18 +16,25 @@ def main():
     for k in data:
         print(k)
 
-        major_cupt_code = MajorCuptCode()
+        program_code, major_code = k.split('-')
 
-        major_cupt_code_data = data[k]['major_cupt_code']
-        
-        for f in major_cupt_code_data:
-            if f != 'faculty':
-                setattr(major_cupt_code, f, major_cupt_code_data[f])
-            else:
-                major_cupt_code.faculty = Faculty.objects.get(pk=major_cupt_code_data[f])
+        old_major_cupt_codes = MajorCuptCode.objects.filter(program_code=program_code, major_code=major_code).all()
 
-        major_cupt_code.campus = major_cupt_code.faculty.campus
-        major_cupt_code.save()
+        if len(old_major_cupt_codes) != 0:
+            major_cupt_code = old_major_cupt_codes[0]
+        else:
+            major_cupt_code = MajorCuptCode()
+
+            major_cupt_code_data = data[k]['major_cupt_code']
+
+            for f in major_cupt_code_data:
+                if f != 'faculty':
+                    setattr(major_cupt_code, f, major_cupt_code_data[f])
+                else:
+                    major_cupt_code.faculty = Faculty.objects.get(pk=major_cupt_code_data[f])
+
+            major_cupt_code.campus = major_cupt_code.faculty.campus
+            major_cupt_code.save()
 
         print('+major_cupt_code', major_cupt_code.id, major_cupt_code)
 

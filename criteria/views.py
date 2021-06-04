@@ -365,6 +365,12 @@ def extract_scoring_scores_json(scoring_scores_json):
             scores.append(s)
     return scores
 
+DEFAULT_MESSAGES = {
+    2: 'อ่านรายละเอียดได้ที่ <a target="_blank" href="https://esd.kps.ku.ac.th/quota/front/">เว็บไซต์การรับสมัครวิทยาเขตกำแพงแสน</a>',
+    3: 'อ่านรายละเอียดได้ที่ <a target="_blank" href="https://qa.src.ku.ac.th/Admission/">ระบบรับสมัครเข้าศึกษาวิทยาเขตศรีราชา</a>',
+    4: 'อ่านรายละเอียดได้ที่ <a target="_blank" href="https://misreg.csc.ku.ac.th/admission/">ระบบรับสมัครวิทยาเขตเฉลิมพระเกียรติจังหวัดสกลนคร</a>',
+}
+
 def show_project(request, project_id, faculty_id=None):
     project = get_object_or_404(AdmissionProject, pk=project_id)
     if not project.major_detail_visible:
@@ -389,6 +395,11 @@ def show_project(request, project_id, faculty_id=None):
     hides_percent = (project_id == 28) or (project.default_round_number == 1)
     hides_scoring_prefix_dash = project_id == 28
 
+    for r in admission_criteria_rows:
+        campus_id = r['criterias'][0].faculty.campus_id
+        if campus_id in DEFAULT_MESSAGES:
+            r['default_message'] = DEFAULT_MESSAGES[campus_id]
+    
     if shows_min_criteria_in_table:
         for r in admission_criteria_rows:
             for c in r['criterias']:

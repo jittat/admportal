@@ -24,6 +24,8 @@
 	</ol>
       {% endif %}
     </li>
+  {% empty %}
+    {{ row.default_message|safe }}
   {% endfor %}
 </ol>
 <style>
