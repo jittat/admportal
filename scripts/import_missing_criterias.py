@@ -69,12 +69,19 @@ def main():
                 admission_criteria.save()
                 print('+admission_criteria', admission_criteria.id)
 
+                parents = {}
+                
                 for score_data in one_criteria['admission_criteria']['score_criterias']:
                     score = ScoreCriteria()
+                    is_child = False
                     for f in score_data:
+                        if f == 'pk':
+                            parents[score_data[f]] = score
+                            continue
                         if f == 'parent':
                             if score_data[f] != None:
-                                print('error', score_data[f])
+                                print('parent', score_data, score_data[f], parents[score_data[f]])
+                                score.parent = parents[score_data[f]]
                                 continue
                         if f == 'value':
                             if score_data[f] != None:
