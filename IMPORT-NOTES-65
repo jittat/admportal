@@ -1,0 +1,33 @@
+Importing procedures (65)
+=========================
+
+1. Manually create admission rounds
+2. Import admission projects
+
+ 2012  python import_projects.py ~/Dropbox/adm65/projects/projects-65-all.csv 
+ 2013  python import_projects.py ~/Dropbox/adm65/projects/projects-65-all-add-1.csv 
+
+3. Export MajorCuptCode & CurriculumMajor from admapp
+
+(admapp) jittat@fledgingc:~/prog/django/admapp$ ./manage.py dumpdata criteria.MajorCuptCode --indent=2 > ../admportal/data/65/MajorCuptCode.json
+(admapp) jittat@fledgingc:~/prog/django/admapp$ ./manage.py dumpdata criteria.CurriculumMajor --indent=2 > ../admportal/data/65/CurriculumMajor.json
+
+4. Import to admportal
+
+(admportal-RrP_EWLR) jittat@fledgingc:~/prog/django/admportal$ ./manage.py loaddata data/65/MajorCuptCode.json 
+(admportal-RrP_EWLR) jittat@fledgingc:~/prog/django/admportal$ ./manage.py loaddata data/65/CurriculumMajor.json 
+
+5. Import project header titles & default round numbers
+
+(admportal-RrP_EWLR) jittat@fledgingc:~/prog/django/admportal/scripts$ python import_project_headers.py ~/Dropbox/adm65/projects/projects-65-very-short.csv 
+
+
+6. HACKS
+
+def index(request, campus_id=None, faculty_id=None):
+    if campus_id==None and faculty_id==None:
+        return redirect(reverse('criteria:index-campus',
+                                kwargs={'campus_id':DEFAULT_CAMPUS_ID}))
+
+    #update_campus_keys()
+    #update_project_list()
