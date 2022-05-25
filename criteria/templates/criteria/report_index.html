@@ -10,6 +10,13 @@
 	<h2>เกณฑ์ โครงการ {{ project.title }} (รอบที่ {{ project.default_round_number }})</h2>
 
 	<div style="clear: both;" class="mb-2"></div>
+
+	<div class="alert alert-warning">
+	  ด้านล่างเป็นรายการสำหรับวิทยาเขตบางเขนเป็นหลัก สำหรับสาขาในวิทยาเขตอื่นกรุณาตรวจสอบจากเว็บไซต์ของวิทยาเขตดังนี้<br>
+	  &#x23F5; <a class="btn btn-sm btn-info" target="_blank" href="https://admission.kps.ku.ac.th/kpsadm/">วิทยาเขตกำแพงแสน</a>
+	  &#x23F5; <a class="btn btn-sm btn-info" target="_blank" href="https://eduserv.src.ku.ac.th/Admission/">วิทยาเขตศรีราชา</a>
+	  &#x23F5; <a class="btn btn-sm btn-info" target="_blank" href="https://misreg.csc.ku.ac.th/admission/">วิทยาเขตเฉลิมพระเกียรติ จังหวัดสกลนคร</a>
+	</div>
 	
 	{% with True as is_faculty_row_visible %}
 	  {% with True as is_edit_link_hidden %}
