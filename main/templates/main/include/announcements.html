@@ -8,7 +8,7 @@
         <ul class="nav nav-tabs" role="tablist">
           {% for r in announcement_rounds %}
             <li class="nav-item">
-              <a class="nav-link {% if r.number == default_round_number %}active{% endif %}" data-toggle="tab" href="#tab_round_{{ r.number }}" role="tab" aria-controls="tab_round_{{ r.number }}" aria-selected="{% if r.number == default_round_number %}true{% else %}false{% endif %}">รอบที่ {{ r.number }}</a>
+	      <a class="nav-link {% if r.number == default_round_number %}active{% endif %}" data-toggle="tab" href="#tab_round_{{ r.number }}" role="tab" aria-controls="tab_round_{{ r.number }}" aria-selected="{% if r.number == default_round_number %}true{% else %}false{% endif %}">{% if r.number != 100 %}รอบที่ {{ r.number }}{% else %}ข้อมูลนิสิตใหม่{% endif %}</a>
             </li>
           {% endfor %}
         </ul>
