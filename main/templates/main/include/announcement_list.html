@@ -1,12 +1,20 @@
 <ul style="margin-top: 10px;">
   {% for announcement in announcements %}
-    <li>
+    <li {% if announcement.has_extra_indent %}style="list-style:none;"{% endif %}>
+      {% if announcement.has_extra_indent %}
+	<ul>
+	  <li>
+      {% endif %}
       {{ announcement.body }}
       {% if announcement.more_link_text %}
         <a class="btn btn-sm btn-info" target="_blank" href="{{ announcement.more_link_url|safe }}">{{ announcement.more_link_text }}</a>
       {% endif %}
       {% if announcement.attachment %}
         <a class="btn btn-sm btn-info" target="_blank" href="{{ announcement.attachment.url|safe }}">ดาวน์โหลด</a>
+      {% endif %}
+      {% if announcement.has_extra_indent %}
+	  </li>
+	</ul>
       {% endif %}
     </li>
   {% endfor %}
