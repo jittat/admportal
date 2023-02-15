@@ -1,7 +1,7 @@
 from django.db import models
 
 class Announcement(models.Model):
-    DEFAULT_ROUND_NUMBER = 1
+    DEFAULT_ROUND_NUMBER = 2
     
     body = models.TextField()
     more_link_text = models.CharField(max_length=100,
@@ -23,9 +23,14 @@ class Announcement(models.Model):
                                         null=True,
                                         blank=True,
                                         default=None)
+
+    rank = models.IntegerField(verbose_name='ลำดับในการแสดง',
+                               default=1000)
+    has_extra_indent = models.BooleanField(verbose_name='ย่อหน้าเพิ่มเติมหรือไม่',
+                                           default=False)
     
     class Meta:
-        ordering = ['-created_date']
+        ordering = ['rank','-created_date']
     
     def __str__(self):
         return self.body
