@@ -2,6 +2,8 @@ Importing procedures (65)
 =========================
 
 1. Manually create admission rounds
+1.1 Import Campus & Faculty
+
 2. Import admission projects
 
  2012  python import_projects.py ~/Dropbox/adm65/projects/projects-65-all.csv 

@@ -390,10 +390,10 @@ def show_project(request, project_id, faculty_id=None):
 
     free_curriculum_majors = []
 
-    shows_min_criteria_in_table = project_id in [27,28]
-    shows_scoring_criteria_percent = project_id in [27,28]
-    hides_percent = (project_id == 28) or (project.default_round_number == 1)
-    hides_scoring_prefix_dash = project_id == 28
+    shows_min_criteria_in_table = project_id in []
+    shows_scoring_criteria_percent = project_id in []
+    hides_percent = (project.default_round_number == 1)
+    hides_scoring_prefix_dash = False # project_id == 28
 
     for r in admission_criteria_rows:
         campus_id = r['criterias'][0].faculty.campus_id

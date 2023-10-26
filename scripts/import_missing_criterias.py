@@ -80,7 +80,7 @@ def main():
                             continue
                         if f == 'parent':
                             if score_data[f] != None:
-                                print('parent', score_data, score_data[f], parents[score_data[f]])
+                                #print('parent', score_data, score_data[f], parents[score_data[f]])
                                 score.parent = parents[score_data[f]]
                                 continue
                         if f == 'value':
@@ -94,7 +94,7 @@ def main():
                     score.admission_criteria = admission_criteria
                     score.save()
 
-                    print('+score', score.id, score)
+                    #print('+score', score.id, score)
 
                 curriculum_major_admission_criteria = CurriculumMajorAdmissionCriteria()
                 curriculum_major_admission_criteria.curriculum_major = curriculum_major
@@ -103,7 +103,7 @@ def main():
                 curriculum_major_admission_criteria.version = 1
                 curriculum_major_admission_criteria.save()
                     
-                print('+curriculum_major_admission_criteria', curriculum_major_admission_criteria.id)
+                #print('+curriculum_major_admission_criteria', curriculum_major_admission_criteria.id)
 
 if __name__ == '__main__':
     main()
