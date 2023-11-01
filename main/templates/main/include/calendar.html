@@ -4,14 +4,12 @@
     <div class="col-md-12">
       <h2>ปฏิทินการรับสมัคร</h2>
 
-      กรุณาติดตามประกาศกำหนดการสำหรับการรับสมัครปีการศึกษา {% current_year %} เร็ว ๆ นี้
-      
-      <ul class="nav nav-pills mb-1 d-none" role="tablist">
+      <ul class="nav nav-pills mb-1" role="tablist">
 	<li class="nav-item">
 	  <a class="nav-link">รอบการรับสมัคร</a>
 	</li>
 	<li class="nav-item">
-	  <a class="nav-link" data-toggle="pill" role="tab" href="#cal-round1">รอบที่ 1</a>
+	  <a class="nav-link active" data-toggle="pill" role="tab" href="#cal-round1">รอบที่ 1</a>
 	</li>
 	<li class="nav-item">
 	  <a class="nav-link" data-toggle="pill" role="tab" href="#cal-round2">รอบที่ 2</a>
@@ -19,13 +17,13 @@
 	<li class="nav-item">
 	  <a class="nav-link" data-toggle="pill" role="tab" href="#cal-round3">รอบที่ 3</a>
 	</li>
-	<li class="nav-item">
+	<li class="nav-item d-none">
 	  <a class="nav-link active" data-toggle="pill" role="tab" href="#cal-round4">รอบที่ 4</a>
 	</li>
       </ul>
 
-      <div class="tab-content d-none">
-	<div class="tab-pane" id="cal-round1" role="tabpanel">
+      <div class="tab-content">
+	<div class="tab-pane active" id="cal-round1" role="tabpanel">
 	  {% include "main/include/calendar_round1_table.html" %}
 	</div>
 	<div class="tab-pane" id="cal-round2" role="tabpanel">
@@ -34,7 +32,7 @@
 	<div class="tab-pane" id="cal-round3" role="tabpanel">
 	  {% include "main/include/calendar_round3_table.html" %}
 	</div>
-	<div class="tab-pane active" id="cal-round4" role="tabpanel">
+	<div class="tab-pane d-none" id="cal-round4" role="tabpanel">
 	  {% include "main/include/calendar_round4_table.html" %}
 	</div>
       </div>
