@@ -366,7 +366,7 @@ def extract_scoring_scores_json(scoring_scores_json):
     return scores
 
 DEFAULT_MESSAGES = {
-    2: 'อ่านรายละเอียดได้ที่ <a target="_blank" href="https://admission.kps.ku.ac.th/kpsadm/">เว็บไซต์การรับสมัครวิทยาเขตกำแพงแสน</a>',
+    2: 'อ่านรายละเอียดได้ที่ <a target="_blank" href="https://admission.kps.ku.ac.th/">เว็บไซต์การรับสมัครวิทยาเขตกำแพงแสน</a>',
     3: 'อ่านรายละเอียดได้ที่ <a target="_blank" href="https://admissions.src.ku.ac.th/">ระบบรับสมัครเข้าศึกษาวิทยาเขตศรีราชา</a>',
     4: 'อ่านรายละเอียดได้ที่ <a target="_blank" href="https://misreg.csc.ku.ac.th/admission/">ระบบรับสมัครวิทยาเขตเฉลิมพระเกียรติจังหวัดสกลนคร</a>',
 }
