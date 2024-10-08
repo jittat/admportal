@@ -91,6 +91,8 @@ class AdmissionProject(models.Model):
                                           verbose_name='ชื่อสั้นมากแสดงหัวตาราง')
     default_round_number = models.IntegerField(default=0,
                                                verbose_name='รอบ (default)')
+    display_rank = models.IntegerField(default=0,
+                                       verbose_name='สำหรับใช้เรียงรายการ')
     
     def __str__(self):
         return self.title

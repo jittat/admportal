@@ -75,7 +75,7 @@ def index(request, campus_id=None, faculty_id=None):
     
     all_campuses = Campus.objects.all()
     all_faculties = Faculty.objects.all()
-    all_projects = AdmissionProject.objects.filter(is_available=True).all()
+    all_projects = AdmissionProject.objects.filter(is_available=True).order_by('display_rank').all()
 
     selected_obj = None
 
