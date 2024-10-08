@@ -7,6 +7,8 @@ from django.http import HttpResponseForbidden
 from majors.models import Faculty, Campus, AdmissionProject, AdmissionRound
 from .models import CurriculumMajor, MajorCuptCode, AdmissionCriteria
 
+HIDE_CRITERIA = True
+
 DEFAULT_CAMPUS_ID = 1
 
 def build_choices(campuses, faculties, current_selection=None):
@@ -66,6 +68,9 @@ def update_project_list():
 
 
 def index(request, campus_id=None, faculty_id=None):
+    if HIDE_CRITERIA:
+        return HttpResponseForbidden()
+    
     if campus_id==None and faculty_id==None:
         return redirect(reverse('criteria:index-campus',
                                 kwargs={'campus_id':DEFAULT_CAMPUS_ID}))
@@ -372,6 +377,9 @@ DEFAULT_MESSAGES = {
 }
 
 def show_project(request, project_id, faculty_id=None):
+    if HIDE_CRITERIA:
+        return HttpResponseForbidden()
+    
     project = get_object_or_404(AdmissionProject, pk=project_id)
     if not project.major_detail_visible:
         if not request.user.is_authenticated:
