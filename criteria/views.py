@@ -7,7 +7,7 @@ from django.http import HttpResponseForbidden
 from majors.models import Faculty, Campus, AdmissionProject, AdmissionRound
 from .models import CurriculumMajor, MajorCuptCode, AdmissionCriteria
 
-HIDE_CRITERIA = True
+HIDE_CRITERIA = False
 
 DEFAULT_CAMPUS_ID = 1
 
