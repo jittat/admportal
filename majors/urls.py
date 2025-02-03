@@ -1,10 +1,11 @@
-from django.conf.urls import url
+# from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 app_name = 'org-majors'
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^projects/(\d+)/$', views.list_majors, name='list-majors'),
-    url(r'^search/$', views.search_majors, name='search-majors'),
+    path('', views.index, name='index'),
+    path('projects/<int:id>/', views.list_majors, name='list-majors'),
+    path('search/', views.search_majors, name='search-majors'),
 ]
