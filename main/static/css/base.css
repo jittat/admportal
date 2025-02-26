@@ -1,6 +1,7 @@
 /* Move down content because we have a fixed navbar that is 3.5rem tall */
 body {
   padding-top: 3.5rem;
+  min-width: 400px;
 }
 
 .bg-dark {
@@ -12,7 +13,7 @@ body {
     border-radius: 0px;
     color: white;
     font-family: 'Prompt', sans-serif;
-    padding-top: 30px;
+    /* padding-top: 30px; */
     padding-bottom: 30px;
 }
 
@@ -98,4 +99,30 @@ h1,h2,h3,h4 {
 .top-radius-5 {
     border-top-left-radius: .25rem;
     border-top-right-radius: .25rem;
+}
+
+.ku-logo-nav {
+    width: 50px;
+    height: 40px;
+    /* height: auto; */
+}
+.navbar-brand.hamburgur {
+    font-size: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .navbar-expand-md {
+        justify-content: space-between;
+    }
+}
+@media (min-width: 1200px) {
+    .ku-logo-nav {
+        display: none;
+    }
+}
+@media (min-width: 768px) {
+    .jumbotron {
+        padding: 4rem 2rem !important;
+    }
+
 }

@@ -12,11 +12,13 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet"> 
+    
     <!-- Custom styles for this template -->
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script>window.jQuery || document.write('<script src="{% static 'lib/bootstrap/assets/js/vendor/jquery.min.js' %}"><\/script>')</script>
   </head>
@@ -24,7 +26,8 @@
   <body>
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="{% url 'main-index' %}">KU-TCAS'66</a>
+		  <img class="ku-logo-nav" src="{% static 'img/ku-logo-sm.png' %}" />
+      <a class="navbar-brand hamburgur" href="{% url 'main-index' %}">KU-TCAS'66</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -52,5 +55,7 @@
     <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'lib/bootstrap/assets/js/ie10-viewport-bug-workaround.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

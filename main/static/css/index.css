@@ -1,0 +1,66 @@
+.container.grid {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    /* margin: 0rem 10rem; */
+}
+div.admission-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+h1.admission-title {
+    font-size: 3rem; /* Default size */
+}
+.admission-title-md {
+    display: none;
+}
+
+div.ku-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+}
+img.ku-logo {
+    width: 100%;
+    height: auto;
+}
+
+
+@media (max-width: 1200px) {
+    .container.grid {
+        grid-template-columns: 100% 0%;
+    }
+    div.ku-logo {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) { /* Tablets */
+    h1.admission-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) { /* Mobile */
+    h1.admission-title {
+        font-size: 2rem;
+    }
+    div.ku-logo {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) { /* Mobile */
+    h1.admission-title {
+        display: none;
+    }
+    .admission-title-md {
+        display: block;
+        font-size: 1.7rem;
+    }
+    .ku-logo {
+        display: none;
+    }
+
+}

@@ -1,0 +1,81 @@
+/* .black {
+    background-color: red !important;
+} */
+
+.scroll {
+    overflow-x: scroll;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    th {
+        display: none;
+    }
+
+    td {
+        display: grid;
+        grid-template-columns: 40% 60%; /* Two equal columns */
+        padding: 0.5rem 1rem !important;
+        place-items: start;
+    }
+
+    .date {
+        padding-left: 1.5rem;
+    }
+
+    .area {
+        display: block;
+        text-align: start;
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding-top: 1.5rem !important;
+        padding-left: 2rem !important;
+    }
+
+    .hide-md {
+        display: none;
+    }
+
+    .recruiting, .interview-annouce, .interview, .interview-result, .capable-annouce, .edu-test, 
+    .annouce-1, .annouce-2, .verify-1, .cancel, .interview-and-health-result, .verify-annouce {
+        padding-left: 1rem;
+    }
+    .recruiting::before {
+        content: "รับสมัคร";
+    }
+    .interview-annouce::before {
+        content: "ประกาศรายชื่อผู้มีสิทธิ์สอบสัมภาษณ์";
+    }
+    .interview::before {
+        content: "สอบสัมภาษณ์";
+    }
+    .interview-result::before {
+        content: "ประกาศผลสอบสัมภาษณ์";
+    }
+    .capable-annouce::before {
+        content: "ประกาศรายชื่อผู้มีสิทธิ์ทดสอบความสามารถ";
+    }
+    .edu-test::before {
+        content: "ทดสอบทักษะ คณะศึกษาศาสตร์และพัฒนศาสตร์";
+    }
+    .annouce-1::before {
+        content: "ประกาศผล (ครั้งที่ 1)";
+    }
+    .annouce-2::before {
+        content: "ประกาศผล (ครั้งที่ 2) โดยระบบยืนยันสิทธิ์ให้อัตโนมัติ";
+    }
+    .verify-1::before {
+        content: "ยืนยันสิทธิ์ (ครั้งที่ 1)";
+    }
+    .cancel::before {
+        content: "สละสิทธิ์ในระบบ mytcas";
+    }
+    .interview-and-health-result::before {
+        content: "สอบสัมภาษณ์หรือส่งผลตรวจสุขภาพ (ถ้ามี)";
+    }
+    .verify-annouce::before {
+        content: "ประกาศรายชื่อผู้ยืนยันสิทธิ์";
+    }
+
+    
+}
