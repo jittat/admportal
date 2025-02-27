@@ -33,3 +33,7 @@ def index(request, campus_id=None, faculty_id=None):
 
     #update_campus_keys()
     #update_project_list()
+
+  445  ./manage.py loaddata -i ~/data/67/r4/AdmissionCriteria.json 
+  446  ./manage.py loaddata -i ~/data/67/r4/ScoreCriteria.json 
+  447  ./manage.py loaddata -i ~/data/67/r4/CurriculumMajorAdmissionCriteria.json 
