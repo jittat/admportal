@@ -1,6 +1,6 @@
-<table class="table table-sm table-striped table-responsive">
+<table id="majorTableId" class="table table-sm table-striped table-responsive" style="position: relative;">
   <thead class="thead-dark">
-    <tr>
+    <tr id="majorTableHeaderHiddenRowId">
       <th>สาขาวิชา</th>
       {% for p in selected_projects %}
 	<th class="p-round-{{ p.default_round_number }}">

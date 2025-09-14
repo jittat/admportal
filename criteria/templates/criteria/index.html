@@ -9,7 +9,7 @@
 	</div>
 	<h2>สาขาและโครงการที่รับ - {{ selected_label }}</h2>
 	<div class="alert alert-info">
-	  เลือกคณะหรือวิทยาเขตเพื่อตรวจสอบสาขาและโครงการ/รอบที่รับสมัคร  สำหรับรายละเอียดเงื่อนไขเกณฑ์การรับของโครงการต่าง ๆ จะประกาศให้ทราบเร็ว ๆ นี้
+	  เลือกคณะหรือวิทยาเขตเพื่อตรวจสอบสาขาและโครงการ/รอบที่รับสมัคร 
 	  {% if campus.id == 2 %}
 	    สำหรับการสมัคร{{ campus.title }} สามารถตรวจสอบข้อมูลได้ที่ <a class="btn btn-secondary btn-sm" target="_blank" href="http://esd.kps.ku.ac.th/quota/">เว็บไซต์การรับสมัครของวิทยาเขตกำแพงแสน</a>
 	  {% endif %}
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <div class="sticky-top pb-2" style="top: 56px; background: white;">
+  <div class="sticky-top" style="top: 56px; background: white;">
     <div class="container">
       <div class="row">
 	<div class="col-md-12 project-major-pages">
@@ -46,7 +46,7 @@
 	    </select>
 	  </div>
 
-	  <ul class="nav nav-pills mb-1">
+	  <ul class="nav nav-pills mb-1 pb-2">
 	    <li class="nav-item">
 	      <a class="nav-link">รอบการรับสมัคร:</a>
 	    </li>
@@ -59,6 +59,11 @@
 	</div>
       </div>
     </div>
+    <div class="container">
+      <div class="row">
+	{% include "criteria/include/major_project_table_header.html" %}
+      </div>
+    </div>
   </div>
   <div class="container">
     <div class="row">
@@ -69,6 +74,25 @@
    var campusUrlTemplate = "{% url 'criteria:index-campus' 9999 %}";
    var facultyUrlTemplate = "{% url 'criteria:index-faculty' 9999 %}";
 
+   function syncColumnWidths() {
+     console.log('started');
+     var tabWidth = $('#majorTableHeaderHiddenRowId')[0].offsetWidth;
+     $('#majorTableHeaderRowId').css('width',tabWidth);
+     $('#majorTableHeaderHeadId').css('width',tabWidth);
+     console.log(tabWidth);
+
+     var thCols = $('#majorTableHeaderRowId').find('th');
+       $('#majorTableHeaderHiddenRowId').find('th').each(function(i) {
+       var col = thCols[i];
+       var width = this.offsetWidth;
+       console.log(i,width);
+       $(col).css('width',width);
+     });
+     var height = $('#majorTableHeaderHiddenRowId')[0].offsetHeight;
+     //$('#majorTableId').css('top',-height);
+     $('#majorHeaderTableId').show();
+   }
+   
    function selectRound(r) {
      {% for r in round_numbers %}
      if(r == {{ r }}) {
@@ -87,6 +111,7 @@
      $(".round-buttons").click(function(){
        var r = $(this).data('roundNumber');
        selectRound(r);
+       syncColumnWidths();
        return false;
      });
      
@@ -103,6 +128,7 @@
      });
 
      selectRound({{ round_numbers.0 }});
+     syncColumnWidths();
    });
   </script>
 {% endblock %}
