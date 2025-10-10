@@ -26,42 +26,42 @@
   <div class="sticky-top" style="top: 56px; background: white;">
     <div class="container">
       <div class="row">
-	<div class="col-md-12 project-major-pages">
-	  <div class="mb-2">
-	    เลือกคณะหรือวิทยาเขต
-	    <select class="target-selects">
-	      {% for c in choices %}
-		<option
-		  {% if c.is_selected %}selected{% endif %}
-		  data-sel-type="{{ c.type }}"
-		  data-sel-id="{{ c.id }}"
-		>
-		  {% if c.type == 'campus' %}
-		    --- {{ c.label }} ---
-		  {% else %}
-		    ›› {{ c.label }}
-		  {% endif %}
-		</option>
-	      {% endfor %}
-	    </select>
-	  </div>
+        <div class="col-md-12 project-major-pages">
+          <div class="mb-2">
+            เลือกคณะหรือวิทยาเขต
+            <select class="target-selects">
+              {% for c in choices %}
+                <option
+                  {% if c.is_selected %}selected{% endif %}
+                  data-sel-type="{{ c.type }}"
+                  data-sel-id="{{ c.id }}"
+                >
+                  {% if c.type == 'campus' %}
+                    --- {{ c.label }} ---
+                  {% else %}
+                    ›› {{ c.label }}
+                  {% endif %}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
 
-	  <ul class="nav nav-pills mb-1 pb-2">
-	    <li class="nav-item">
-	      <a class="nav-link">รอบการรับสมัคร:</a>
-	    </li>
-	    {% for r in round_numbers %}
-	      <li class="nav-item">
-		<a class="nav-link round-buttons" data-round-number="{{ r }}" id="round-button-{{ r }}" href="#">รอบที่ {{ r }}</a>
-	      </li>
-	    {% endfor %}
-	  </ul>
-	</div>
+          <ul class="nav nav-pills mb-1 pb-2">
+            <li class="nav-item">
+              <a class="nav-link">รอบการรับสมัคร:</a>
+            </li>
+            {% for r in round_numbers %}
+              <li class="nav-item">
+                <a class="nav-link round-buttons" data-round-number="{{ r }}" id="round-button-{{ r }}" href="#">รอบที่ {{ r }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="container">
+    <div class="container d-none">
       <div class="row">
-	{% include "criteria/include/major_project_table_header.html" %}
+	      {% include "criteria/include/major_project_table_header.html" %}
       </div>
     </div>
   </div>
