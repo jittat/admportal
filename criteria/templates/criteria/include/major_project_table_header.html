@@ -1,0 +1,12 @@
+<table id="majorHeaderTableId" class="table table-sm table-striped mb-0 table-responsive" style="display: none; overflow: hidden;">
+  <thead id="majorTableHeaderHeadId" class="thead-dark">
+    <tr id="majorTableHeaderRowId">
+      <th>สาขาวิชา</th>
+      {% for p in selected_projects %}
+	<th class="p-round-{{ p.default_round_number }}">
+	  {{ p.table_header_title|linebreaks }}
+	</th>
+      {% endfor %}
+    </tr>
+  </thead>
+</table>
