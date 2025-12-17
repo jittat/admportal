@@ -3,28 +3,28 @@
     <tr id="majorTableHeaderHiddenRowId">
       <th>สาขาวิชา</th>
       {% for p in selected_projects %}
-        <th class="p-round-{{ p.default_round_number }}">
-          {{ p.table_header_title|linebreaks }}
-        </th>
+	<th class="p-round-{{ p.default_round_number }}">
+	  {{ p.table_header_title|linebreaks }}
+	</th>
       {% endfor %}
     </tr>
   </thead>
   <tbody>
     {% for c in major_codes %}
       {% ifchanged c.faculty %}
-        <tr class="table-info">
-          <td colspan="1000">{{ c.faculty }} ({{ c.campus.title }})</td>
-        </tr>
+	<tr class="table-info">
+	  <td colspan="1000">{{ c.faculty }} ({{ c.campus.title }})</td>
+	</tr>
       {% endifchanged %}
       <tr>
-        <td>{{ c }}</td>
-        {% for p in selected_projects %}
-          {% if p.id in c.get_admission_project_set %}
-            <td class="text-center p-round-{{ p.default_round_number }}"><i class="fas fa-check"></i></td>
-          {% else %}
-            <td class="p-round-{{ p.default_round_number }}"></td>
-          {% endif %}
-        {% endfor %}
+	<td>{{ c }}</td>
+	{% for p in selected_projects %}
+	  {% if p.id in c.get_admission_project_set %}
+	    <td class="text-center p-round-{{ p.default_round_number }}"><i class="fas fa-check"></i></td>
+	  {% else %}
+	    <td class="p-round-{{ p.default_round_number }}"></td>
+	  {% endif %}
+	{% endfor %}
       </tr>
     {% endfor %}
   </tbody>
