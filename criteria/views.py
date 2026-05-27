@@ -186,7 +186,11 @@ def prepare_admission_criteria(admission_criterias, curriculum_majors, combine_m
     curriculum_majors_with_criterias = []
     for criteria in admission_criterias:
         criteria.cache_score_criteria_children()
-        criteria.curriculum_major_admission_criterias = criteria.curriculummajoradmissioncriteria_set.select_related('curriculum_major').all()
+        # TODO: fix this later
+        criteria.curriculum_major_admission_criterias = (criteria.curriculummajoradmissioncriteria_set
+                                                         .select_related('curriculum_major')
+                                                         .filter(slots__gt=0)
+                                                         .all())
         criteria.curriculum_major_admission_criteria_count = len(criteria.curriculum_major_admission_criterias)
         criteria.curriculum_majors = [mj.curriculum_major for mj in criteria.curriculum_major_admission_criterias]
         curriculum_majors_with_criterias += criteria.curriculum_majors
