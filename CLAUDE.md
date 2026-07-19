@@ -10,6 +10,10 @@ criteria (required scores, scoring weights). Content and UI are in Thai. It is a
 presentation layer: the authoritative data is authored in a separate `admapp` project and imported
 here (see "Data import" below). Django 3.2 on Python 3.8.
 
+Fuller documentation lives in [`docs/`](docs/README.md): [architecture](docs/architecture.md),
+[data model](docs/data-model.md), [data import](docs/data-import.md), and
+[development](docs/development.md).
+
 ## Commands
 
 ```bash
