@@ -8,7 +8,7 @@
 -i https://pypi.python.org/simple
 asgiref==3.8.1; python_version >= '3.6'
 backports.zoneinfo==0.2.1; python_version < '3.9'
-django==4.0.10
+django==4.1.13
 mysqlclient==2.2.7
 pytz==2018.5
 sqlparse==0.4.2
