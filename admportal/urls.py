@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.urls import include, re_path
 from django.contrib import admin
 
 from django.conf.urls.static import static
@@ -22,10 +22,10 @@ from django.conf import settings
 import main.views
 
 urlpatterns = [
-    url(r'^$', main.views.index, name='main-index'),
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', admin.site.urls),
-    url(r'^majors/', include('criteria.urls')),
-    url(r'^org-majors/', include('majors.urls')),
-    url(r'^main/', include('main.urls')),
+    re_path(r'^$', main.views.index, name='main-index'),
+    re_path(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    re_path(r'^admin/', admin.site.urls),
+    re_path(r'^majors/', include('criteria.urls')),
+    re_path(r'^org-majors/', include('majors.urls')),
+    re_path(r'^main/', include('main.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
