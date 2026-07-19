@@ -7,7 +7,7 @@
 
 -i https://pypi.python.org/simple
 asgiref==3.12.1; python_version >= '3.10'
-django==5.1.15
+django==5.2.16
 mysqlclient==2.2.8
 pytz==2018.5
 sqlparse==0.4.2
