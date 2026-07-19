@@ -6,10 +6,9 @@
 #
 
 -i https://pypi.python.org/simple
-asgiref==3.8.1; python_version >= '3.6'
-backports.zoneinfo==0.2.1; python_version < '3.9'
-django==4.2.30
-mysqlclient==2.2.7
+asgiref==3.12.1; python_version >= '3.10'
+django==5.0.14
+mysqlclient==2.2.8
 pytz==2018.5
 sqlparse==0.4.2
-typing-extensions==4.13.2; python_version < '3.11'
+typing-extensions==4.16.0; python_version < '3.11'
