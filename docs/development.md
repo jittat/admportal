@@ -2,8 +2,8 @@
 
 ## Requirements
 
-- Python 3.8 (see `.python-version`)
-- Django 3.2, `mysqlclient`, `pytz` — pinned in `requirements.txt` / `Pipfile`
+- Python 3.10 (see `.python-version`)
+- Django 5.2 (LTS), `mysqlclient`, `pytz` — pinned in `requirements.txt` / `Pipfile`
 
 ```bash
 pip install -r requirements.txt

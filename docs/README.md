@@ -5,7 +5,7 @@ admission projects, majors, admission rounds/calendar, and per-major admission c
 (required scores and scoring weights). Content and UI are in Thai.
 
 It is a **read-only presentation layer**: the authoritative data is authored in a separate
-`admapp` project and imported here. Django 3.2 on Python 3.8.
+`admapp` project and imported here. Django 5.2 (LTS) on Python 3.10.
 
 ## Contents
 

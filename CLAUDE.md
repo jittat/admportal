@@ -8,7 +8,7 @@ Public-facing web portal ("admportal") that displays Kasetsart University's TCAS
 information — admission projects, majors, admission rounds/calendar, and per-major admission
 criteria (required scores, scoring weights). Content and UI are in Thai. It is a read-only
 presentation layer: the authoritative data is authored in a separate `admapp` project and imported
-here (see "Data import" below). Django 3.2 on Python 3.8.
+here (see "Data import" below). Django 5.2 (LTS) on Python 3.10.
 
 Fuller documentation lives in [`docs/`](docs/README.md): [architecture](docs/architecture.md),
 [data model](docs/data-model.md), [data import](docs/data-import.md), and
@@ -36,7 +36,7 @@ python -m doctest majors/header_utils.py -v
 ./manage.py loaddata data/<year>/<Model>.json
 ```
 
-Dependencies are pinned in `requirements.txt` / `Pipfile` (Django 3.2, mysqlclient, pytz).
+Dependencies are pinned in `requirements.txt` / `Pipfile` (Django 5.2, mysqlclient, pytz).
 
 ## Configuration
 
