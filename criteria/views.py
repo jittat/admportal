@@ -404,7 +404,7 @@ def show_project(request, project_id, faculty_id=None):
 
     shows_min_criteria_in_table = project_id in []
     shows_scoring_criteria_percent = project_id in []
-    hides_percent = (project.default_round_number == 1)
+    hides_percent = False # (project.default_round_number == 1)
     hides_scoring_prefix_dash = False # project_id == 28
 
     for r in admission_criteria_rows:
