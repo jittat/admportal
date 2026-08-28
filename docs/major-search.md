@@ -122,12 +122,18 @@ Consequences worth knowing:
 
 ## 5. Tests
 
-`criteria/tests.py` covers `simplify_title`, `find_major_cupt_codes` (exact, normalized, all-terms,
-blank, no-match) and the view (blank query, `ALLOW_SEARCH=False`, `HIDE_CRITERIA`, a visible hit,
-exclusion of hidden-only projects, slot summing, deleted-criteria exclusion, round ordering).
+`criteria/tests.py`, 20 tests in four classes:
+
+| Class | Covers |
+| --- | --- |
+| `SimplifyTitleTest` | normalization (also doctested in `criteria/search.py`) |
+| `FindMajorCuptCodesTest` | exact, normalized, all-terms-must-match, blank, no-match |
+| `SearchViewTest` | blank query, `ALLOW_SEARCH=False`, `HIDE_CRITERIA`, a visible hit, exclusion of hidden-only projects, slot summing, deleted-criteria exclusion, round ordering |
+| `SharedQuotaTest` | zero-slot majors survive `prepare_admission_criteria`, appear on the project page with the combined-quota wording, are marked rather than zeroed in search, sort behind the quota-carrying major, and still show `-` when no criteria exist |
 
 ```bash
 ./manage.py test criteria --settings=admportal.settings_test
+python -m doctest criteria/search.py -v
 ```
 
 The `--settings` override is needed because `settings_local.py` points at MySQL with an account that
@@ -138,6 +144,8 @@ cannot create a test database. See [Development › Testing](development.md#test
 ```
 criteria/search.py                              simplify_title, matches, find_major_cupt_codes
 criteria/views.py                               search_majors, build_search_results, collect_slots
+                                                (prepare_admission_criteria — shared-quota majors,
+                                                 see architecture.md)
 criteria/urls.py                                criteria:search-majors → /majors/search/
 criteria/templates/criteria/search.html         results page
 criteria/templates/criteria/include/            search_form.html, search_result_major.html
