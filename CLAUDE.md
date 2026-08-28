@@ -32,8 +32,8 @@ Fuller documentation lives in [`docs/`](docs/README.md): [architecture](docs/arc
 # Doctests live in majors/header_utils.py
 python -m doctest majors/header_utils.py -v
 
-# Load imported fixtures (see IMPORT-NOTES-65 for the full yearly procedure)
-./manage.py loaddata data/<year>/<Model>.json
+# Import a round's data exported from admapp (see docs/data-import.md)
+cd scripts && python import_round_data.py ../data/<year>/<round>-json
 ```
 
 Dependencies are pinned in `requirements.txt` / `Pipfile` (Django 5.2, mysqlclient, pytz).
@@ -98,6 +98,13 @@ namespaced names (`criteria:...`, `org-majors:...`) rather than assuming the pat
 ### Data import (scripts/)
 
 Standalone scripts, run from inside `scripts/` (they call `django_bootstrap.bootstrap()` to set up
-Django, then use the ORM). They import CSVs / JSON exported from the `admapp` project. `IMPORT-NOTES-65`
-documents the per-year procedure and ordering. Yearly source data lives under `data/<year>/`
-(git-ignored). Note `.py~` (emacs backup) files litter the tree — the real files are the `.py` ones.
+Django, then use the ORM). They import CSVs / JSON exported from the `admapp` project.
+`scripts/import_round_data.py` is the entry point: `admapp` fixtures use the app label `appl` where
+this project uses `majors`, and carry extra fields, so they must be rewritten before `loaddata` will
+accept them — never work around this with `loaddata -i`, which silently skips objects whose model it
+does not recognise. `docs/data-import.md` documents the full per-year procedure; `IMPORT-NOTES-65`
+is the older 2565 record. Yearly source data lives under `data/<year>/` (git-ignored). Note `.py~`
+(emacs backup) files litter the tree — the real files are the `.py` ones.
+
+`import_projects.py` deletes and recreates projects by id, cascading into `AdmissionCriteria` and
+`CurriculumMajor`; it is no longer part of the normal procedure.

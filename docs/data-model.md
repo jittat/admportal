@@ -34,7 +34,7 @@ Important flags and ordering fields:
 | --- | --- |
 | `is_available` | Used by the **criteria browser** to decide which projects to list. |
 | `major_detail_visible` | Used by the **public major listing/search**; non-visible projects are gated behind login. |
-| `default_round_number` | Which round the project is shown under. |
+| `default_round_number` | Which round the project is shown under. Portal-only; derived from the project's `AdmissionRound` at import time by `scripts/set_default_round_numbers.py`. |
 | `display_rank` | Sort order within a round. |
 | `column_descriptions` | Org-mode outline for the major table header (see [Architecture](architecture.md#1-precomputed-table-headers)). |
 | `major_table_header_precomputed`, `column_count`, `major_description_list_template` | Derived, recomputed in `save()`. Do not edit by hand. |

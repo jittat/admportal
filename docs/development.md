@@ -24,8 +24,8 @@ pipenv install
 # Create an admin user (the /org-majors and non-visible pages require login)
 ./manage.py createsuperuser
 
-# Load imported fixtures (see docs/data-import.md for the full yearly procedure)
-./manage.py loaddata data/<year>/<Model>.json
+# Import a round's data exported from admapp (see docs/data-import.md)
+cd scripts && python import_round_data.py ../data/<year>/<round>-json
 ```
 
 ## Testing
