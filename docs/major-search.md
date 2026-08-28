@@ -55,9 +55,11 @@ python -m doctest criteria/search.py -v
   in `criteria/views.py` and may be stale.
 - **Slots** are summed per (major, project) by `collect_slots` over
   `CurriculumMajorAdmissionCriteria`, skipping rows whose `AdmissionCriteria.is_deleted`. One query
-  for the whole result set, not one per major.
+  for the whole result set, not one per major. A sum of `0` across live criteria means a shared
+  quota (see § 4), not an absent one.
 - **Ordering.** Result cards follow the matched codes' order (faculty, then title); project rows
-  within a card sort by `default_round_number`, `display_rank`, `id`.
+  within a card sort by `default_round_number`, `display_rank`, `id` — by round, *not* by slots,
+  unlike the criteria table, where majors within one criteria row sort by slots descending.
 
 Each result is `{'major_cupt_code': code, 'project_rows': [{'project', 'round_number', 'slots',
 'criteria_count'}, ...]}`. Majors with no visible project are dropped.
@@ -108,6 +110,12 @@ Consequences worth knowing:
   to explain — **per-cycle copy in `settings.py` that must be reviewed as each round opens.**
 - A visible project whose criteria are not imported yet yields `criteria_count == 0`; the card shows
   `-` instead of a slot count rather than a misleading `0`.
+- **Zero slots mean a shared quota.** A criteria may record its whole quota against one major and
+  `0` against its siblings — in the 2570 data every zero sits under a criteria with a non-zero
+  sibling; there is no criteria whose majors are all zero. Such rows show
+  `*จำนวนรับรวมกับเงื่อนไขอื่น`, the same wording the criteria table uses, rather than `0`, which
+  would read as "no seats". The criteria pages had the matching bug — a `slots__gt=0` filter in
+  `prepare_admission_criteria` dropped those majors outright — fixed alongside this.
 - A (major, project) pair can legitimately carry several live criteria with separate quotas. Slots
   are summed and a `N เกณฑ์` badge points the reader at the project's criteria page for the
   breakdown.

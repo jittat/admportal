@@ -189,11 +189,18 @@ def prepare_admission_criteria(admission_criterias, curriculum_majors, combine_m
     curriculum_majors_with_criterias = []
     for criteria in admission_criterias:
         criteria.cache_score_criteria_children()
-        # TODO: fix this later
-        criteria.curriculum_major_admission_criterias = (criteria.curriculummajoradmissioncriteria_set
-                                                         .select_related('curriculum_major')
-                                                         .filter(slots__gt=0)
-                                                         .all())
+        # Majors with zero slots are kept.  A zero means the major's quota is
+        # counted together with a sibling major under the same criteria, which
+        # the table renders as 'จำนวนรับรวมกับเงื่อนไขอื่น'.  Filtering them out
+        # hid every major but the quota-carrying one on shared-quota projects.
+        # Largest quota first, so the major carrying a shared quota heads the
+        # row and the zero-slot siblings follow it.  Stable, so majors with
+        # equal slots keep their existing order.
+        criteria.curriculum_major_admission_criterias = sorted(
+            (criteria.curriculummajoradmissioncriteria_set
+             .select_related('curriculum_major')
+             .all()),
+            key=lambda mc: -mc.slots)
         criteria.curriculum_major_admission_criteria_count = len(criteria.curriculum_major_admission_criterias)
         criteria.curriculum_majors = [mj.curriculum_major for mj in criteria.curriculum_major_admission_criterias]
         curriculum_majors_with_criterias += criteria.curriculum_majors

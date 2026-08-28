@@ -6,6 +6,7 @@ from majors.models import Campus, Faculty, AdmissionProject
 from .models import MajorCuptCode, CurriculumMajor
 from .models import AdmissionCriteria, CurriculumMajorAdmissionCriteria
 from .search import simplify_title, find_major_cupt_codes
+from .views import prepare_admission_criteria
 from . import views
 
 
@@ -172,3 +173,92 @@ class SearchViewTest(SearchTestCase):
 
         rows = response.context['results'][0]['project_rows']
         self.assertEqual([r['round_number'] for r in rows], [1, 3])
+
+
+class SharedQuotaTest(SearchTestCase):
+    """A criteria can carry its whole quota on one major, zero on its siblings.
+
+    The zero means 'counted with the other major', not 'no seats' — such majors
+    must still be listed.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.project = self.create_project('พัฒนาเครือข่ายองค์กรแห่งการเรียนรู้')
+        self.criteria = AdmissionCriteria.objects.create(admission_project=self.project,
+                                                         faculty=self.faculty,
+                                                         campus=self.campus)
+        self.carrier = self.add_major('วท.บ. สาขาวิชาคณิตศาสตร์', '101', slots=36)
+        self.shared = self.add_major('วท.บ. สาขาวิชาพฤกษศาสตร์', '102', slots=0)
+
+    def add_major(self, title, program_code, slots):
+        code = self.create_code(title, program_code)
+        curriculum_major = CurriculumMajor.objects.create(admission_project=self.project,
+                                                          cupt_code=code,
+                                                          faculty=self.faculty,
+                                                          campus=self.campus)
+        CurriculumMajorAdmissionCriteria.objects.create(
+            curriculum_major=curriculum_major,
+            admission_criteria=self.criteria,
+            slots=slots)
+        return code
+
+    def test_criteria_rows_keep_the_zero_slot_major(self):
+        rows, _ = prepare_admission_criteria([self.criteria],
+                                             CurriculumMajor.objects.filter(
+                                                 admission_project=self.project),
+                                             True)
+
+        listed = [mc.curriculum_major.cupt_code for row in rows for mc in row['majors']]
+        self.assertIn(self.carrier, listed)
+        self.assertIn(self.shared, listed)
+
+    def test_quota_carrying_major_is_listed_first(self):
+        # a second criteria whose zero-slot majors are inserted *before* the
+        # one carrying the quota, so insertion order alone would bury it
+        self.criteria = AdmissionCriteria.objects.create(admission_project=self.project,
+                                                         faculty=self.faculty,
+                                                         campus=self.campus)
+        self.add_major('วท.บ. สาขาวิชาสถิติ', '104', slots=0)
+        self.add_major('วท.บ. สาขาวิชาฟิสิกส์', '105', slots=0)
+        carrier = self.add_major('วท.บ. สาขาวิชาเคมี', '106', slots=12)
+
+        rows, _ = prepare_admission_criteria([self.criteria],
+                                             CurriculumMajor.objects.filter(
+                                                 admission_project=self.project),
+                                             True)
+
+        listed = [mc for row in rows for mc in row['majors']]
+        self.assertEqual([mc.slots for mc in listed], [12, 0, 0])
+        self.assertEqual(listed[0].curriculum_major.cupt_code, carrier)
+
+    def test_project_page_shows_the_zero_slot_major(self):
+        response = self.client.get(reverse('criteria:project-index',
+                                           args=[self.project.id]))
+
+        self.assertContains(response, 'พฤกษศาสตร์')
+        self.assertContains(response, 'จำนวนรับรวมกับเงื่อนไขอื่น')
+
+    def test_search_marks_the_zero_slot_major_instead_of_showing_nought(self):
+        response = self.client.get(reverse('criteria:search-majors'),
+                                   {'query': 'พฤกษศาสตร์'})
+
+        row = response.context['results'][0]['project_rows'][0]
+        self.assertEqual(row['slots'], 0)
+        self.assertEqual(row['criteria_count'], 1)
+        self.assertContains(response, 'จำนวนรับรวมกับเงื่อนไขอื่น')
+
+    def test_search_still_shows_a_dash_when_no_criteria_exist(self):
+        project = self.create_project('โครงการที่ยังไม่มีเกณฑ์')
+        code = self.create_code('วท.บ. สาขาวิชาสถิติ', '103')
+        CurriculumMajor.objects.create(admission_project=project,
+                                       cupt_code=code,
+                                       faculty=self.faculty,
+                                       campus=self.campus)
+
+        response = self.client.get(reverse('criteria:search-majors'),
+                                   {'query': 'สถิติ'})
+
+        row = response.context['results'][0]['project_rows'][0]
+        self.assertEqual(row['criteria_count'], 0)
+        self.assertNotContains(response, 'จำนวนรับรวมกับเงื่อนไขอื่น')

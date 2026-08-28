@@ -26,6 +26,8 @@
             <td class="text-center">
               {% if row.criteria_count == 0 %}
                 -
+              {% elif row.slots == 0 %}
+                <small>*จำนวนรับรวมกับเงื่อนไขอื่น</small>
               {% else %}
                 {{ row.slots }}
                 {% if row.criteria_count > 1 %}

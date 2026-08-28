@@ -99,10 +99,18 @@ to take effect. `header_utils.py` is also the one place with real (doc)tests.
 `criteria/views.py` builds the criteria table server-side before rendering:
 
 1. `prepare_admission_criteria` — for each `AdmissionCriteria`, caches its score-criteria children
-   (to avoid N+1 queries), attaches the curriculum majors with non-zero slots, and produces one row
-   per criteria plus a list of "free" majors with no criteria.
+   (to avoid N+1 queries), attaches its curriculum majors, and produces one row per criteria plus a
+   list of "free" majors with no criteria.
 2. `combine_criteria_rows` — merges majors that appear under multiple criteria: when a major has
    slots in exactly one criteria (the rest zero), it collapses into a single combined row.
+
+**Zero slots mean "shared quota", not "no seats".** A criteria may record its whole quota against
+one major and `0` against its siblings; the table renders those as `*จำนวนรับรวมกับเงื่อนไขอื่น`.
+Majors within a row are ordered by slots descending, so the quota-carrying major heads the row and
+its zero-slot siblings follow (a stable sort — equal slots keep their existing order).
+`prepare_admission_criteria` used to filter them out (`slots__gt=0`), which hid every major but the
+quota-carrying one — on one 2570 project, 19 of 20 majors. The filter also made step 2 unreachable,
+since with every row non-zero its "exactly one non-zero" condition can never hold.
 3. `sort_admission_criteria_rows` — orders rows by faculty, then major code, then descending slots.
 
 Raw score keys stored in JSON columns (`min_scores_json`, `scoring_scores_json`) are translated to
