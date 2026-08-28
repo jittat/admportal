@@ -11,6 +11,10 @@ def current_year():
 def admission_round_count():
     return settings.ADMISSION_ROUND_COUNT
 
+@register.simple_tag
+def allow_search():
+    return settings.ALLOW_SEARCH
+
 
 
 

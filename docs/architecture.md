@@ -46,11 +46,27 @@ Renders `main/index.html` with:
   below.
 - Both views short-circuit with `403` when the `HIDE_CRITERIA` flag is on.
 
+### Major search — `criteria.views.search_majors` (`/majors/search/`)
+
+A `GET` search (so results are linkable) over `MajorCuptCode` titles, reached from the landing-page
+form and the navbar link. See [Major search](major-search.md) for the full description. In short:
+
+- `criteria/search.py` normalizes the query and every candidate title with `simplify_title` and
+  matches in Python over the whole table — a few hundred rows, so no denormalized column or index
+  is needed. All whitespace-separated terms must match.
+- `build_search_results` groups the hits **by major**: one entry per matched `MajorCuptCode`,
+  listing the `major_detail_visible` projects that accept it, each with round number, summed slots
+  and a live-criteria count.
+- Honours `HIDE_CRITERIA` (403) and `settings.ALLOW_SEARCH` (redirect), and renders the bare form
+  when no query is given.
+
 ### Public major listing & search — `majors.views` (`/org-majors/...`)
 
-- `list_majors` shows the majors under a project; `search_majors` does a substring search over
-  `Major.simplified_title` (title with certain characters stripped, see `Major.simplify_title`),
-  restricted to `major_detail_visible` projects.
+Obsolete, kept but unreferenced. These views read `majors.Major`, which the current import
+procedure no longer populates (see [Major search § 2](major-search.md#2-why-the-old-search-died)).
+
+- `list_majors` shows the majors under a project; `search_majors` was the previous search, a
+  substring match over `Major.simplified_title`.
 - `index` (the raw project list) requires login.
 
 ## Two rendering subtleties worth knowing

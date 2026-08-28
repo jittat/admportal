@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 project-major-pages">
+        <div class="float-right">
+          <img src="{% static 'img/ku-logo-xs-back.png' %}" />
+        </div>
+        <h2>ค้นหาสาขา</h2>
+        {% include "criteria/include/search_form.html" %}
+        <hr />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 project-major-pages">
+        {% if has_query %}
+          <h3>ผลการค้นหา{{ scope_display }}</h3>
+          <p>
+            <b>คำค้นหา:</b> {{ query }} &nbsp;&nbsp;
+            พบทั้งสิ้น {{ results|length }} สาขา
+          </p>
+
+          {% for result in results %}
+            {% include "criteria/include/search_result_major.html" %}
+          {% empty %}
+            <b>ไม่พบสาขาที่คุณต้องการ</b> {{ empty_display_message }}
+          {% endfor %}
+        {% else %}
+          <p>ป้อนชื่อสาขาที่ต้องการค้นหา{{ scope_display }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

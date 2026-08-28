@@ -1,0 +1,45 @@
+<div class="major-search-results mb10 p10 border-a0 mb-4">
+  <h4>
+    <span class="badge badge-success">{{ forloop.counter }}.</span>
+    {{ result.major_cupt_code.title }}
+    {% if result.major_cupt_code.major_title %}{{ result.major_cupt_code.major_title }}{% endif %}
+    <small>({{ result.major_cupt_code.program_type }})</small>
+  </h4>
+  <div class="major-contents">
+    {{ result.major_cupt_code.faculty }}
+    <span class="badge campus-badge-campus-{{ result.major_cupt_code.campus.id }}">{{ result.major_cupt_code.campus }}</span>
+
+    <table class="table table-sm table-striped table-responsive mt-2">
+      <thead class="thead-dark">
+        <tr>
+          <th>โครงการที่รับสมัคร</th>
+          <th class="text-center">รอบ</th>
+          <th class="text-center">จำนวนรับ</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in result.project_rows %}
+          <tr>
+            <td>{{ row.project }}</td>
+            <td class="text-center">{{ row.round_number }}</td>
+            <td class="text-center">
+              {% if row.criteria_count == 0 %}
+                -
+              {% else %}
+                {{ row.slots }}
+                {% if row.criteria_count > 1 %}
+                  <span class="badge badge-secondary">{{ row.criteria_count }} เกณฑ์</span>
+                {% endif %}
+              {% endif %}
+            </td>
+            <td>
+              <a class="btn btn-sm btn-success" target="_blank"
+                 href="{% url 'criteria:project-index' row.project.id %}">อ่านเกณฑ์</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

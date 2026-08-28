@@ -31,16 +31,21 @@ cd scripts && python import_round_data.py ../data/<year>/<round>-json
 ## Testing
 
 ```bash
-./manage.py test                 # all apps
-./manage.py test criteria        # one app
-./manage.py test criteria.tests.SomeTestCase.test_method   # single test
+./manage.py test --settings=admportal.settings_test                 # all apps
+./manage.py test criteria --settings=admportal.settings_test        # one app
+./manage.py test criteria.tests.SearchViewTest.test_no_match --settings=admportal.settings_test
 ```
 
-> Note: the `tests.py` files in each app are currently empty stubs — there is no meaningful test
-> suite yet. The only executable tests are **doctests** in the header-parsing utilities:
+`--settings=admportal.settings_test` is required in practice: `settings.py` ends by importing
+`settings_local.py`, which points at the per-year MySQL database using an account that cannot
+create `test_<dbname>`. `admportal/settings_test.py` swaps in an in-memory SQLite database.
+
+> Note: `main/tests.py` and `majors/tests.py` are still empty stubs. The real tests are
+> `criteria/tests.py` (major search) plus **doctests** in two modules:
 
 ```bash
 python -m doctest majors/header_utils.py -v
+python -m doctest criteria/search.py -v
 ```
 
 ## Configuration
@@ -72,8 +77,14 @@ elsewhere.
 
 ### Feature gate
 
-`HIDE_CRITERIA` is a module-level flag in `criteria/views.py`. When set, the criteria pages return
-`403 Forbidden` — used to hide criteria from the public before official release.
+`HIDE_CRITERIA` is a module-level flag in `criteria/views.py`. When set, the criteria pages —
+including major search, whose results carry criteria-derived slot counts — return `403 Forbidden`.
+Used to hide criteria from the public before official release.
+
+`ALLOW_SEARCH` (in `settings.py`) hides the search forms and redirects `/majors/search/` back to the
+landing page. `SEARCH_SCOPE_DISPLAY` and `SEARCH_EMPTY_DISPLAY_MESSAGE` are the per-cycle Thai copy
+telling visitors which rounds the search currently covers — review them whenever a new round's
+projects become `major_detail_visible`.
 
 ## Housekeeping notes
 

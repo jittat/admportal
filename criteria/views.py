@@ -3,9 +3,12 @@ import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponseForbidden
+from django.conf import settings
 
 from majors.models import Faculty, Campus, AdmissionProject, AdmissionRound
 from .models import CurriculumMajor, MajorCuptCode, AdmissionCriteria
+from .models import CurriculumMajorAdmissionCriteria
+from .search import find_major_cupt_codes
 
 HIDE_CRITERIA = False
 
@@ -432,3 +435,87 @@ def show_project(request, project_id, faculty_id=None):
                    'hides_scoring_prefix_dash': hides_scoring_prefix_dash,
                    'hides_percent': hides_percent,
                    })
+
+
+def collect_slots(curriculum_majors):
+    """Total slots and live criteria count for each curriculum major, keyed by id."""
+    rows = (CurriculumMajorAdmissionCriteria
+            .objects
+            .filter(curriculum_major__in=curriculum_majors,
+                    admission_criteria__is_deleted=False))
+
+    slots = {}
+    for r in rows:
+        if r.curriculum_major_id not in slots:
+            slots[r.curriculum_major_id] = {'slots': 0, 'criteria_count': 0}
+        slots[r.curriculum_major_id]['slots'] += r.slots
+        slots[r.curriculum_major_id]['criteria_count'] += 1
+
+    return slots
+
+
+def build_search_results(major_cupt_codes):
+    """Group visible (major, project) pairs under the major that was matched."""
+    visible_projects = AdmissionProject.objects.filter(major_detail_visible=True).all()
+    visible_project_map = dict([(p.id, p) for p in visible_projects])
+
+    curriculum_majors = [m for m in
+                         (CurriculumMajor
+                          .objects
+                          .filter(cupt_code__in=major_cupt_codes)
+                          .select_related('cupt_code'))
+                         if m.admission_project_id in visible_project_map]
+
+    slots = collect_slots(curriculum_majors)
+
+    project_rows = {}
+    for m in curriculum_majors:
+        project = visible_project_map[m.admission_project_id]
+        major_slots = slots.get(m.id, {'slots': 0, 'criteria_count': 0})
+
+        if m.cupt_code_id not in project_rows:
+            project_rows[m.cupt_code_id] = []
+        project_rows[m.cupt_code_id].append({
+            'project': project,
+            'round_number': project.default_round_number,
+            'slots': major_slots['slots'],
+            'criteria_count': major_slots['criteria_count'],
+        })
+
+    results = []
+    for code in major_cupt_codes:
+        rows = project_rows.get(code.id, [])
+        if not rows:
+            continue
+
+        rows.sort(key=lambda r: (r['round_number'],
+                                 r['project'].display_rank,
+                                 r['project'].id))
+        results.append({'major_cupt_code': code,
+                        'project_rows': rows})
+
+    return results
+
+
+def search_majors(request):
+    if HIDE_CRITERIA:
+        return HttpResponseForbidden()
+
+    if not settings.ALLOW_SEARCH:
+        return redirect(reverse('main-index'))
+
+    query = request.GET.get('query', '').strip()
+
+    # with no query this is just the search page, showing the form alone
+    if query == '':
+        results = []
+    else:
+        results = build_search_results(find_major_cupt_codes(query))
+
+    return render(request,
+                  'criteria/search.html',
+                  {'query': query,
+                   'has_query': query != '',
+                   'results': results,
+                   'scope_display': settings.SEARCH_SCOPE_DISPLAY,
+                   'empty_display_message': settings.SEARCH_EMPTY_DISPLAY_MESSAGE})

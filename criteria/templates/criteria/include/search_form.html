@@ -1,0 +1,10 @@
+<form class="form-inline" method="get" action="{% url 'criteria:search-majors' %}">
+  <div class="form-row w-100">
+    <div class="col">
+      <input class="form-control w-100" type="text" placeholder="ป้อนชื่อสาขา" name="query" value="{{ query|default:'' }}">
+    </div>
+    <div class="col-auto">
+      <input class="btn btn-primary" type="submit" value="ค้นข้อมูลสาขา" />
+    </div>
+  </div>
+</form>

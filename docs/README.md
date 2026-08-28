@@ -14,6 +14,7 @@ It is a **read-only presentation layer**: the authoritative data is authored in 
   mechanisms.
 - [Data model](data-model.md) — the domain entities and how they relate.
 - [Data import](data-import.md) — the per-year import workflow from `admapp`.
+- [Major search](major-search.md) — the public major-name search over the CUPT taxonomy.
 
 ## Quick start
 

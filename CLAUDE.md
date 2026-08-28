@@ -24,12 +24,12 @@ Fuller documentation lives in [`docs/`](docs/README.md): [architecture](docs/arc
 ./manage.py makemigrations
 ./manage.py migrate
 
-# Tests (Django test runner; note: the tests.py files are currently empty stubs)
-./manage.py test              # all
-./manage.py test criteria     # one app
-./manage.py test criteria.tests.SomeTestCase.test_method   # single test
+# Tests (needs --settings: settings_local points at MySQL, whose account
+# cannot create a test database; settings_test swaps in SQLite)
+./manage.py test --settings=admportal.settings_test           # all
+./manage.py test criteria --settings=admportal.settings_test  # one app
 
-# Doctests live in majors/header_utils.py
+# Doctests live in majors/header_utils.py and criteria/search.py
 python -m doctest majors/header_utils.py -v
 
 # Import a round's data exported from admapp (see docs/data-import.md)
@@ -54,7 +54,8 @@ Dependencies are pinned in `requirements.txt` / `Pipfile` (Django 5.2, mysqlclie
 Three Django apps, wired in `admportal/urls.py`:
 
 - **`majors`** — the core domain models. Everything else depends on these.
-- **`criteria`** — admission criteria/scoring models plus the main public criteria browser.
+- **`criteria`** — admission criteria/scoring models, the main public criteria browser, and the
+  public major-name search (`criteria/search.py`, see [docs/major-search.md](docs/major-search.md)).
 - **`main`** — the site landing page (`/`), announcements, and the admission calendar.
 
 Note the URL/app-name mismatch: `criteria.urls` is mounted at `/majors/` (app_name
