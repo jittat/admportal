@@ -32,7 +32,10 @@ regardless of spacing or of whether the writer typed the thanthakhat.
 
 The query is split on whitespace and **all** terms must appear — `วิศวกรรม เคมี` matches
 `วศ.บ. สาขาวิชาวิศวกรรมเคมี`, `วิศวกรรม ไฟฟ้า` does not. `major_title` is searched alongside
-`title` (it is empty for every row in the 2570 data, but populated in other cycles).
+`title`. It holds the วิชาเอก track under a major and is populated on 49 of the 290 rows in the
+2570 data, so it genuinely widens matching: `ภาษาอังกฤษ` reaches
+`ศษ.บ. สาขาวิชาศึกษาศาสตร์` through `วิชาเอกการสอนภาษาอังกฤษ`, and a title with several tracks
+(ศษ.บ. ศึกษาศาสตร์ has eight) returns one card per track.
 
 Matching runs **in Python over the whole table**, not in SQL. There are only a few hundred
 `MajorCuptCode` rows (290 in 2570) and a full scan measures ~20ms, so no `simplified_title` column,
@@ -122,7 +125,7 @@ Consequences worth knowing:
 
 ## 5. Tests
 
-`criteria/tests.py`, 20 tests in four classes:
+`criteria/tests.py`, 33 tests in six classes:
 
 | Class | Covers |
 | --- | --- |
@@ -130,11 +133,18 @@ Consequences worth knowing:
 | `FindMajorCuptCodesTest` | exact, normalized, all-terms-must-match, blank, no-match |
 | `SearchViewTest` | blank query, `ALLOW_SEARCH=False`, `HIDE_CRITERIA`, a visible hit, exclusion of hidden-only projects, slot summing, deleted-criteria exclusion, round ordering |
 | `SharedQuotaTest` | zero-slot majors survive `prepare_admission_criteria`, appear on the project page with the combined-quota wording, are marked rather than zeroed in search, sort behind the quota-carrying major, and still show `-` when no criteria exist |
+| `EvalSetTest` | shape of the semantic-search eval fixture — bands declared and used, no duplicate queries, labels present (see [Semantic search](semantic-search.md) § Phase 0) |
+| `EvalMetricsTest` | recall@k normalization, MRR, title dedup, negative-band handling |
 
 ```bash
 ./manage.py test criteria --settings=admportal.settings_test
 python -m doctest criteria/search.py -v
+python -m doctest criteria/evaluation.py -v
 ```
+
+The eval set is also a regression net for *this* search: `scripts/eval_baseline.py` scores
+`find_major_cupt_codes` on 36 labelled Thai queries and validates that every label still names a
+real major after a data import.
 
 The `--settings` override is needed because `settings_local.py` points at MySQL with an account that
 cannot create a test database. See [Development › Testing](development.md#testing).

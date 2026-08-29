@@ -29,8 +29,17 @@ Fuller documentation lives in [`docs/`](docs/README.md): [architecture](docs/arc
 ./manage.py test --settings=admportal.settings_test           # all
 ./manage.py test criteria --settings=admportal.settings_test  # one app
 
-# Doctests live in majors/header_utils.py and criteria/search.py
+# Doctests live in majors/header_utils.py and criteria/{search,evaluation}.py
+# plus criteria/embeddings/{base,corpus}.py
 python -m doctest majors/header_utils.py -v
+
+# Validate the search eval set against the live corpus and score the substring baseline
+cd scripts && python eval_baseline.py --verbose
+
+# Semantic-search model bake-off (docs/semantic-search.md Phase 1).
+# --fake needs no API key and makes no network calls; a real run needs
+# OPENROUTER_API_KEY (env or a git-ignored .env) and reviewed eval labels.
+cd scripts && python eval_embeddings.py --fake
 
 # Import a round's data exported from admapp (see docs/data-import.md)
 cd scripts && python import_round_data.py ../data/<year>/<round>-json

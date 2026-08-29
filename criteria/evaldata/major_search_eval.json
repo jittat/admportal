@@ -1,0 +1,414 @@
+{
+  "version": 1,
+  "corpus_year": 2570,
+  "corpus_size": 290,
+  "label_unit": "MajorCuptCode.title, deduplicated",
+  "reviewed_by": null,
+  "reviewed_date": null,
+  "notes": [
+    "Phase 0 eval set for semantic major search (docs/semantic-search.md).",
+    "Labels are MajorCuptCode titles, not ids: ids are reassigned every admission cycle.",
+    "A title can appear on several rows (same major at several campuses, or Thai/international",
+    "programmes of one major). Rows sharing a title are one unit for scoring - see",
+    "criteria/evaluation.py.",
+    "DRAFT LABELS. Every 'reviewed' flag below is false. These were drafted from the 2570 title",
+    "list by reading the titles, NOT by anyone who knows what a Thai high-school student means by",
+    "a given phrase. A wrong gold set silently selects the wrong embedding provider in Phase 1 and",
+    "every later measurement inherits the error. Do not run a provider bake-off against an",
+    "unreviewed set."
+  ],
+  "bands": {
+    "near_exact": "Query is a substring of, or nearly, the real title. Today's search already handles these; they are the regression net.",
+    "colloquial": "The everyday Thai word for a profession or field, which rarely appears in an academic title.",
+    "career_phrased": "A phrase about the job wanted rather than the subject studied.",
+    "field_level": "A broad area covering several majors across faculties.",
+    "misspelling": "Common misspellings and student abbreviations.",
+    "negative": "Nothing in the corpus should match. Not scored for recall/MRR; scored for precision - anything returned above the similarity floor is a false positive."
+  },
+  "queries": [
+    {
+      "query": "วิศวกรรมคอมพิวเตอร์",
+      "band": "near_exact",
+      "reviewed": false,
+      "expected": [
+        "วศ.บ. สาขาวิชาวิศวกรรมคอมพิวเตอร์",
+        "วศ.บ. สาขาวิชาวิศวกรรมคอมพิวเตอร์และสารสนเทศศาสตร์"
+      ]
+    },
+    {
+      "query": "วิทยาการคอมพิวเตอร์",
+      "band": "near_exact",
+      "reviewed": false,
+      "expected": [
+        "วท.บ. สาขาวิชาวิทยาการคอมพิวเตอร์"
+      ]
+    },
+    {
+      "query": "สถาปัตยกรรม",
+      "band": "near_exact",
+      "reviewed": false,
+      "expected": [
+        "สถ.บ.(สถาปัตยกรรมศาสตรบัณฑิต)",
+        "วท.บ. สาขาวิชาสถาปัตยกรรม",
+        "ภ.สถ.บ.(ภูมิสถาปัตยกรรมศาสตรบัณฑิต)"
+      ]
+    },
+    {
+      "query": "เศรษฐศาสตร์",
+      "band": "near_exact",
+      "reviewed": false,
+      "expected": [
+        "ศ.บ. สาขาวิชาเศรษฐศาสตร์",
+        "ศ.บ. สาขาวิชาเศรษฐศาสตร์ประยุกต์และธุรกิจเกษตร",
+        "ศ.บ. สาขาวิชาเศรษฐศาสตร์สหกรณ์",
+        "ศศ.บ. สาขาวิชาเศรษฐศาสตร์การประกอบการ"
+      ]
+    },
+    {
+      "query": "ภาษาอังกฤษ",
+      "band": "near_exact",
+      "reviewed": false,
+      "expected": [
+        "ศศ.บ. สาขาวิชาภาษาอังกฤษ",
+        "ศศ.บ. สาขาวิชาภาษาอังกฤษเพื่อการสื่อสารระหว่างวัฒนธรรมและผู้ประกอบการ",
+        "ศศ.บ. สาขาวิชาภาษาอังกฤษเพื่ออุตสาหกรรมบริการ"
+      ]
+    },
+    {
+      "query": "บัญชี",
+      "band": "near_exact",
+      "reviewed": false,
+      "expected": [
+        "บช.บ.(บัญชีบัณฑิต)",
+        "บธ.บ. สาขาวิชาการบัญชี"
+      ]
+    },
+    {
+      "query": "สัตวแพทย์",
+      "band": "near_exact",
+      "reviewed": false,
+      "expected": [
+        "สพ.บ.(สัตวแพทยศาสตรบัณฑิต)",
+        "วท.บ. สาขาวิชาเทคนิคการสัตวแพทย์",
+        "วท.บ. สาขาวิชาการพยาบาลสัตว์"
+      ]
+    },
+    {
+      "query": "หมอ",
+      "band": "colloquial",
+      "reviewed": false,
+      "expected": [
+        "พ.บ.(แพทยศาสตรบัณฑิต)"
+      ],
+      "note": "REVIEW: does a student typing หมอ alone also want สัตวแพทย์, พยาบาล or เภสัช in the related section? Drafted as แพทยศาสตร์ only."
+    },
+    {
+      "query": "หมอรักษาสัตว์",
+      "band": "colloquial",
+      "reviewed": false,
+      "expected": [
+        "สพ.บ.(สัตวแพทยศาสตรบัณฑิต)",
+        "วท.บ. สาขาวิชาเทคนิคการสัตวแพทย์",
+        "วท.บ. สาขาวิชาการพยาบาลสัตว์"
+      ]
+    },
+    {
+      "query": "พยาบาล",
+      "band": "colloquial",
+      "reviewed": false,
+      "expected": [
+        "พย.บ.(พยาบาลศาสตรบัณฑิต)"
+      ],
+      "note": "Today's substring search also returns วท.บ. สาขาวิชาการพยาบาลสัตว์ for this query."
+    },
+    {
+      "query": "ขายยา",
+      "band": "colloquial",
+      "reviewed": false,
+      "expected": [
+        "ภ.บ.(เภสัชศาสตรบัณฑิต)"
+      ]
+    },
+    {
+      "query": "ครู",
+      "band": "colloquial",
+      "reviewed": false,
+      "expected": [
+        "ศษ.บ. สาขาวิชาศึกษาศาสตร์",
+        "ศษ.บ. สาขาวิชาการจัดการเรียนรู้",
+        "ศษ.บ. สาขาวิชาพลศึกษา",
+        "ศษ.บ. สาขาวิชาสุขศึกษา"
+      ]
+    },
+    {
+      "query": "ทนาย",
+      "band": "colloquial",
+      "reviewed": false,
+      "expected": [
+        "น.บ.(นิติศาสตรบัณฑิต)"
+      ]
+    },
+    {
+      "query": "นักข่าว",
+      "band": "colloquial",
+      "reviewed": false,
+      "expected": [
+        "ศศ.บ. สาขาวิชานิเทศศาสตร์"
+      ]
+    },
+    {
+      "query": "อยากทำงานธนาคาร",
+      "band": "career_phrased",
+      "reviewed": false,
+      "expected": [
+        "บธ.บ. สาขาวิชาการเงินและการลงทุน",
+        "บธ.บ. สาขาวิชาการบริหารการเงินและการลงทุน",
+        "บช.บ.(บัญชีบัณฑิต)",
+        "ศ.บ. สาขาวิชาเศรษฐศาสตร์"
+      ]
+    },
+    {
+      "query": "เขียนโปรแกรม",
+      "band": "career_phrased",
+      "reviewed": false,
+      "expected": [
+        "วท.บ. สาขาวิชาวิทยาการคอมพิวเตอร์",
+        "วศ.บ. สาขาวิชาวิศวกรรมคอมพิวเตอร์",
+        "วศ.บ. สาขาวิชาวิศวกรรมซอฟต์แวร์และความรู้",
+        "วท.บ. สาขาวิชาเทคโนโลยีสารสนเทศ",
+        "วท.บ. สาขาวิชาวิทยาการและเทคโนโลยีดิจิทัล"
+      ]
+    },
+    {
+      "query": "อยากเป็นเชฟ",
+      "band": "career_phrased",
+      "reviewed": false,
+      "expected": [
+        "วท.บ. สาขาวิชาคหกรรมศาสตร์",
+        "วท.บ. สาขาวิชาอาหาร โภชนาการ และการกำหนดอาหาร",
+        "ศศ.บ. สาขาวิชาการโรงแรม ภัตตาคาร และเรือสำราญ"
+      ]
+    },
+    {
+      "query": "อยากทำงานสายการบิน",
+      "band": "career_phrased",
+      "reviewed": false,
+      "expected": [
+        "บธ.บ. สาขาวิชาการจัดการธุรกิจการบิน",
+        "วท.บ. สาขาวิชาการจัดการเทคโนโลยีการบิน"
+      ]
+    },
+    {
+      "query": "ทำงานโรงแรม",
+      "band": "career_phrased",
+      "reviewed": false,
+      "expected": [
+        "บธ.บ. สาขาวิชาการจัดการโรงแรมและท่องเที่ยวสมัยใหม่",
+        "ศศ.บ. สาขาวิชาการโรงแรม ภัตตาคาร และเรือสำราญ",
+        "บธ.บ. สาขาวิชาการจัดการท่องเที่ยว โรงแรม และอีเวนต์",
+        "บธ.บ. สาขาวิชาการจัดการอุตสาหกรรมการบริการ"
+      ]
+    },
+    {
+      "query": "วิเคราะห์ข้อมูล",
+      "band": "career_phrased",
+      "reviewed": false,
+      "expected": [
+        "วท.บ. สาขาวิชาวิทยาการวิเคราะห์ข้อมูลและคณิตศาสตร์ประกันภัย",
+        "วท.บ. สาขาวิชาสถิติ",
+        "วท.บ. สาขาวิชาวิทยาการคอมพิวเตอร์"
+      ]
+    },
+    {
+      "query": "อยากทำงานด้านการตลาด",
+      "band": "career_phrased",
+      "reviewed": false,
+      "expected": [
+        "บธ.บ. สาขาวิชาการตลาด",
+        "บธ.บ. สาขาวิชาการตลาดดิจิทัลและการสร้างตรา"
+      ]
+    },
+    {
+      "query": "สร้างหุ่นยนต์",
+      "band": "career_phrased",
+      "reviewed": false,
+      "expected": [
+        "วศ.บ. สาขาวิชาวิศวกรรมหุ่นยนต์และระบบอัตโนมัติ",
+        "วศ.บ. สาขาวิชาวิศวกรรมการผลิตดิจิทัลและการบูรณาการหุ่นยนต์",
+        "วท.บ. สาขาวิชาเครื่องจักรกลและเมคคาทรอนิกส์เกษตร"
+      ]
+    },
+    {
+      "query": "ดูแลสัตว์",
+      "band": "field_level",
+      "reviewed": false,
+      "expected": [
+        "สพ.บ.(สัตวแพทยศาสตรบัณฑิต)",
+        "วท.บ. สาขาวิชาการพยาบาลสัตว์",
+        "วท.บ. สาขาวิชาเทคนิคการสัตวแพทย์",
+        "วท.บ. สาขาวิชาสัตวศาสตร์",
+        "วท.บ. สาขาวิชาสัตวศาสตร์อุตสาหกรรม"
+      ]
+    },
+    {
+      "query": "สิ่งแวดล้อม",
+      "band": "field_level",
+      "reviewed": false,
+      "expected": [
+        "วท.บ. สาขาวิชาการจัดการสิ่งแวดล้อม",
+        "วท.บ. สาขาวิชาวิทยาศาสตร์และเทคโนโลยีสิ่งแวดล้อม",
+        "วศ.บ. สาขาวิชาวิศวกรรมสิ่งแวดล้อม",
+        "วศ.บ. สาขาวิชาวิศวกรรมสิ่งแวดล้อมเพื่อการพัฒนาอย่างยั่งยืน",
+        "วท.บ. สาขาวิชาอนามัยสิ่งแวดล้อม",
+        "วท.บ. สาขาวิชาเกษตรและสิ่งแวดล้อมศึกษา"
+      ]
+    },
+    {
+      "query": "ปลูกต้นไม้",
+      "band": "field_level",
+      "reviewed": false,
+      "expected": [
+        "วท.บ. สาขาวิชาพืชศาสตร์",
+        "วท.บ. สาขาวิชาเกษตรศาสตร์",
+        "วท.บ. สาขาวิชาพฤกษศาสตร์",
+        "วท.บ. สาขาวิชาพฤกษนวัตกรรม",
+        "วท.บ. สาขาวิชาวนศาสตร์"
+      ]
+    },
+    {
+      "query": "ทะเล",
+      "band": "field_level",
+      "reviewed": false,
+      "expected": [
+        "วท.บ. สาขาวิชาประมง",
+        "วท.บ. สาขาวิชาการขนส่งทางทะเล",
+        "วท.บ. สาขาวิชาวิทยาศาสตร์การเดินเรือ",
+        "วศ.บ. สาขาวิชาวิศวกรรมต่อเรือและวิศวกรรมสมุทรศาสตร์"
+      ]
+    },
+    {
+      "query": "ภาษาต่างประเทศ",
+      "band": "field_level",
+      "reviewed": false,
+      "expected": [
+        "ศศ.บ. สาขาวิชาภาษาจีน",
+        "ศศ.บ. สาขาวิชาภาษาจีนธุรกิจ",
+        "ศศ.บ. สาขาวิชาภาษาญี่ปุ่นธุรกิจ",
+        "ศศ.บ. สาขาวิชาภาษาเกาหลีธุรกิจ",
+        "ศศ.บ. สาขาวิชาภาษาตะวันตก",
+        "ศศ.บ. สาขาวิชาภาษาอังกฤษ"
+      ]
+    },
+    {
+      "query": "กีฬา",
+      "band": "field_level",
+      "reviewed": false,
+      "expected": [
+        "วท.บ. สาขาวิชาวิทยาศาสตร์การกีฬาและการออกกำลังกาย",
+        "ศษ.บ. สาขาวิชาพลศึกษา"
+      ]
+    },
+    {
+      "query": "ดนตรี",
+      "band": "field_level",
+      "reviewed": false,
+      "expected": [
+        "ศศ.บ. สาขาวิชาดนตรีไทย",
+        "ศศ.บ. สาขาวิชาดนตรีตะวันตก"
+      ]
+    },
+    {
+      "query": "การเมือง",
+      "band": "field_level",
+      "reviewed": false,
+      "expected": [
+        "ศศ.บ. สาขาวิชารัฐศาสตร์",
+        "ร.บ. สาขาวิชาการเมืองและการปกครอง",
+        "ศศ.บ. สาขาวิชารัฐประศาสนศาสตร์",
+        "รป.บ.(รัฐประศาสนศาสตรบัณฑิต)"
+      ]
+    },
+    {
+      "query": "วิศวะคอม",
+      "band": "misspelling",
+      "reviewed": false,
+      "expected": [
+        "วศ.บ. สาขาวิชาวิศวกรรมคอมพิวเตอร์",
+        "วศ.บ. สาขาวิชาวิศวกรรมคอมพิวเตอร์และสารสนเทศศาสตร์"
+      ],
+      "note": "Student abbreviation, not a misspelling as such. No substring match today."
+    },
+    {
+      "query": "วิทยาศาตร์คอมพิวเตอร์",
+      "band": "misspelling",
+      "reviewed": false,
+      "expected": [
+        "วท.บ. สาขาวิชาวิทยาการคอมพิวเตอร์"
+      ],
+      "note": "Two errors at once: วิทยาศาสตร์ misspelt (missing ส), and the major is วิทยาการ not วิทยาศาสตร์."
+    },
+    {
+      "query": "เศรษฐสาสตร์",
+      "band": "misspelling",
+      "reviewed": false,
+      "expected": [
+        "ศ.บ. สาขาวิชาเศรษฐศาสตร์",
+        "ศ.บ. สาขาวิชาเศรษฐศาสตร์ประยุกต์และธุรกิจเกษตร",
+        "ศ.บ. สาขาวิชาเศรษฐศาสตร์สหกรณ์",
+        "ศศ.บ. สาขาวิชาเศรษฐศาสตร์การประกอบการ"
+      ]
+    },
+    {
+      "query": "สถาปัตย์",
+      "band": "misspelling",
+      "reviewed": false,
+      "expected": [
+        "สถ.บ.(สถาปัตยกรรมศาสตรบัณฑิต)",
+        "วท.บ. สาขาวิชาสถาปัตยกรรม",
+        "ภ.สถ.บ.(ภูมิสถาปัตยกรรมศาสตรบัณฑิต)"
+      ],
+      "note": "simplify_title drops the thanthakhat, so this one DOES match today."
+    },
+    {
+      "query": "อุสาหการ",
+      "band": "misspelling",
+      "reviewed": false,
+      "expected": [
+        "วศ.บ. สาขาวิชาวิศวกรรมอุตสาหการ",
+        "วศ.บ. สาขาวิชาวิศวกรรมอุตสาหการและระบบ",
+        "วศ.บ. สาขาวิชาวิศวกรรมอุตสาหการ-โลจิสติกส์"
+      ]
+    },
+    {
+      "query": "ภาษาอังกิด",
+      "band": "misspelling",
+      "reviewed": false,
+      "expected": [
+        "ศศ.บ. สาขาวิชาภาษาอังกฤษ",
+        "ศศ.บ. สาขาวิชาภาษาอังกฤษเพื่อการสื่อสารระหว่างวัฒนธรรมและผู้ประกอบการ",
+        "ศศ.บ. สาขาวิชาภาษาอังกฤษเพื่ออุตสาหกรรมบริการ"
+      ]
+    },
+    {
+      "query": "หมอฟัน",
+      "band": "negative",
+      "reviewed": false,
+      "expected": [],
+      "note": "KU has no dentistry programme. The related section must stay empty rather than offer แพทยศาสตร์ or สัตวแพทยศาสตร์."
+    },
+    {
+      "query": "ทันตแพทยศาสตร์",
+      "band": "negative",
+      "reviewed": false,
+      "expected": [],
+      "note": "The formal name of the same absent programme."
+    },
+    {
+      "query": "นาฏศิลป์",
+      "band": "negative",
+      "reviewed": false,
+      "expected": [],
+      "note": "Nearest neighbours are ดนตรีไทย / ศิลปศาสตร์, neither of which is what was asked for."
+    }
+  ]
+}
