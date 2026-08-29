@@ -45,7 +45,9 @@ cd scripts && python eval_embeddings.py --fake
 cd scripts && python import_round_data.py ../data/<year>/<round>-json
 ```
 
-Dependencies are pinned in `requirements.txt` / `Pipfile` (Django 5.2, mysqlclient, pytz).
+Dependencies are pinned in `requirements.txt` / `Pipfile` (Django 5.2, mysqlclient, pytz, plus
+`requests` and `numpy` for the embedding layer — see [semantic search](docs/semantic-search.md)).
+`requirements.txt` is generated: `pipenv requirements > requirements.txt`, never hand-edited.
 
 ## Configuration
 
