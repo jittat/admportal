@@ -62,7 +62,8 @@ python -m doctest criteria/search.py -v
   unlike the criteria table, where majors within one criteria row sort by slots descending.
 
 Each result is `{'major_cupt_code': code, 'project_rows': [{'project', 'round_number', 'slots',
-'criteria_count'}, ...]}`. Majors with no visible project are dropped.
+'criteria_count'}, ...]}`. A (major, project) pair is listed only if the project is visible and the
+major has at least one live criteria in it; a code left with no pairs is dropped.
 
 ## 2. Why the old search died
 
@@ -108,8 +109,12 @@ Consequences worth knowing:
 - Projects for rounds not yet released are silently absent from results. That is what
   `SEARCH_SCOPE_DISPLAY` ("จากโครงการรับสมัครในรอบที่ 1") and `SEARCH_EMPTY_DISPLAY_MESSAGE` exist
   to explain — **per-cycle copy in `settings.py` that must be reviewed as each round opens.**
-- A visible project whose criteria are not imported yet yields `criteria_count == 0`; the card shows
-  `-` instead of a slot count rather than a misleading `0`.
+- **A `CurriculumMajor` with no live criteria is hidden.** Its existence alone does not mean the
+  major is offered in that project — in the 2570 data 30 of 760 visible pairs have no criteria (21 of
+  them in โอลิมปิกวิชาการ), and the project page already omits them. Search used to list them with
+  `-` as the slot count; it now drops them, and a code with no remaining pair drops out of the
+  results. The flip side: a visible project whose criteria are not imported yet is absent from search
+  entirely, so import criteria before making a project visible.
 - **Zero slots mean a shared quota.** A criteria may record its whole quota against one major and
   `0` against its siblings — in the 2570 data every zero sits under a criteria with a non-zero
   sibling; there is no criteria whose majors are all zero. Such rows show
@@ -122,14 +127,14 @@ Consequences worth knowing:
 
 ## 5. Tests
 
-`criteria/tests.py`, 20 tests in four classes:
+`criteria/tests.py`, 22 tests in four classes:
 
 | Class | Covers |
 | --- | --- |
 | `SimplifyTitleTest` | normalization (also doctested in `criteria/search.py`) |
 | `FindMajorCuptCodesTest` | exact, normalized, all-terms-must-match, blank, no-match |
 | `SearchViewTest` | blank query, `ALLOW_SEARCH=False`, `HIDE_CRITERIA`, a visible hit, exclusion of hidden-only projects, slot summing, deleted-criteria exclusion, round ordering |
-| `SharedQuotaTest` | zero-slot majors survive `prepare_admission_criteria`, appear on the project page with the combined-quota wording, are marked rather than zeroed in search, sort behind the quota-carrying major, and still show `-` when no criteria exist |
+| `SharedQuotaTest` | zero-slot majors survive `prepare_admission_criteria`, appear on the project page with the combined-quota wording, are marked rather than zeroed in search, sort behind the quota-carrying major; majors with no live criteria (none at all, or only deleted ones) are hidden from search |
 
 ```bash
 ./manage.py test criteria --settings=admportal.settings_test

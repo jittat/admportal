@@ -462,7 +462,10 @@ def collect_slots(curriculum_majors):
 
 
 def build_search_results(major_cupt_codes):
-    """Group visible (major, project) pairs under the major that was matched."""
+    """Group visible (major, project) pairs under the major that was matched.
+
+    Only pairs backed by at least one non-deleted criteria are listed.
+    """
     visible_projects = AdmissionProject.objects.filter(major_detail_visible=True).all()
     visible_project_map = dict([(p.id, p) for p in visible_projects])
 
@@ -477,8 +480,12 @@ def build_search_results(major_cupt_codes):
 
     project_rows = {}
     for m in curriculum_majors:
+        # a major with no live criteria is not actually offered in that project
+        if m.id not in slots:
+            continue
+
         project = visible_project_map[m.admission_project_id]
-        major_slots = slots.get(m.id, {'slots': 0, 'criteria_count': 0})
+        major_slots = slots[m.id]
 
         if m.cupt_code_id not in project_rows:
             project_rows[m.cupt_code_id] = []

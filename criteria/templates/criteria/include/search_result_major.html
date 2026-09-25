@@ -24,9 +24,7 @@
             <td>{{ row.project }}</td>
             <td class="text-center">{{ row.round_number }}</td>
             <td class="text-center">
-              {% if row.criteria_count == 0 %}
-                -
-              {% elif row.slots == 0 %}
+              {% if row.slots == 0 %}
                 <small>*จำนวนรับรวมกับเงื่อนไขอื่น</small>
               {% else %}
                 {{ row.slots }}

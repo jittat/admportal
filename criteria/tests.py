@@ -248,7 +248,7 @@ class SharedQuotaTest(SearchTestCase):
         self.assertEqual(row['criteria_count'], 1)
         self.assertContains(response, 'จำนวนรับรวมกับเงื่อนไขอื่น')
 
-    def test_search_still_shows_a_dash_when_no_criteria_exist(self):
+    def test_search_hides_a_major_with_no_criteria(self):
         project = self.create_project('โครงการที่ยังไม่มีเกณฑ์')
         code = self.create_code('วท.บ. สาขาวิชาสถิติ', '103')
         CurriculumMajor.objects.create(admission_project=project,
@@ -259,6 +259,38 @@ class SharedQuotaTest(SearchTestCase):
         response = self.client.get(reverse('criteria:search-majors'),
                                    {'query': 'สถิติ'})
 
-        row = response.context['results'][0]['project_rows'][0]
-        self.assertEqual(row['criteria_count'], 0)
-        self.assertNotContains(response, 'จำนวนรับรวมกับเงื่อนไขอื่น')
+        self.assertEqual(response.context['results'], [])
+
+    def test_search_hides_a_major_whose_only_criteria_is_deleted(self):
+        project = self.create_project('โครงการที่ยกเลิกเกณฑ์')
+        code = self.create_code('วท.บ. สาขาวิชาสถิติ', '103')
+        curriculum_major = CurriculumMajor.objects.create(admission_project=project,
+                                                          cupt_code=code,
+                                                          faculty=self.faculty,
+                                                          campus=self.campus)
+        deleted = AdmissionCriteria.objects.create(admission_project=project,
+                                                   faculty=self.faculty,
+                                                   campus=self.campus,
+                                                   is_deleted=True)
+        CurriculumMajorAdmissionCriteria.objects.create(
+            curriculum_major=curriculum_major,
+            admission_criteria=deleted,
+            slots=10)
+
+        response = self.client.get(reverse('criteria:search-majors'),
+                                   {'query': 'สถิติ'})
+
+        self.assertEqual(response.context['results'], [])
+
+    def test_search_lists_only_the_projects_with_criteria(self):
+        without = self.create_project('โครงการที่ยังไม่มีเกณฑ์')
+        CurriculumMajor.objects.create(admission_project=without,
+                                       cupt_code=self.carrier,
+                                       faculty=self.faculty,
+                                       campus=self.campus)
+
+        response = self.client.get(reverse('criteria:search-majors'),
+                                   {'query': 'คณิตศาสตร์'})
+
+        rows = response.context['results'][0]['project_rows']
+        self.assertEqual([r['project'] for r in rows], [self.project])
