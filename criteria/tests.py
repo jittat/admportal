@@ -294,3 +294,78 @@ class SharedQuotaTest(SearchTestCase):
 
         rows = response.context['results'][0]['project_rows']
         self.assertEqual([r['project'] for r in rows], [self.project])
+
+
+class SelectedMajorTest(SearchTestCase):
+    """A search result links to the project page with ?major=<code id>#selected-major."""
+
+    def setUp(self):
+        super().setUp()
+        self.project = self.create_project('โควตาศิลปวัฒนธรรม')
+        self.code = self.create_code('วศ.บ. สาขาวิชาวิศวกรรมคอมพิวเตอร์', '001')
+        self.other = self.create_code('วศ.บ. สาขาวิชาวิศวกรรมเคมี', '002')
+        # two criteria with different majors, so they stay separate rows;
+        # self.code sits in both
+        self.curriculum_major = self.create_curriculum_major(self.code, self.project, slots=10)
+        other_curriculum_major = self.create_curriculum_major(self.other, self.project, slots=5)
+        second = AdmissionCriteria.objects.create(admission_project=self.project,
+                                                  faculty=self.faculty,
+                                                  campus=self.campus)
+        for curriculum_major in [self.curriculum_major, other_curriculum_major]:
+            CurriculumMajorAdmissionCriteria.objects.create(
+                curriculum_major=curriculum_major,
+                admission_criteria=second,
+                slots=3)
+        self.url = reverse('criteria:project-index', args=[self.project.id])
+
+    def rows(self):
+        criterias = AdmissionCriteria.objects.filter(admission_project=self.project)
+        rows, _ = prepare_admission_criteria(criterias,
+                                             CurriculumMajor.objects.filter(
+                                                 admission_project=self.project),
+                                             True)
+        return rows
+
+    def test_marks_every_row_with_the_major_but_anchors_only_the_first(self):
+        rows = self.rows()
+        views.mark_selected_major(rows, self.code.id)
+
+        selected = [r for r in rows if r['is_selected']]
+        self.assertEqual(len(selected), 2)
+        self.assertEqual([r for r in rows if r['is_first_selected']], selected[:1])
+
+    def test_marks_only_rows_with_the_major(self):
+        rows = self.rows()
+        views.mark_selected_major(rows, self.other.id)
+
+        for r in rows:
+            listed = [mc.curriculum_major.cupt_code_id for mc in r['majors']]
+            self.assertEqual(r['is_selected'], self.other.id in listed)
+
+    def test_project_page_anchors_and_highlights_the_major(self):
+        response = self.client.get(self.url, {'major': self.code.id})
+
+        self.assertEqual(response.context['selected_major_id'], self.code.id)
+        self.assertContains(response, 'id="selected-major"', count=1)
+        # name and slot cells, in each of the two rows listing it
+        self.assertContains(response, 'selected-major-cell', count=4)
+
+    def test_project_page_ignores_a_bad_or_unmatched_major(self):
+        for value in ['abc', '', '999999']:
+            response = self.client.get(self.url, {'major': value})
+
+            self.assertNotContains(response, 'id="selected-major"')
+            self.assertNotContains(response, 'selected-major-cell')
+
+    def test_project_page_without_a_major(self):
+        response = self.client.get(self.url)
+
+        self.assertIsNone(response.context['selected_major_id'])
+        self.assertNotContains(response, 'id="selected-major"')
+
+    def test_search_result_links_to_the_major_on_the_project_page(self):
+        response = self.client.get(reverse('criteria:search-majors'),
+                                   {'query': 'วิศวกรรมคอมพิวเตอร์'})
+
+        self.assertContains(response,
+                            '{}?major={}#selected-major'.format(self.url, self.code.id))

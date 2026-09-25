@@ -48,13 +48,13 @@
 	{% endifchanged  %}
       {% endif %}
 
-      <tr class="{% if major_count == 0 %}table-warning{% endif %}">
+      <tr class="{% if major_count == 0 %}table-warning{% endif %}"{% if row.is_first_selected %} id="selected-major"{% endif %}>
 	{% if major_count > 0 %}
 	  {% with curriculum_major_admission_criterias.0 as majorcriteria %}
-	    <td rowspan="{{ criteria_count }}">
+	    <td rowspan="{{ criteria_count }}"{% if majorcriteria.curriculum_major.cupt_code_id == selected_major_id %} class="selected-major-cell"{% endif %}>
 	      {{ majorcriteria.curriculum_major.cupt_code }}
 	    </td>
-	    <td rowspan="{{ criteria_count }}" class="text-center">
+	    <td rowspan="{{ criteria_count }}" class="text-center{% if majorcriteria.curriculum_major.cupt_code_id == selected_major_id %} selected-major-cell{% endif %}">
 	      {% if majorcriteria.slots != 0 %}
   		{{majorcriteria.slots}}
 	      {% else %}
@@ -76,10 +76,10 @@
       {% for majorcriteria in curriculum_major_admission_criterias %}
 	{% if not forloop.first %}
 	  <tr>
-	    <td>
+	    <td{% if majorcriteria.curriculum_major.cupt_code_id == selected_major_id %} class="selected-major-cell"{% endif %}>
 	      {{majorcriteria.curriculum_major.cupt_code}}
 	    </td>
-	    <td class="text-center">
+	    <td class="text-center{% if majorcriteria.curriculum_major.cupt_code_id == selected_major_id %} selected-major-cell{% endif %}">
 	      {% if majorcriteria.slots != 0 %}
   		{{majorcriteria.slots}}
 	      {% else %}

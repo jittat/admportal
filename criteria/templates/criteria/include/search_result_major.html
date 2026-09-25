@@ -35,7 +35,7 @@
             </td>
             <td>
               <a class="btn btn-sm btn-success" target="_blank"
-                 href="{% url 'criteria:project-index' row.project.id %}">อ่านเกณฑ์</a>
+                 href="{% url 'criteria:project-index' row.project.id %}?major={{ result.major_cupt_code.id }}#selected-major">อ่านเกณฑ์</a>
             </td>
           </tr>
         {% endfor %}

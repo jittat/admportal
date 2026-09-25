@@ -99,3 +99,20 @@ h1,h2,h3,h4 {
     border-top-left-radius: .25rem;
     border-top-right-radius: .25rem;
 }
+
+/* keep in-page anchor jumps (e.g. #selected-major) clear of the fixed-top navbar */
+html {
+    scroll-padding-top: 4.5rem;
+}
+
+/* criteria table: the major a search result linked to (?major=...#selected-major) */
+.table td.selected-major-cell {
+    background-color: #e6edf5;
+    font-weight: bold;
+}
+
+/* accent bar on the major-name cell, the first cell of its row */
+.table td.selected-major-cell:first-child {
+    box-shadow: inset 4px 0 0 #5a7fa8;
+    padding-left: .75rem; /* clear the bar; table-sm default is .3rem */
+}

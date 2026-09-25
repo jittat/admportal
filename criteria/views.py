@@ -390,6 +390,30 @@ DEFAULT_MESSAGES = {
     4: 'อ่านรายละเอียดได้ที่ <a target="_blank" href="https://misreg.csc.ku.ac.th/admission/">ระบบรับสมัครวิทยาเขตเฉลิมพระเกียรติจังหวัดสกลนคร</a>',
 }
 
+def parse_selected_major_id(request):
+    """The MajorCuptCode id passed as ?major= by a search result link, or None."""
+    try:
+        return int(request.GET.get('major', ''))
+    except ValueError:
+        return None
+
+
+def mark_selected_major(admission_criteria_rows, cupt_code_id):
+    """Flag the criteria rows listing the major a search result linked to.
+
+    A major can sit in several rows (one per distinct criteria), so every such
+    row gets is_selected; only the first gets is_first_selected, which carries
+    the #selected-major anchor the link jumps to.
+    """
+    is_first = True
+    for row in admission_criteria_rows:
+        row['is_selected'] = any(mc.curriculum_major.cupt_code_id == cupt_code_id
+                                 for mc in row['majors'])
+        row['is_first_selected'] = row['is_selected'] and is_first
+        if row['is_selected']:
+            is_first = False
+
+
 def show_project(request, project_id, faculty_id=None):
     if HIDE_CRITERIA:
         return HttpResponseForbidden()
@@ -411,6 +435,9 @@ def show_project(request, project_id, faculty_id=None):
     admission_criteria_rows, free_curriculum_majors = prepare_admission_criteria(admission_criterias, curriculum_majors, True)
 
     free_curriculum_majors = []
+
+    selected_major_id = parse_selected_major_id(request)
+    mark_selected_major(admission_criteria_rows, selected_major_id)
 
     shows_min_criteria_in_table = project_id in []
     shows_scoring_criteria_percent = project_id in []
@@ -441,6 +468,7 @@ def show_project(request, project_id, faculty_id=None):
                    'shows_scoring_criteria_percent': shows_scoring_criteria_percent,
                    'hides_scoring_prefix_dash': hides_scoring_prefix_dash,
                    'hides_percent': hides_percent,
+                   'selected_major_id': selected_major_id,
                    })
 
 

@@ -65,6 +65,22 @@ Each result is `{'major_cupt_code': code, 'project_rows': [{'project', 'round_nu
 'criteria_count'}, ...]}`. A (major, project) pair is listed only if the project is visible and the
 major has at least one live criteria in it; a code left with no pairs is dropped.
 
+### Landing on the major (`?major=<id>#selected-major`)
+
+Each "อ่านเกณฑ์" link is `criteria:project-index` plus `?major=<MajorCuptCode id>#selected-major`.
+On the project page, `show_project` reads the parameter (`parse_selected_major_id`; anything
+non-integer is ignored) and `mark_selected_major` flags the criteria rows:
+
+- `is_selected` on **every** row listing the major — a major can sit in several rows, one per
+  distinct criteria (51 codes do so in the 2570 data, up to 11 per project);
+- `is_first_selected` on the first of them only. `criteria_table.html` puts
+  `id="selected-major"` on that row's first `<tr>`, so the browser's own fragment jump lands at the
+  top of the group — where the criteria text is — not on the major's own line further down.
+
+The major's name and slot cells get `selected-major-cell` in every row listing it. Both the jump
+and the highlight are server-rendered, no JavaScript. `html { scroll-padding-top }` in
+`main/static/css/base.css` keeps the row clear of the fixed-top navbar, for this and any other in-page anchor.
+
 ## 2. Why the old search died
 
 The previous search (`majors.views.search_majors`, `org-majors:search-majors`) matched
@@ -127,7 +143,7 @@ Consequences worth knowing:
 
 ## 5. Tests
 
-`criteria/tests.py`, 22 tests in four classes:
+`criteria/tests.py`, 28 tests in five classes:
 
 | Class | Covers |
 | --- | --- |
@@ -135,6 +151,7 @@ Consequences worth knowing:
 | `FindMajorCuptCodesTest` | exact, normalized, all-terms-must-match, blank, no-match |
 | `SearchViewTest` | blank query, `ALLOW_SEARCH=False`, `HIDE_CRITERIA`, a visible hit, exclusion of hidden-only projects, slot summing, deleted-criteria exclusion, round ordering |
 | `SharedQuotaTest` | zero-slot majors survive `prepare_admission_criteria`, appear on the project page with the combined-quota wording, are marked rather than zeroed in search, sort behind the quota-carrying major; majors with no live criteria (none at all, or only deleted ones) are hidden from search |
+| `SelectedMajorTest` | `mark_selected_major` flags every row with the major and anchors only the first; the project page renders one `id="selected-major"` and highlights the major's cells; bad, unmatched or missing `?major=` renders plainly; search links carry `?major=<id>#selected-major` |
 
 ```bash
 ./manage.py test criteria --settings=admportal.settings_test
@@ -149,15 +166,19 @@ cannot create a test database. See [Development › Testing](development.md#test
 ```
 criteria/search.py                              simplify_title, matches, find_major_cupt_codes
 criteria/views.py                               search_majors, build_search_results, collect_slots
+                                                (show_project — parse_selected_major_id,
+                                                 mark_selected_major)
                                                 (prepare_admission_criteria — shared-quota majors,
                                                  see architecture.md)
 criteria/urls.py                                criteria:search-majors → /majors/search/
 criteria/templates/criteria/search.html         results page
-criteria/templates/criteria/include/            search_form.html, search_result_major.html
+criteria/templates/criteria/include/            search_form.html, search_result_major.html,
+                                                criteria_table.html (selected-major anchor/highlight)
 criteria/tests.py                               search tests
 admportal/settings_test.py                      SQLite settings for the test runner
 
 main/templates/base.html                        navbar search link
+main/static/css/base.css                        scroll-padding-top, .selected-major-cell
 main/templatetags/adm_extras.py                 allow_search tag
 main/templates/main/include/search_normal.html  landing-page form
 admportal/settings.py                           ALLOW_SEARCH, SEARCH_SCOPE_DISPLAY,
