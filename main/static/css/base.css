@@ -116,3 +116,13 @@ html {
     box-shadow: inset 4px 0 0 #5a7fa8;
     padding-left: .75rem; /* clear the bar; table-sm default is .3rem */
 }
+
+/* criteria table on large screens: let long unbroken strings (URLs in
+   criteria descriptions) wrap, so they don't force the table wider than its
+   container and hide columns behind a far-away scrollbar.  Smaller screens
+   keep drag-scrolling; wrapping anywhere there crushes the columns. */
+@media (min-width: 992px) {
+    .criteria-table td {
+        overflow-wrap: anywhere;
+    }
+}
