@@ -126,3 +126,18 @@ html {
         overflow-wrap: anywhere;
     }
 }
+
+/* criteria table on smaller screens: the table drag-scrolls, and without a
+   floor each column gets squeezed by whichever one has the widest content */
+@media (max-width: 991.98px) {
+    .criteria-table th.major-name-col {
+        min-width: 10rem;
+    }
+    .criteria-table th.slots-col {
+        min-width: 4rem;
+    }
+    .criteria-table th.required-criteria-col,
+    .criteria-table th.scoring-criteria-col {
+        min-width: 14rem;
+    }
+}

@@ -3,17 +3,17 @@
   <thead class="thead-dark">
     {% if not shows_min_criteria_in_table %}
       <tr>
-	<th>สาขาวิชาที่ใช้เกณฑ์</th>
-	<th>จำนวนรับ</th>
-	<th>เงื่อนไขขั้นต่ำ</th>
-	<th>เกณฑ์การพิจารณา</th>
+	<th class="major-name-col">สาขาวิชาที่ใช้เกณฑ์</th>
+	<th class="slots-col">จำนวนรับ</th>
+	<th class="required-criteria-col">เงื่อนไขขั้นต่ำ</th>
+	<th class="scoring-criteria-col">เกณฑ์การพิจารณา</th>
       </tr>
     {% else %}
       <tr>
-	<th rowspan="3">สาขาวิชาที่ใช้เกณฑ์</th>
-	<th rowspan="3">จำนวนรับ</th>
+	<th rowspan="3" class="major-name-col">สาขาวิชาที่ใช้เกณฑ์</th>
+	<th rowspan="3" class="slots-col">จำนวนรับ</th>
 	<th class="text-center" colspan="12">เงื่อนไขขั้นต่ำ</th>
-	<th rowspan="3">เกณฑ์การพิจารณา</th>
+	<th rowspan="3" class="scoring-criteria-col">เกณฑ์การพิจารณา</th>
       </tr>
       <tr>
 	<th class="text-center" colspan="3">หน่วยกิต</th>
