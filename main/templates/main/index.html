@@ -15,6 +15,10 @@
   </div>
 </div>
 
+{% if banner %}
+  {% include "main/include/banner.html" %}
+{% endif %}
+
 {% if announcements %}
   {% include "main/include/announcements.html" %}
 {% endif %}

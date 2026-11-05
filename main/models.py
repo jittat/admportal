@@ -34,3 +34,26 @@ class Announcement(models.Model):
     
     def __str__(self):
         return self.body
+
+
+class Banner(models.Model):
+    image = models.ImageField(upload_to='banners/%Y/%m/%d/',
+                              verbose_name='ภาพแบนเนอร์')
+    link_url = models.CharField(max_length=300,
+                                blank=True,
+                                verbose_name='ลิงก์เมื่อคลิก')
+    alt_text = models.CharField(max_length=200,
+                                blank=True,
+                                verbose_name='คำอธิบายภาพ')
+    is_hidden = models.BooleanField(verbose_name='ซ่อนหรือไม่',
+                                    default=False)
+    rank = models.IntegerField(verbose_name='ลำดับในการแสดง',
+                               default=1000)
+    created_date = models.DateTimeField(verbose_name='วันเวลาที่สร้าง',
+                                        auto_now_add=True)
+
+    class Meta:
+        ordering = ['rank', '-created_date']
+
+    def __str__(self):
+        return self.alt_text or self.image.name

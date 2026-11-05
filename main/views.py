@@ -4,7 +4,7 @@ from majors.models import Campus, AdmissionRound, AdmissionProject
 
 from django.conf import settings
 
-from .models import Announcement
+from .models import Announcement, Banner
 
 DEFAULT_ROUND_NUMBER = Announcement.DEFAULT_ROUND_NUMBER
 
@@ -13,6 +13,9 @@ def index(request):
     campuses = Campus.objects.all()
 
     announcements = Announcement.objects.filter(is_published=True).all()
+
+    # Random pick among visible banners; may become a slideshow later.
+    banner = Banner.objects.filter(is_hidden=False).order_by('?').first()
 
     all_rounds = []
     all_announcement_rounds = {}
@@ -50,6 +53,7 @@ def index(request):
                   { 'admission_rounds': admission_rounds,
                     'campuses': campuses,
                     'announcements': announcements,
+                    'banner': banner,
                     'announcement_rounds': announcement_rounds,
                     'default_round_number': DEFAULT_ROUND_NUMBER,
                     'admission_projects': projects,
