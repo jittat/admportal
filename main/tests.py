@@ -63,3 +63,27 @@ class BannerIndexTests(TestCase):
         self.make_banner('hidden.gif', is_hidden=True)
         for _ in range(10):
             self.assertIn(self.get_index().context['banner'].pk, visible)
+
+    def test_message_and_link_text(self):
+        self.make_banner('msg.gif',
+                         link_url='https://example.com/news',
+                         message='เปิดรับสมัครแล้ว\nรอบที่ 1',
+                         link_text='อ่านรายละเอียด')
+        response = self.get_index()
+        self.assertContains(response, 'เปิดรับสมัครแล้ว<br>รอบที่ 1')
+        self.assertContains(
+            response,
+            '<a class="btn btn-sm btn-success ml-1" '
+            'href="https://example.com/news">อ่านรายละเอียด</a>',
+            html=True)
+
+    def test_message_without_link(self):
+        self.make_banner('msg.gif', message='ข้อความ', link_text='ไม่มีลิงก์')
+        response = self.get_index()
+        self.assertContains(response, 'ข้อความ')
+        self.assertNotContains(response, 'ไม่มีลิงก์')
+
+    def test_no_message_paragraph_when_empty(self):
+        self.make_banner('plain.gif')
+        response = self.get_index()
+        self.assertNotContains(response, '<p class="mt-2 mb-0 text-center small">')

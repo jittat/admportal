@@ -45,6 +45,11 @@ class Banner(models.Model):
     alt_text = models.CharField(max_length=200,
                                 blank=True,
                                 verbose_name='คำอธิบายภาพ')
+    message = models.TextField(blank=True,
+                               verbose_name='ข้อความใต้แบนเนอร์')
+    link_text = models.CharField(max_length=200,
+                                 blank=True,
+                                 verbose_name='ข้อความลิงก์ (ต่อท้ายข้อความ)')
     is_hidden = models.BooleanField(verbose_name='ซ่อนหรือไม่',
                                     default=False)
     rank = models.IntegerField(verbose_name='ลำดับในการแสดง',
