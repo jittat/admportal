@@ -1,8 +1,6 @@
 from django.db import models
 
 class Announcement(models.Model):
-    DEFAULT_ROUND_NUMBER = 2
-    
     body = models.TextField()
     more_link_text = models.CharField(max_length=100,
                                       blank=True,

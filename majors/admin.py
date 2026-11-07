@@ -26,5 +26,12 @@ admin.site.register(AdmissionProject, AdmissionProjectAdmin)
 
 admin.site.register(Campus)
 admin.site.register(Faculty)
-admin.site.register(AdmissionRound)
+
+
+@admin.register(AdmissionRound)
+class AdmissionRoundAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'number', 'subround_number', 'rank', 'is_default_tab']
+    list_editable = ['is_default_tab']
+
+
 admin.site.register(Major)

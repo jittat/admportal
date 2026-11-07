@@ -42,7 +42,8 @@ cd scripts && python import_round_data.py ../data/<year>/<round>-json
 create `test_<dbname>`. `admportal/settings_test.py` swaps in an in-memory SQLite database.
 
 > Note: `majors/tests.py` is still an empty stub. The tests are `criteria/tests.py` (major search),
-> `main/tests.py` (landing-page banner, using a temporary `MEDIA_ROOT`), plus **doctests** in two
+> `main/tests.py` (landing-page banner, using a temporary `MEDIA_ROOT`, and the default
+> announcement tab), plus **doctests** in two
 > modules:
 
 ```bash

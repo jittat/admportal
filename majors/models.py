@@ -42,10 +42,24 @@ class AdmissionRound(models.Model):
                                        blank=True,
                                        verbose_name='กำหนดการ')
 
+    # Portal-only (admapp has no counterpart); import_round_data.py keeps it
+    # across re-imports.  At most one round is checked: see save().
+    is_default_tab = models.BooleanField(
+        default=False,
+        verbose_name='เปิดแท็บรอบนี้เป็นค่าเริ่มต้นในข่าวสารหน้าแรก',
+        help_text='ถ้าไม่เลือกรอบใด จะเปิดแท็บของรอบที่มีประกาศล่าสุด')
+
     class Meta:
         ordering = ['rank']
 
-        
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.is_default_tab:
+            (AdmissionRound.objects
+             .filter(is_default_tab=True)
+             .exclude(pk=self.pk)
+             .update(is_default_tab=False))
+
     def __str__(self):
         if self.subround_number == 0:
             return 'รอบที่ %d' % (self.number,)

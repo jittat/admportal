@@ -1,11 +1,15 @@
 import shutil
 import tempfile
+from datetime import timedelta
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
+from django.utils import timezone
 
-from .models import Banner
+from majors.models import AdmissionRound
+
+from .models import Announcement, Banner
 
 # Smallest valid GIF (1x1 pixel), enough for ImageField validation.
 TINY_GIF = (b'GIF89a\x01\x00\x01\x00\x80\x00\x00\x00\x00\x00\xff\xff\xff!'
@@ -90,3 +94,61 @@ class BannerIndexTests(TestCase):
         self.make_banner('plain.gif')
         response = self.get_index()
         self.assertNotContains(response, '<p class="mt-2 mb-0 text-center small">')
+
+
+class DefaultAnnouncementTabTests(TestCase):
+    def setUp(self):
+        self.rounds = {n: AdmissionRound.objects.create(number=n, rank=n)
+                       for n in (1, 2, 3)}
+
+    def announce(self, round_number, days_ago, **kwargs):
+        return Announcement.objects.create(
+            body='round %s' % round_number,
+            admission_round=(self.rounds[round_number]
+                             if round_number else None),
+            created_date=timezone.now() - timedelta(days=days_ago),
+            **kwargs)
+
+    def default_tab(self):
+        return self.client.get(reverse('main-index')).context['default_round_number']
+
+    def test_no_announcements(self):
+        self.assertIsNone(self.default_tab())
+
+    def test_falls_back_to_round_of_latest_announcement(self):
+        self.announce(3, days_ago=5)
+        self.announce(1, days_ago=1)
+        self.announce(None, days_ago=0)   # no round: ignored for the choice
+        self.assertEqual(self.default_tab(), 1)
+
+    def test_unpublished_announcements_ignored(self):
+        self.announce(1, days_ago=5)
+        self.announce(2, days_ago=1, is_published=False)
+        self.assertEqual(self.default_tab(), 1)
+
+    def test_checked_round_wins(self):
+        self.announce(2, days_ago=5)
+        self.announce(3, days_ago=1)
+        self.rounds[2].is_default_tab = True
+        self.rounds[2].save()
+        response = self.client.get(reverse('main-index'))
+        self.assertEqual(response.context['default_round_number'], 2)
+        self.assertContains(response, 'id="tab_round_2" role="tabpanel"')
+        self.assertContains(
+            response, 'class="tab-pane fade show active" id="tab_round_2"')
+
+    def test_checked_round_without_tab_falls_back(self):
+        self.announce(2, days_ago=5)
+        self.announce(3, days_ago=1)
+        self.rounds[1].is_default_tab = True
+        self.rounds[1].save()
+        self.assertEqual(self.default_tab(), 3)
+
+    def test_only_one_round_checked(self):
+        for n in (1, 2):
+            self.rounds[n].is_default_tab = True
+            self.rounds[n].save()
+        self.assertEqual(
+            list(AdmissionRound.objects.filter(is_default_tab=True)
+                 .values_list('number', flat=True)),
+            [2])

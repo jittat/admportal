@@ -100,7 +100,8 @@ python import_round_data.py ../data/70/r1-json
 ```
 
 That fixes the fixtures into `data/70/r1-json-fixed/`, loads all ten in foreign-key order inside a
-single transaction, and derives `default_round_number`. It prints the target database and row
+single transaction, derives `default_round_number`, and restores which round is checked as
+`is_default_tab` (a portal-only field the reload would reset). It prints the target database and row
 counts and asks for confirmation first (`--yes` to skip). Because `loaddata` matches on primary key,
 re-running it updates rows in place; it does not delete rows removed in `admapp` since the export.
 

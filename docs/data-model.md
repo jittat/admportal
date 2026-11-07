@@ -25,6 +25,10 @@ Top of the hierarchy. `Faculty` belongs to a `Campus` (`on_delete=PROTECT`).
 A TCAS round. Key fields: `number`, optional `subround_number` (0 = no subround), and `rank` for
 ordering. `short_descriptions` and `admission_dates` hold calendar text shown on the landing page.
 
+`is_default_tab` (portal-only, editable from the admin list) picks which round's announcement tab
+the landing page opens first. `save()` keeps at most one round checked. `import_round_data.py`
+restores it after re-loading rounds, since `loaddata` would otherwise reset it.
+
 ### `AdmissionProject`
 An admission program. Linked to rounds many-to-many through `AdmissionProjectRound`.
 
@@ -85,7 +89,9 @@ report.
 ### `Announcement`
 Landing-page announcements. `is_published` gates visibility; `rank` then `-created_date` set the
 order (`Meta.ordering`). An announcement may attach to an `AdmissionRound`; if it has none, the
-landing page shows it under **every** round. `DEFAULT_ROUND_NUMBER = 2` is the fallback round.
+landing page shows it under **every** round. The tab opened first is the round checked as
+`AdmissionRound.is_default_tab`; if none is checked (or it has no announcements), the round of the
+most recent announcement that has a round.
 
 ### `Banner`
 Landing-page banner image (`ImageField`, needs Pillow), uploaded to `banners/%Y/%m/%d/` under

@@ -145,6 +145,13 @@ def main():
         if answer.strip().lower() not in ('y', 'yes'):
             raise SystemExit('aborted.')
 
+    from majors.models import AdmissionRound
+
+    # Portal-only: loaddata rewrites whole rows, which would uncheck it.
+    default_tab_ids = list(AdmissionRound.objects
+                           .filter(is_default_tab=True)
+                           .values_list('id', flat=True))
+
     print('')
     with transaction.atomic():
         for name in LOAD_ORDER:
@@ -157,6 +164,13 @@ def main():
         # that loaddata skips.
         print('\nsetting default_round_number from admission rounds')
         set_default_round_numbers.set_default_round_numbers()
+
+        restored = (AdmissionRound.objects
+                    .filter(id__in=default_tab_ids)
+                    .update(is_default_tab=True))
+        if restored:
+            print('restored is_default_tab on %d admission round(s)'
+                  % restored)
 
     print('')
     print_counts('row counts after load:', counts())

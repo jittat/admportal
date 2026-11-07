@@ -34,7 +34,9 @@ Renders `main/index.html` with:
 - One non-hidden `Banner`, picked at random (`order_by('?')`), or `None`. It is shown between the
   page header and the announcements (`main/include/banner.html`).
 - Published `Announcement`s, grouped by round number. Announcements with no round attach to
-  *every* round.
+  *every* round. `pick_default_round_number` chooses the tab opened first: the round checked as
+  `AdmissionRound.is_default_tab` if it has a tab, otherwise the round of the most recent
+  announcement that has a round.
 - Projects with `major_detail_visible=True`, ordered by `default_round_number`, `display_rank`.
 
 ### Criteria browser — `criteria.views.index` / `show_project` (`/majors/...`)
