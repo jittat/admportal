@@ -36,7 +36,7 @@ python -m doctest majors/header_utils.py -v
 cd scripts && python import_round_data.py ../data/<year>/<round>-json
 ```
 
-Dependencies are pinned in `requirements.txt` / `Pipfile` (Django 5.2, mysqlclient, pytz).
+Dependencies are pinned in `requirements.txt` / `Pipfile` (Django 5.2, mysqlclient, Pillow, pytz).
 
 ## Configuration
 
@@ -56,7 +56,8 @@ Three Django apps, wired in `admportal/urls.py`:
 - **`majors`** — the core domain models. Everything else depends on these.
 - **`criteria`** — admission criteria/scoring models, the main public criteria browser, and the
   public major-name search (`criteria/search.py`, see [docs/major-search.md](docs/major-search.md)).
-- **`main`** — the site landing page (`/`), announcements, and the admission calendar.
+- **`main`** — the site landing page (`/`), the front-page banner, announcements, and the
+  admission calendar.
 
 Note the URL/app-name mismatch: `criteria.urls` is mounted at `/majors/` (app_name
 `criteria`), and `majors.urls` is mounted at `/org-majors/` (app_name `org-majors`). Use the

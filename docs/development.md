@@ -3,7 +3,8 @@
 ## Requirements
 
 - Python 3.10 (see `.python-version`)
-- Django 5.2 (LTS), `mysqlclient`, `pytz` — pinned in `requirements.txt` / `Pipfile`
+- Django 5.2 (LTS), `mysqlclient`, Pillow (for the banner `ImageField`), `pytz` — pinned in
+  `requirements.txt` / `Pipfile`
 
 ```bash
 pip install -r requirements.txt
@@ -40,8 +41,9 @@ cd scripts && python import_round_data.py ../data/<year>/<round>-json
 `settings_local.py`, which points at the per-year MySQL database using an account that cannot
 create `test_<dbname>`. `admportal/settings_test.py` swaps in an in-memory SQLite database.
 
-> Note: `main/tests.py` and `majors/tests.py` are still empty stubs. The real tests are
-> `criteria/tests.py` (major search) plus **doctests** in two modules:
+> Note: `majors/tests.py` is still an empty stub. The tests are `criteria/tests.py` (major search),
+> `main/tests.py` (landing-page banner, using a temporary `MEDIA_ROOT`), plus **doctests** in two
+> modules:
 
 ```bash
 python -m doctest majors/header_utils.py -v
@@ -90,4 +92,6 @@ projects become `major_detail_visible`.
 
 - The tree contains many `.py~` / `.html.org` / `.html.updated` files (emacs backups and
   work-in-progress copies). The real files are the plain `.py` / `.html` ones — ignore the rest.
-- `data/` and `uploads/` are git-ignored; they hold per-year source data and uploaded media.
+- `data/` and `uploads/` are git-ignored; they hold per-year source data and uploaded media
+  (announcement attachments, banner images). Django serves `/media/` itself only when
+  `DEBUG=True`; in production the web server must serve it.

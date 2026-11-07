@@ -6,7 +6,7 @@ Three Django apps, wired together in `admportal/urls.py`.
 | --- | --- |
 | `majors` | Core domain models (campus, faculty, project, round, major, CUPT taxonomy). Everything depends on these. |
 | `criteria` | Admission-criteria/scoring models plus the main public criteria browser. |
-| `main` | The landing page (`/`), announcements, and the admission calendar. |
+| `main` | The landing page (`/`), banners, announcements, and the admission calendar. |
 
 The `criteria` app imports `majors` models but **not** vice-versa. Keep that dependency direction.
 
@@ -31,6 +31,8 @@ is served at `/org-majors/`. Always use the namespaced URL names (`criteria:...`
 
 Renders `main/index.html` with:
 - All admission rounds and campuses (for the calendar and navigation).
+- One non-hidden `Banner`, picked at random (`order_by('?')`), or `None`. It is shown between the
+  page header and the announcements (`main/include/banner.html`).
 - Published `Announcement`s, grouped by round number. Announcements with no round attach to
   *every* round.
 - Projects with `major_detail_visible=True`, ordered by `default_round_number`, `display_rank`.

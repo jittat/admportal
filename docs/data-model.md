@@ -86,3 +86,17 @@ report.
 Landing-page announcements. `is_published` gates visibility; `rank` then `-created_date` set the
 order (`Meta.ordering`). An announcement may attach to an `AdmissionRound`; if it has none, the
 landing page shows it under **every** round. `DEFAULT_ROUND_NUMBER = 2` is the fallback round.
+
+### `Banner`
+Landing-page banner image (`ImageField`, needs Pillow), uploaded to `banners/%Y/%m/%d/` under
+`MEDIA_ROOT`. Optional fields:
+- `link_url` — where a click on the image goes.
+- `alt_text` — the image's `alt` text; also the banner's `__str__` in the admin.
+- `message` — text shown centered, in small type, under the image (line breaks are kept).
+- `link_text` — shown after the message as a button to `link_url`. Ignored when `link_url` is
+  empty.
+
+`is_hidden` takes a banner off the page (used for old news). `rank` then `-created_date` set the
+order (`Meta.ordering`). The landing page currently ignores the order and picks one non-hidden
+banner at random; the order is there for a possible slideshow later. In the admin, `is_hidden` and
+`rank` are editable from the list view.
