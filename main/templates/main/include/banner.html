@@ -1,13 +1,13 @@
 <div class="container mb-4">
   <div class="row">
     <div class="col-md-12">
-      {% if banner.link_url %}<a href="{{ banner.link_url }}">{% endif %}
+      {% if banner.link_url %}<a href="{{ banner.link_url }}" target="_blank" rel="noopener">{% endif %}
         <img class="img-fluid w-100" src="{{ banner.image.url }}" alt="{{ banner.alt_text }}" />
       {% if banner.link_url %}</a>{% endif %}
       {% if banner.message or banner.link_text and banner.link_url %}
         <p class="mt-2 mb-0 text-center small">
           {{ banner.message|linebreaksbr }}
-          {% if banner.link_text and banner.link_url %}<a class="btn btn-sm btn-success ml-1" href="{{ banner.link_url }}">{{ banner.link_text }}</a>{% endif %}
+          {% if banner.link_text and banner.link_url %}<a class="btn btn-sm btn-success ml-1" href="{{ banner.link_url }}" target="_blank" rel="noopener">{{ banner.link_text }}</a>{% endif %}
         </p>
       {% endif %}
     </div>

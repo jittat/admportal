@@ -49,7 +49,9 @@ class BannerIndexTests(TestCase):
         response = self.get_index()
         self.assertEqual(response.context['banner'], banner)
         self.assertContains(response, banner.image.url)
-        self.assertContains(response, 'href="https://example.com/news"')
+        self.assertContains(
+            response,
+            'href="https://example.com/news" target="_blank" rel="noopener"')
         self.assertContains(response, 'alt="ข่าวใหม่"')
 
     def test_visible_banner_without_link(self):
@@ -74,7 +76,8 @@ class BannerIndexTests(TestCase):
         self.assertContains(
             response,
             '<a class="btn btn-sm btn-success ml-1" '
-            'href="https://example.com/news">อ่านรายละเอียด</a>',
+            'href="https://example.com/news" target="_blank" rel="noopener">'
+            'อ่านรายละเอียด</a>',
             html=True)
 
     def test_message_without_link(self):
