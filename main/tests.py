@@ -152,3 +152,29 @@ class DefaultAnnouncementTabTests(TestCase):
             list(AdmissionRound.objects.filter(is_default_tab=True)
                  .values_list('number', flat=True)),
             [2])
+
+
+class SpecialRoundTitleTests(TestCase):
+    def test_str(self):
+        self.assertEqual(str(AdmissionRound(number=2, rank=2)), 'รอบที่ 2')
+        self.assertEqual(
+            str(AdmissionRound(number=1, subround_number=2, rank=1)),
+            'รอบที่ 1/2')
+        self.assertEqual(
+            str(AdmissionRound(number=100, rank=1000,
+                               short_descriptions='ข้อมูลนิสิตใหม่')),
+            'ข้อมูลนิสิตใหม่')
+        # A special round with no title still gets a usable label.
+        self.assertEqual(str(AdmissionRound(number=101, rank=1001)),
+                         'รอบที่ 101')
+
+    def test_tab_labels(self):
+        for number, title in ((1, 'Portfolio'), (100, 'ข้อมูลนิสิตใหม่')):
+            r = AdmissionRound.objects.create(number=number, rank=number,
+                                              short_descriptions=title)
+            Announcement.objects.create(body='x', admission_round=r,
+                                        created_date=timezone.now())
+        response = self.client.get(reverse('main-index'))
+        self.assertContains(response, '>รอบที่ 1</a>')
+        self.assertContains(response, '>ข้อมูลนิสิตใหม่</a>')
+        self.assertNotContains(response, 'รอบที่ 100')

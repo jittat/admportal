@@ -40,6 +40,7 @@ def index(request):
 
     all_rounds = []
     all_announcement_rounds = {}
+    round_titles = {}
     announcement_rounds = []
 
     for a in announcements:
@@ -48,6 +49,7 @@ def index(request):
             if round_number not in all_announcement_rounds:
                 all_rounds.append(round_number)
                 all_announcement_rounds[round_number] = []
+                round_titles[round_number] = a.admission_round.number_title
 
     for a in announcements:
         if a.admission_round:
@@ -59,6 +61,7 @@ def index(request):
 
     for r in sorted(all_rounds):
         announcement_rounds.append({'number': r,
+                                    'title': round_titles[r],
                                     'items': all_announcement_rounds[r]})
 
     default_round_number = pick_default_round_number(announcement_rounds,

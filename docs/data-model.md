@@ -25,6 +25,12 @@ Top of the hierarchy. `Faculty` belongs to a `Campus` (`on_delete=PROTECT`).
 A TCAS round. Key fields: `number`, optional `subround_number` (0 = no subround), and `rank` for
 ordering. `short_descriptions` and `admission_dates` hold calendar text shown on the landing page.
 
+Rounds numbered `SPECIAL_NUMBER_START` (100) and up are portal-only groupings made by hand in the
+admin, not TCAS rounds — e.g. round 100 holds announcements for new students. They are labelled by
+their `short_descriptions` (the announcement tab, `__str__` in the admin and drop-downs) instead of
+"รอบที่ N"; with an empty `short_descriptions` they fall back to "รอบที่ N". They are not in the
+admapp export, so imports leave them alone — as long as admapp never uses the same primary key.
+
 `is_default_tab` (portal-only, editable from the admin list) picks which round's announcement tab
 the landing page opens first. `save()` keeps at most one round checked. `import_round_data.py`
 restores it after re-loading rounds, since `loaddata` would otherwise reset it.

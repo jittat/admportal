@@ -31,6 +31,11 @@ class Faculty(models.Model):
     
 
 class AdmissionRound(models.Model):
+    # Rounds numbered from here up are not TCAS rounds but portal-only
+    # groupings (e.g. 100 = information for new students).  They are shown
+    # by their short_descriptions instead of "รอบที่ N".
+    SPECIAL_NUMBER_START = 100
+
     number = models.IntegerField()
     subround_number = models.IntegerField(default=0)
     rank = models.IntegerField()
@@ -60,9 +65,20 @@ class AdmissionRound(models.Model):
              .exclude(pk=self.pk)
              .update(is_default_tab=False))
 
+    @property
+    def is_special(self):
+        return self.number >= self.SPECIAL_NUMBER_START
+
+    @property
+    def number_title(self):
+        """Title for the round number as a whole, ignoring the subround."""
+        if self.is_special and self.short_descriptions:
+            return self.short_descriptions
+        return 'รอบที่ %d' % (self.number,)
+
     def __str__(self):
-        if self.subround_number == 0:
-            return 'รอบที่ %d' % (self.number,)
+        if self.subround_number == 0 or self.is_special:
+            return self.number_title
         else:
             return 'รอบที่ %d/%d' % (self.number, self.subround_number)
 
